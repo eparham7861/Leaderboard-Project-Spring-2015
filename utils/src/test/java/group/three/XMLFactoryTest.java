@@ -66,6 +66,35 @@ public class XMLFactoryTest {
 		assertEquals(getXML(5), currentXML.convertAllToXML());
 	}
 	
+	@Test
+	public void testSetHiddenStudents(){
+		int hiddenStudentNum = 5;
+		currentXML.setHiddenStudentAmount(hiddenStudentNum);
+		assertEquals(hiddenStudentNum, currentXML.getHiddenStudentAmount());
+	}
+	
+	@Test
+	public void testModifiedValue(){
+	//We believe the modified variable is to determine if there is any change in the # of visible students
+		String modifyString = "true";
+		currentXML.setModifiedValue(modifyString);
+		assertEquals(modifyString, currentXML.getModifiedValue());
+	}
+	
+	@Test
+	public void testSetColorBackground(){
+		String graphBackgroundColor = "blue";
+		currentXML.setBackgroundColor(graphBackgroundColor);
+		assertEquals(graphBackgroundColor, currentXML.getBackgroundColor());
+	}
+	
+	@Test
+	public void testSetUserColor(){
+		String userColor = "red";
+		currentXML.setUserColor(userColor);
+		assertEquals(userColor, currentXML.getUserColor());
+	}
+	
 	private String getXML(int count) {
 		String xml = "<Leaderboard><courseID>" + currentXML.getCourseID() + "</courseID>";
 		xml += "<setting>" + currentXML.getSetting() + "</setting>";

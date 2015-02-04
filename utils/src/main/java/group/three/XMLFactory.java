@@ -2,16 +2,22 @@ package group.three;
 
 public class XMLFactory {
 	private String courseID;
-	private int settingNumber, visibleStudents;
+	private int settingNumber, visibleStudents, hiddenStudents;
 	private String levelLabel;
 	private String gradebookLabel;
+	private String isModified;
+	private String backgroundColor, userColor;
 	
 	public XMLFactory(){
 		courseID = "";
 		settingNumber = 0;
 		visibleStudents = 1;
+		hiddenStudents = 0;
 		levelLabel = "";
 		gradebookLabel = "";
+		isModified = "";
+		backgroundColor = "null";
+		userColor = "null";
 	}
 	
 	public void setCourseID(String id){
@@ -34,6 +40,22 @@ public class XMLFactory {
 		this.visibleStudents = visibleStudents;
 	}
 	
+	public void setHiddenStudentAmount(int amount){
+		this.hiddenStudents = amount;
+	}
+	
+	public void setModifiedValue(String modifyBooleanString){
+		this.isModified = modifyBooleanString;
+	}
+	
+	public void setBackgroundColor(String colValue){
+		this.backgroundColor = colValue;
+	}
+	
+	public void setUserColor(String userColorValue){
+		this.userColor = userColorValue;
+	}
+	
 	public String getCourseID(){
 		return this.courseID;
 	}
@@ -47,11 +69,27 @@ public class XMLFactory {
 	}
 	
 	public int getVisibleStudents() {
-		return visibleStudents;
+		return this.visibleStudents;
+	}
+	
+	public int getHiddenStudentAmount(){
+		return this.hiddenStudents;
 	}
 	
 	public String getGradebookLabel(){
 		return this.gradebookLabel;
+	}
+	
+	public String getModifiedValue(){
+		return this.isModified;
+	}
+	
+	public String getBackgroundColor(){
+		return this.backgroundColor;
+	}
+	
+	public String getUserColor(){
+		return this.userColor;
 	}
 	
 	public String convertAllToXML(){
