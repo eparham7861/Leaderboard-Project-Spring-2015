@@ -1,6 +1,6 @@
 subprojects {
 	apply plugin: 'war'
-	
+
 	dependencies {
 		compile project(":utils")
 		compile "javax.servlet:servlet-api:2.5"

@@ -1,0 +1,10 @@
+courseID
+settings (levelValue)
+levelLabel
+gradebook_column
+visibleStudents
+hiddenStudents
+modified
+numberOfVisibleStudents
+color
+userColor
