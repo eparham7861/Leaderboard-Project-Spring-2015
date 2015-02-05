@@ -4,11 +4,19 @@ public class Student {
 	private double score;
 	private String fName, lName, userName;
 	private boolean hidden;
+	private int studentID;
+	private String studentHighlightColor;
+	private String studentGeneralColor;
+	
+	
 	
 	public Student () {
 		hidden = false;
 	}
-	
+	public void setStudentID(int ID){
+		this.studentID  ID;
+	}
+
 	public void setFirstName(String fName) {
 		this.fName = fName;
 	}
@@ -27,6 +35,10 @@ public class Student {
 	
 	public void setHidden() {
 		hidden = true;
+	}
+	
+		public int getStudentID(){
+		return studentID;
 	}
 	
 	public String getFirstName() {
