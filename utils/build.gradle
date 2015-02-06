@@ -16,6 +16,9 @@ repositories {
 }
 
 dependencies {
+	compile files("BBLibs/bb-cms-admin.jar")
+	compile files("BBLibs/bb-platform.jar")
+	
     testCompile group: 'junit', 
                 name: 'junit', 
                 version: '4.+'
