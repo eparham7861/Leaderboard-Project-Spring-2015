@@ -14,7 +14,7 @@ public class Student {
 		hidden = false;
 	}
 	public void setStudentID(int ID){
-		this.studentID  ID;
+		this.studentID = ID;
 	}
 
 	public void setFirstName(String fName) {
