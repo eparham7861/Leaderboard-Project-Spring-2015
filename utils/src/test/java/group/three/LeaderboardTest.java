@@ -14,15 +14,15 @@ public class LeaderboardTest {
 	public void startUp() {
 		currentBoard = new Leaderboard();
 		user1 = mock(User.class);
-		when(user1.getStudentId()).thenReturn("redshirt1");
-		when(user1.getUserName()).thenReturn("username1");
-		when(user1.getGivenName()).thenReturn("Name1");
-		when(user1.getFamilyName()).thenReturn("Family1");
+		when(user1.getStudentId()).thenReturn("01234567");
+		when(user1.getUserName()).thenReturn("eparham");
+		when(user1.getGivenName()).thenReturn("Eric");
+		when(user1.getFamilyName()).thenReturn("Parham");
 	}
 	
 	@Test
 	public void testSetUser() {
 		currentBoard.setCurrentUser(user1);
-		assertEquals("User [username=username1, name= Name1 Family1]", currentBoard.toString());
+		assertEquals("User [username=eparham, name=Eric Parham]", currentBoard.toString());
 	}
 }

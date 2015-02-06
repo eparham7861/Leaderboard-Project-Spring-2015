@@ -11,7 +11,7 @@ public class Leaderboard {
 	
 	@Override
 	public String toString() {
-		return "User [username=" + getUserName() + ", name= " + getName() + "]";
+		return "User [username=" + getUserName() + ", name=" + getName() + "]";
 	}
 	
 	public String getUserName() {
