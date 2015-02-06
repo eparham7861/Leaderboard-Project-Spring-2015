@@ -6,13 +6,13 @@ import blackboard.data.user.User;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class LeaderboardTest {
+public class LeaderboardUserTest {
 	
-	private Leaderboard currentBoard;
+	private LeaderboardUser currentUser;
 	private User user1;
 	@Before
 	public void startUp() {
-		currentBoard = new Leaderboard();
+		currentUser = new LeaderboardUser();
 		user1 = mock(User.class);
 		when(user1.getStudentId()).thenReturn("01234567");
 		when(user1.getUserName()).thenReturn("eparham");
@@ -21,8 +21,8 @@ public class LeaderboardTest {
 	}
 	
 	@Test
-	public void testSetUser() {
-		currentBoard.setCurrentUser(user1);
-		assertEquals("User [username=eparham, name=Eric Parham]", currentBoard.toString());
+	public void testSetCurrentUser() {
+		currentUser.setCurrentUser(user1);
+		assertEquals("User [username=eparham, name=Eric Parham]", currentUser.toString());
 	}
 }

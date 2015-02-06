@@ -2,7 +2,7 @@ package group.three;
 
 import blackboard.data.user.User;
 
-public class Leaderboard {
+public class LeaderboardUser {
 	private User currentUser;
 	
 	public void setCurrentUser(User currentUser) {
