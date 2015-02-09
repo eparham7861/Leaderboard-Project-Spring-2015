@@ -1,5 +1,5 @@
 apply plugin: 'war'
-version = '1.4'
+version = '1.5'
 
 project.ext {
 	learnVersion = "9.1.110082.0"

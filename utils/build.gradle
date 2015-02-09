@@ -18,6 +18,7 @@ repositories {
 dependencies {
 	compile files("BBLibs/bb-cms-admin.jar")
 	compile files("BBLibs/bb-platform.jar")
+	compile files("BBLibs/servlet-api.jar")
 	
 	testCompile "org.mockito:mockito-core:1.+"
 	
