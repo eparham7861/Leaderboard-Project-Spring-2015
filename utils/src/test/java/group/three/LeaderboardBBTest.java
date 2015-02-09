@@ -35,14 +35,4 @@ public class LeaderboardBBTest {
 		
 		currentLeaderboard.configureBoard(currentContext);
 	}
-	
-	@Test
-	public void testSessionUser() {
-		assertEquals("Eric Parham", currentLeaderboard.getSessionUserName());
-	}
-	
-	@Test
-	public void testGetCourseID() {
-		assertEquals("CS491", currentLeaderboard.getCourseID());
-	}
 }

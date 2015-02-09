@@ -27,12 +27,4 @@ public class LeaderboardBB {
 	private void setCurrentCourseID() {
 		currentCourseID.setCourse(currentContext.getCourseId());
 	}
-	
-	public String getSessionUserName() {
-		return currentUser.getName();
-	}
-	
-	public String getCourseID() {
-		return currentCourseID.toString();
-	}
 }
