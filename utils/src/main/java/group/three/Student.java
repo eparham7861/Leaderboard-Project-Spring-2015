@@ -36,8 +36,14 @@ public class Student {
 	public void setHidden() {
 		hidden = true;
 	}
+	public void setStudentHighlightColor(String Color){
+		this.studentHighlightColor = Color;
+	}
+	public void setStudentGeneralColor(String Color){
+		this.studentGeneralColor = Color;
+	}
 	
-		public int getStudentID(){
+	public int getStudentID(){
 		return studentID;
 	}
 	
@@ -59,6 +65,12 @@ public class Student {
 	
 	public boolean isHidden() {
 		return hidden;
+	}
+	public String getStudentHighlightColor(){
+		return studentHighlightColor;
+	}
+	public String getStudentGeneralColor(){
+		return studentGeneralColor;
 	}
 	
 	public boolean isScoreHigher(Double score) {
