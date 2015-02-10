@@ -18,25 +18,36 @@
 <%
 	//This is a test
 	String color_value = "";
+	//String colorValue = ""; //JARED EDITED VERSION
 	String user_color_value = "";
+	//String userColorValue = ""; //JARED EDITED VERSION
 	Id courseID = ctx.getCourseId();
 	String [] level_values = new String[10];
+	//String[] XMLlevelValues = new String[10]; //JARED EDITED VERSION
 	String [] level_labels = new String[10];
+	//String[] XMLlevelLabels = new String [10]; //JARED EDITED VERSION
 	String jsConfigFormPath = PlugInUtil.getUri("dt", "leaderboardblock11", "js/config_form.js");
 	
 		
 	// Create a new persistence object.  Don't save empty fields.
 	B2Context b2Context = new B2Context(request);
+	//XMLFactory xmlFactory = new XMLFactory(); //JARED EDITED VERSION
 	b2Context.setSaveEmptyValues(false);
+	//xmlFactory.setSaveEmptyValues(false); //JARED EDITED VERSION
 	
 	// Grab previously saved color value
 	color_value = b2Context.getSetting(true, false, "color");
+	//colorValue = xmlFactory.getSetting(); //JARED EDITED VERSION
 	user_color_value = b2Context.getSetting(true, false, "user_color");
+	//userColorValue = xmlFactory.getSetting(); //JARED EDITED VERSION
 	
 	// Grab previously saved level values and labels
 	for(int i = 0; i < 10; i++){
-		level_values[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Points" + courseID.toExternalString() );
+		level_values[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Points" + courseID.toExternalString());
+		//XMLlevelValues[i] = xmlFactory.getSetting(); //JARED EDITED VERSION
 		level_labels[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Labels" + courseID.toExternalString());
+		//XMLlevelLabels[i] = xmlFactory.getSetting(); //JARED EDITED VERSION
+
 	}
 %>
 
@@ -92,8 +103,10 @@
 								String levelLabel;
 								String levelPoints;
 								levelLabel = level_labels[i-1];
+								//levelLabel = XMLlevelLabels[i-1]; //JARED EDITED VERSION
 								levelPoints = level_values[i-1];
-								//Sets some default values if none is set
+								//levelPoints = XMLlevelPoints[i-1]; //JARED EDITED VERSION
+								//Sets some default values if none are set
 								if(i == 2 && levelLabel.equals("") && levelPoints.equals("")) {
 									levelLabel = "Apprentice";
 									levelPoints = "100";
@@ -136,12 +149,17 @@
 				
 				//Create B2Context object for show/hide feature
 				B2Context b2Context_sh = new B2Context(request);
+				//XMLFactory XMLcontextShowHide = new xmlFactory(); //JARED EDITED VERSION
 				b2Context_sh.setSaveEmptyValues(false);
+				//XMLcontextShowHide.setSaveEmptyValues(false); //JARED EDITED VERSION
+				
+				
 						
 				//Create show/hide UI
 				List<MultiSelectBean> leftList = new ArrayList<MultiSelectBean>();
 				List<MultiSelectBean> rightList = new ArrayList<MultiSelectBean>();
 				String modified = b2Context_sh.getSetting(false, true, "modified" +  courseID.toExternalString());
+				//String modified = XMLcontextShowHide.getSetting(); //JARED EDITED VERSION
 				List<CourseMembership> cmlist = CourseMembershipDbLoader.Default.getInstance().loadByCourseIdAndRole(courseID, CourseMembership.Role.STUDENT, null, true);
 				
 				//Logic to determine if the default or a saved show/hide list is used
@@ -150,6 +168,7 @@
 					//Each list is saved as one string of names with the following format:
 					//"firstName lastName, firstName lastName, etc."
 					String visibleList = b2Context_sh.getSetting(false, true, "visibleStudents" +  courseID.toExternalString());
+					//String visibleList = XMLcontextShowHide(); //JARED EDITED VERSION
 					String[] visibleArr = visibleList.split(",");
 					if(!(visibleList.trim().equals(" ")) && !(visibleList.trim().isEmpty()) && visibleList != null){
 						for(int i = 0; i < visibleArr.length; i++){//Add any saved visible to left side.
@@ -160,6 +179,7 @@
 						}
 					}
 					String hiddenList = b2Context_sh.getSetting(false, true, "hiddenStudents" +  courseID.toExternalString());
+					//String hiddenList = XMLcontextShowHide.getSetting(); //JARED EDITED VERSION
 					String[] hiddenArr = hiddenList.split(",");
 					if(!(hiddenList.trim().equals(" ")) && !(hiddenList.trim().isEmpty()) && hiddenList != null){
 						for(int i = 0; i < hiddenArr.length; i++){//Add any saved hidden to right side.
@@ -177,17 +197,17 @@
 					//if(cmlist.size() > (visibleList.length() + hiddenList.length())){
 						for(int i = 0; i < cmlist.size(); i++){//Check entire roster.
 							User student = cmlist.get(i).getUser();
-							String stuName = student.getGivenName() + " " + student.getFamilyName() + ": " + student.getUserName();
+							String studentName = student.getGivenName() + " " + student.getFamilyName() + ": " + student.getUserName();
 							boolean found = false;
 							for(int j = 0; j < visibleArr.length; j++){//Check visible list
-								if(stuName.equals(visibleArr[j])){
+								if(studentName.equals(visibleArr[j])){
 									found = true;
 									break;
 								}
 							}
 							if(found == false){
 								for(int j = 0; j < hiddenArr.length; j++){//Check hidden list
-									if(stuName.equals(hiddenArr[j])){
+									if(studentName.equals(hiddenArr[j])){
 										found = true;
 										break;
 									}
@@ -195,8 +215,8 @@
 							}
 							if(found == false){//If the name wasn't found on either list, add to visible.
 								MultiSelectBean leftBean = new MultiSelectBean();
-								leftBean.setValue(stuName);
-								leftBean.setLabel(stuName);
+								leftBean.setValue(studentName);
+								leftBean.setLabel(studentName);
 								leftList.add(leftBean);
 							}
 						}
@@ -222,8 +242,10 @@
 				<%
 					//Create a string array for the levels and point values from the config file
 					for(int i = 0; i < 10; i++){
-						level_values[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Points" + courseID.toExternalString() );
+						level_values[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Points" + courseID.toExternalString());
+						//levelValues[i] = xmlFactory.getSetting(); //JARED EDITED VERSION
 						level_labels[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Labels" + courseID.toExternalString());
+						//levelLabels[i] = xmlFactory.getSetting(); //JARED EDITED VERSION
 					}
 					
 					//Use the GradebookManager to get the gradebook data
@@ -245,7 +267,9 @@
 					String prev_grade_choice = "Total";
 					String prev_grade_string = "";
 					B2Context b2Context_grade = new B2Context(request);
+					//XMLFactory XMLcontextGrade = new XMLFactory(); //JARED EDITED VERSION
 					prev_grade_choice = b2Context_grade.getSetting(false,true,"gradebook_column" + courseID.toExternalString());
+					//prevGradeChoice = XMLcontextGrade.getSetting(); // JARED EDITED VERSION
 					if(prev_grade_choice == "") prev_grade_choice = "Total";
 					prev_grade_string = prev_grade_choice + " - (Chosen)"; //selected option on dropdown list 
 				%>

@@ -62,10 +62,13 @@
 
 		//Get number of visible students. This is used to determined height of the leaderboard.		
 		B2Context b2Context_numVisible = new B2Context(request);
+		//XMLFactory XMLnumVisible = new XMLFactory();  //JARED EDITED VERSION
 		String modifiedd = b2Context_numVisible.getSetting(false, true, "modified" + courseID.toExternalString());
+		//String modifiedd = XMLnumVisible();  //JARED EDITED VERSION
 		int numVisible = 0;
 		if(modifiedd.equals("true")){
 			numVisible = Integer.parseInt(b2Context_numVisible.getSetting(false, true, "numVisibleStudents" + courseID.toExternalString()));	
+			//numVisible = Integer.parseInt(XMLnumVisible.getsetting()); JARED EDITED VERSION
 		}
 		else{
 			numVisible = cmlist.size();
@@ -73,13 +76,18 @@
 		
 		//retrieve grade column to be displayed. Use "Total" column if none has been provided, or if the previously chosen grade column has been deleted.
 			String b2_grade_choice = "";
+			//String XMLgradeChoice = ""; //JARED EDITED VERSION
 			B2Context b2Context_grade = new B2Context(request);
+			//XMLFactory XMLcontextGrade = new XMLFactory();  //JARED EDITED VERSION
 			b2_grade_choice = b2Context_grade.getSetting(false,true,"gradebook_column" + courseID.toExternalString());
+			//XMLgradeChoice = XMLcontextGrade.getSetting(); //JARED EDITED VERSION
 			String grade_choice = "total";
 			for (int j = 0; j < lgm.size(); j++) { //check if grade column has been deleted.
 				GradableItem gradeItem = (GradableItem) lgm.get(j);
 				if (gradeItem.getTitle().equals(b2_grade_choice)) {
+				//if (gradeItem.getTitle().equals(XMLgradeChoice)){ //JARED EDITED VERSION
 					grade_choice = b2_grade_choice;
+					//grade_choice = XMLgradeChoice; //JARED EDITED VERSION
 				}
 			}
 			
@@ -106,10 +114,13 @@
 					Last edit 3-10-14 by Tim Burch.
 					*/
 					B2Context b2Context_show_hide = new B2Context(request);
+					//XMLFactory XMLshowHide = new XMLFactory(); //JARED EDITED VERSION
 					String modified = b2Context_show_hide.getSetting(false, true, "modified" + courseID.toExternalString());
+					//String modified = XMLshowHide.getSetting(); //JARED EDITED VERSION
 					String sessionUserName = sessionUser.getGivenName() + " " + sessionUser.getFamilyName() + ": " + sessionUser.getUserName();
 					if(modified.equals("true")){
 						String[] hiddenArr = b2Context_show_hide.getSetting(false, true, "hiddenStudents" + courseID.toExternalString()).split(",");
+						//String[] hiddenArr = XMLshowHide.getSetting(); //JARED EDITED VERSION
 						String stuName = cm.getUser().getGivenName() +" " + cm.getUser().getFamilyName() + ": " + cm.getUser().getUserName();
 						for(int l = 0; l < hiddenArr.length; l++){
 							if(stuName.equals(sessionUserName)){//Only add user if they're the session user.
@@ -152,9 +163,13 @@
 	  				<%	
 	  					// Load saved color settings
 	  					B2Context b2Context = new B2Context(request);
+						//XMLFactory xmlFactory = new XMLFactory();
 	  					String user_color = b2Context.getSetting(true, false, "user_color");	// Highlight color
+						//String userColor = currentXML.getUserColor();  //JARED EDITED VERSION
 	  					String color = b2Context.getSetting(true, false, "color");				// General color
+						//String color = currentXML.getColor();  //JARED EDITED VERSION
 	  					if(user_color == "") user_color = "#44aa22";
+						//if (userColor == "") userColor = "#44aa22";  //JARED EDITED VERSION
 	  					if(color == "") color = "#4572A7";
 	  				
 	  					boolean alreadyHighlighted = false;
@@ -212,6 +227,7 @@
 						<%		// added by dave to remove unnecessary top spacing when no titles have been specified
 						//Capture the number of levels as it was saved in the persistence object by leaderboard_save.jsp.
 						String s =  b2Context.getSetting(false,true,"num_filled_levels" + courseID.toExternalString());
+						//String s = xmlFactory.getSetting(); //JARED EDITED VERSION
 						int filledLevels = (s == "")? 0: Integer.parseInt(s);
 						if (filledLevels > 0) {
 							out.print("spacingTop: 95");	
@@ -262,27 +278,37 @@
 							for(int j = 1; j<=filledLevels; j++){
 								//Gather the target value to achieve the current level from the persistence object.
 								levelFrom = Integer.parseInt(b2Context.getSetting(false,true,"Level_" + (j) + "_Points"+ courseID.toExternalString()));
+								//levelFrom = Integer.parseInt(xmlFactory.getSetting()); //JARED EDITED VERSION
 								if(j == filledLevels) {
 									levelTo = levelFrom * 2;
 								} else {
 									levelTo = Integer.parseInt(b2Context.getSetting(false,true,"Level_" + (j+1) + "_Points"+ courseID.toExternalString()));
+									//levelTo = Integer.parseInt(xmlFactory.getSetting()); //JARED EDITED VERSION
 								}
 								//Calculate the correct gradient color using RGB and dividing with respect to filledLevels.
 								int gradient = (255/(filledLevels+10))*((filledLevels+10)-j);
 								
 								//Gets the current level title if there is not title sets it to a default level lable ADDED 09/27/2013
 								levelLabel = b2Context.getSetting(false,true,"Level_" + (j) + "_Labels"+ courseID.toExternalString());
+								//levelLabel = xmlFactory.getSetting(); //JARED EDITED VERSION
 								//out.print("dave: <" + levelLabel + ">");
-								if (levelLabel == "") levelLabel = "Level " +j; //Sets the default level title
-								
+								if (levelLabel == "") {
+									levelLabel = "Level " +j; //Sets the default level title
+								}
 								//Output javascript for each highchart plotband.
 								out.print("{ color: 'rgb("+gradient+", "+gradient+", "+gradient+")', ");
 								out.print("from: "+levelFrom+", ");
 								out.print("to: "+levelTo+", ");
-								if (j == 1) out.print("label: { text: '',rotation: -35,align: 'center',textAlign: 'left', verticalAlign: 'top', y: -10, style: { color: '#666666'}}}"); //Adds rotation to labels -Jll
-								else out.print("label: { text: '"+ levelLabel +"',rotation: -35,textAlign: 'left',align: 'center', verticalAlign: 'top', y: -10, style: { color: '#666666', fontFamily: 'Verdana, sans-serif'}}}"); //Adds rotation to labels -Jll
+								if (j == 1) {
+									out.print("label: { text: '',rotation: -35,align: 'center',textAlign: 'left', verticalAlign: 'top', y: -10, style: { color: '#666666'}}}"); //Adds rotation to labels -Jll
+								}
+								else { 
+									out.print("label: { text: '"+ levelLabel +"',rotation: -35,textAlign: 'left',align: 'center', verticalAlign: 'top', y: -10, style: { color: '#666666', fontFamily: 'Verdana, sans-serif'}}}"); //Adds rotation to labels -Jll
+								}
 								//Add commas after plotband elements until the last element which does not need one.
-								if(j<filledLevels){out.print(",");}
+								if(j<filledLevels) {
+									out.print(",");
+								}
 							}
 							%>
 						]
