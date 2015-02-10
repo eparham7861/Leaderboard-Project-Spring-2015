@@ -47,12 +47,17 @@ public class XMLFactoryTest {
 	}
 	
 	@Test
-	public void convertToXMLString(){
+	public void convertToXMLStringOneStudent(){
 		currentXML.setCourseID("CS491");
 		currentXML.setSetting(100);
 		currentXML.setLevelLabel("Journeyman");
-		currentXML.setGradebookLabel("450");
+		currentXML.addGradebookLabel("450");
 		currentXML.setVisibleStudents(1);
+		currentXML.setHiddenStudentAmount(0);
+		currentXML.setModifiedValue("true");
+		currentXML.setUserColor("blue");
+		currentXML.setBackgroundColor("black");
+		
 		assertEquals(getXML(1), currentXML.convertAllToXML());
 	}
 	
@@ -61,8 +66,16 @@ public class XMLFactoryTest {
 		currentXML.setCourseID("CS491");
 		currentXML.setSetting(100);
 		currentXML.setLevelLabel("Journeyman");
-		currentXML.setGradebookLabel("450");
 		currentXML.setVisibleStudents(5);
+		currentXML.setHiddenStudentAmount(0);
+		currentXML.setModifiedValue("true");
+		currentXML.setUserColor("blue");
+		currentXML.setBackgroundColor("black");
+		
+		for (int i = 0; i < 5; i++){
+			currentXML.addGradebookLabel(Integer.toString(i + 450));
+		}
+		//currentXML.setGradebookLabel("450");
 		assertEquals(getXML(5), currentXML.convertAllToXML());
 	}
 	
@@ -96,17 +109,26 @@ public class XMLFactoryTest {
 	}
 	
 	private String getXML(int count) {
-		String xml = "<Leaderboard><courseID>" + currentXML.getCourseID() + "</courseID>";
+		String xml = "<course>";
+		xml += "<courseID>" + currentXML.getCourseID() + "</courseID>";
 		xml += "<setting>" + currentXML.getSetting() + "</setting>";
 		xml += "<levelLabel>" + currentXML.getLevelLabel() + "</levelLabel>";
+		xml += "<visibleStudents>" + currentXML.getVisibleStudents() + "</visibleStudents>";
+		xml += "<hiddenStudents>" + currentXML.getHiddenStudentAmount()  + "</hiddenStudents>";
+		xml += "<modified>" + currentXML.getModifiedValue() + "</modified>";
+		xml += "<userColor>" + currentXML.getUserColor() + "</userColor>";
+		xml += "<backgroundColor>" + currentXML.getBackgroundColor() + "</backgroundColor>";
 		
 		for (int i = 0; i < count; i++) {
-			xml += "<student><id>" + i + "</id>";
-			xml += "<gradebookLabel>" + currentXML.getGradebookLabel() + "</gradebookLabel></student>";
+			xml += "<student>";
+			xml += "<id>" + i + "</id>";
+			//xml += "<gradebookLabel>" + currentXML.getGradebookLabel() + "</gradebookLabel>";
+			xml += "<gradebookLabel>" + currentXML.getGradebookLabel(i) + "</gradebookLabel>";
+			xml += "</student>";
 			
 		}
 		
-		xml +="</Leaderboard>";
+		xml += "</course>";
 		
 		return xml;
 	}

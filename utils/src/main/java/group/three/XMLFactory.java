@@ -1,4 +1,5 @@
 package group.three;
+import java.util.ArrayList;
 
 public class XMLFactory {
 	private String courseID;
@@ -7,6 +8,8 @@ public class XMLFactory {
 	private String gradebookLabel;
 	private String isModified;
 	private String backgroundColor, userColor;
+	private ArrayList<String> studentScoreLabels;
+	private String XMLInputString;
 	
 	public XMLFactory(){
 		courseID = "";
@@ -18,6 +21,8 @@ public class XMLFactory {
 		isModified = "";
 		backgroundColor = "null";
 		userColor = "null";
+		studentScoreLabels = new ArrayList<String>();
+		XMLInputString = "";
 	}
 	
 	public void setCourseID(String id){
@@ -35,6 +40,24 @@ public class XMLFactory {
 	public void setGradebookLabel(String gradeLabel){
 		this.gradebookLabel = gradeLabel;
 	}
+	
+	/*Note: We are testing this version of setGradebookLabel*/
+	public void setGradebookLabel(int index, String gradeLabel){
+		studentScoreLabels.set(index, gradeLabel);
+	}
+	
+	public void addGradebookLabel(String gradeLabel){
+		studentScoreLabels.add(gradeLabel);
+	}
+	
+	public void removeGradebookLabel(String gradeLabel){
+		studentScoreLabels.remove(gradeLabel);
+	}
+	
+	public String getGradebookLabel(int index){
+		return studentScoreLabels.get(index);
+	}
+	/*End area of the functions being currently tested*/
 	
 	public void setVisibleStudents(int visibleStudents) {
 		this.visibleStudents = visibleStudents;
@@ -54,6 +77,10 @@ public class XMLFactory {
 	
 	public void setUserColor(String userColorValue){
 		this.userColor = userColorValue;
+	}
+	
+	public void setXMLInputString(String xml){
+		this.XMLInputString = xml;
 	}
 	
 	public String getCourseID(){
@@ -93,19 +120,25 @@ public class XMLFactory {
 	}
 	
 	public String convertAllToXML(){
-		String stringToXML = "<Leaderboard>";
+		String stringToXML = "<course>";
 		stringToXML += "<courseID>" + courseID + "</courseID>";
 		stringToXML += "<setting>" + Integer.toString(settingNumber) + "</setting>";
 		stringToXML += "<levelLabel>" + levelLabel + "</levelLabel>";
+		stringToXML += "<visibleStudents>" + visibleStudents + "</visibleStudents>";
+		stringToXML += "<hiddenStudents>" + hiddenStudents  + "</hiddenStudents>";
+		stringToXML += "<modified>" + isModified + "</modified>";
+		stringToXML += "<userColor>" + userColor + "</userColor>";
+		stringToXML += "<backgroundColor>" + backgroundColor + "</backgroundColor>";
 		
 		for (int i = 0; i < visibleStudents; i++) {
-			stringToXML += "<student><id>" + i + "</id>";
-			stringToXML += "<gradebookLabel>" + gradebookLabel + "</gradebookLabel></student>";
+			stringToXML += "<student>";
+			stringToXML += "<id>" + i + "</id>";
+			//stringToXML += "<gradebookLabel>" + gradebookLabel + "</gradebookLabel>";
+			stringToXML += "<gradebookLabel>" + studentScoreLabels.get(i) + "</gradebookLabel>";
+			stringToXML += "</student>";
 		}
 		
-		stringToXML += "</Leaderboard>";
-		
-		
+		stringToXML += "</course>";
 		
 		return stringToXML;
 	}
