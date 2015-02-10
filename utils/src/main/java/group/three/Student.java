@@ -4,11 +4,19 @@ public class Student {
 	private double score;
 	private String fName, lName, userName;
 	private boolean hidden;
+	private int studentID;
+	private String studentHighlightColor;
+	private String studentGeneralColor;
+	
+	
 	
 	public Student () {
 		hidden = false;
 	}
-	
+	public void setStudentID(int ID){
+		this.studentID = ID;
+	}
+
 	public void setFirstName(String fName) {
 		this.fName = fName;
 	}
@@ -27,6 +35,16 @@ public class Student {
 	
 	public void setHidden() {
 		hidden = true;
+	}
+	public void setStudentHighlightColor(String Color){
+		this.studentHighlightColor = Color;
+	}
+	public void setStudentGeneralColor(String Color){
+		this.studentGeneralColor = Color;
+	}
+	
+	public int getStudentID(){
+		return studentID;
 	}
 	
 	public String getFirstName() {
@@ -47,6 +65,12 @@ public class Student {
 	
 	public boolean isHidden() {
 		return hidden;
+	}
+	public String getStudentHighlightColor(){
+		return studentHighlightColor;
+	}
+	public String getStudentGeneralColor(){
+		return studentGeneralColor;
 	}
 	
 	public boolean isScoreHigher(Double score) {

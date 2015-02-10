@@ -13,6 +13,13 @@ public class StudentTest {
 	}
 	
 	@Test
+	public void testAddStudentID(){
+		int id = 1111;
+		currentStudent.setStudentID(id);
+		assertEquals(id, currentStudent.getStudentID());
+	}
+	
+	@Test
 	public void testAddFirstName() {
 		currentStudent.setFirstName("Eric");
 		assertEquals("Eric", currentStudent.getFirstName());
@@ -41,7 +48,17 @@ public class StudentTest {
 		currentStudent.setHidden();
 		assertTrue(currentStudent.isHidden());
 	}
+	@Test
+	public void testSetStudentHighlightColor(){
+		currentStudent.setStudentHighlightColor("Red");
+		assertEquals("Red", currentStudent.getStudentHighlightColor());
+	}
 	
+	@Test
+	public void testSetStudentGeneralColor(){
+		currentStudent.setStudentGeneralColor("Blue");
+		assertEquals("Blue", currentStudent.getStudentGeneralColor());
+	}
 	@Test
 	public void testStudentScoreIsHigher() {
 		currentStudent.setScore(33.2);

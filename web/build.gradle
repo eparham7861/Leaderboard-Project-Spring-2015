@@ -1,10 +1,44 @@
-subprojects {
-	apply plugin: 'war'
+apply plugin: 'war'
+version = '1.5'
 
-	dependencies {
-		compile project(":utils")
-		compile "javax.servlet:servlet-api:2.5"
-	}
+project.ext {
+	learnVersion = "9.1.110082.0"
+	deployServer = "10.0.1.150"
+	deployInstance = "BBLEARN"
 }
 
+war {
+	// Replace version in Blackboard Manifest
+	inputs.property('version', version)
+	
+	filesMatching("**/bb-manifest.xml") {
+		expand version: version
+	}
+	
+	manifest {
+	
+		attributes(
+			'Implementation-Title': 'Leaderboard Blackboard building block',
+			'Implementation-Version': version,
+			'Implementation-Vendor': 'GroupThree',
+			'Provider': 'Gradle'
+		)
+		
+	}
+	
+	manifest.from(jar.manifest)
 
+}
+
+dependencies {
+	compile project(":utils")
+	compile files("BBLibs/bb-cms-admin.jar")
+	compile files("BBLibs/bb-platform.jar")
+	compile files("BBLibs/bb-taglibs.jar")
+	compile files("BBLibs/servlet-api.jar")
+	
+	providedCompile 'javax.servlet:servlet-api:2.5'
+	providedCompile 'javax.servlet:jsp-api:2.0'
+			
+	providedCompile 'javax.servlet:jstl:1.2'
+}
