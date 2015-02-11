@@ -26,4 +26,8 @@ public class UserBB {
 	public String getName() {
 		return currentUser.getGivenName() + " " + currentUser.getFamilyName();
 	}
+	
+	public String getID() {
+		return currentUser.getId().toString();
+	}
 }

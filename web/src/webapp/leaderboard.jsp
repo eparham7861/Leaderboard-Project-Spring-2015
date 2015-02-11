@@ -32,6 +32,9 @@
 <%@include file="leaderboard_student.jsp" %>
 
 	<%
+		LeaderboardBB currentLeaderboard = new LeaderboardBB();
+		currentLeaderboard.configureBoard(ctx);
+		
 		// get the current user
 		User sessionUser = ctx.getUser();
 		Id courseID = ctx.getCourseId();		
