@@ -36,6 +36,8 @@ dependencies {
 	compile files("BBLibs/bb-platform.jar")
 	compile files("BBLibs/bb-taglibs.jar")
 	compile files("BBLibs/servlet-api.jar")
+	compile files("BBLibs/commons-logging-1.1.1.jar")
+	compile files("BBLibs/dwr.jar")
 	
 	providedCompile 'javax.servlet:servlet-api:2.5'
 	providedCompile 'javax.servlet:jsp-api:2.0'
