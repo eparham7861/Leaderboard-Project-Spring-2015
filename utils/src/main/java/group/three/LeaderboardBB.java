@@ -1,9 +1,12 @@
 package group.three;
 
-import blackboard.platform.context.Context;
+import blackboard.base.InitializationException;
 import blackboard.data.user.User;
 import blackboard.persist.*;
 import javax.servlet.http.HttpServletRequest;
+import blackboard.platform.context.ContextManager;
+import blackboard.platform.context.Context;
+import blackboard.platform.RuntimeBbServiceException;
 import java.util.*;
 
 public class LeaderboardBB {
@@ -21,27 +24,32 @@ public class LeaderboardBB {
 	private XMLFactory currentXML;
 	
 	public LeaderboardBB(Context currentContext) {
-		this.currentContext = currentContext;
+		try {
+			this.currentContext = currentContext;
+			
+			sessionUserRole = "";
+			sessionUserID = "";
+			scoreToHighlight = -1.0;
+			index = 0;
+			
+			currentUser = new UserBB();
+			currentCourseID = new CourseIDBB();
+			currentGradebook = new GradebookManagerBB();
+			currentCourseMembership = new CourseMembershipBB();
+			students = new ArrayList<Student>();
+			currentXML = new XMLFactory();
+			canSeeScores = false;
+			
+			setCurrentUser();
+			setCurrentCourseID();
+			setGradebookManager();
+			setSessionUserID();
+			setSessionUserRole();
+			setCourseMemberships();
+		}
+		catch (RuntimeBbServiceException e) {
 		
-		sessionUserRole = "";
-		sessionUserID = "";
-		scoreToHighlight = -1.0;
-		index = 0;
-		
-		currentUser = new UserBB();
-		currentCourseID = new CourseIDBB();
-		currentGradebook = new GradebookManagerBB();
-		currentCourseMembership = new CourseMembershipBB();
-		students = new ArrayList<Student>();
-		currentXML = new XMLFactory();
-		
-		setCurrentUser();
-		setCurrentCourseID();
-		setGradebookManager();
-		setSessionUserID();
-		setSessionUserRole();
-		setCourseMemberships();
-		isInstructor();
+		}
 	}
 	
 	private void setCurrentUser() {

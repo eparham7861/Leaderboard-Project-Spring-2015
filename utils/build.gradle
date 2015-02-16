@@ -21,6 +21,9 @@ dependencies {
 	compile files("BBLibs/servlet-api.jar")
 	compile files("BBLibs/commons-logging-1.1.1.jar")
 	compile files("BBLibs/dwr.jar")
+	compile files("BBLibs/json-lib-2.4-jdk15.jar")
+	
+	runtime files("BBLibs/json-lib-2.4-jdk15.jar")
 	
 	testCompile "org.mockito:mockito-core:1.+"
 	

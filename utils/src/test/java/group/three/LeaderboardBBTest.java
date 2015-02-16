@@ -2,9 +2,13 @@ package group.three;
 
 import org.junit.*;
 import static org.junit.Assert.*;
+import blackboard.base.InitializationException;
 import blackboard.data.user.User;
 import blackboard.persist.*;
+import javax.servlet.http.HttpServletRequest;
+import blackboard.platform.context.ContextManager;
 import blackboard.platform.context.Context;
+import blackboard.platform.RuntimeBbServiceException;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -31,6 +35,10 @@ public class LeaderboardBBTest {
 		when(currentContext.getUser()).thenReturn(currentUser);
 		when(currentContext.getCourseId()).thenReturn(currentCourseID);
 		
-		currentLeaderboard = new LeaderboardBB(currentContext);
+	}
+	
+	@Test
+	public void testNewLeaderboard() {
+		currentLeaderboard = new LeaderboardBB(currentContext);	
 	}
 }
