@@ -17,8 +17,6 @@ public class LeaderboardBBTest {
 	
 	@Before
 	public void startUp() {
-		currentLeaderboard = new LeaderboardBB();
-		
 		currentUser = mock(User.class);
 		when(currentUser.getStudentId()).thenReturn("01234567");
 		when(currentUser.getUserName()).thenReturn("eparham");
@@ -33,6 +31,6 @@ public class LeaderboardBBTest {
 		when(currentContext.getUser()).thenReturn(currentUser);
 		when(currentContext.getCourseId()).thenReturn(currentCourseID);
 		
-		currentLeaderboard.configureBoard(currentContext);
+		currentLeaderboard = new LeaderboardBB(currentContext);
 	}
 }
