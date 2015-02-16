@@ -1,5 +1,11 @@
 package group.three;
+
 import java.util.ArrayList;
+import java.io.*;
+import java.util.*;
+import javax.xml.parsers.*;
+import org.w3c.dom.*;
+import org.xml.sax.*;
 
 public class XMLFactory {
 	private String courseID;
@@ -81,6 +87,90 @@ public class XMLFactory {
 	
 	public void setXMLInputString(String xml){
 		this.XMLInputString = xml;
+		constructXML();
+	}
+	
+	private void constructXML() {
+		try{
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document document = builder.parse(new InputSource(new StringReader(XMLInputString)));
+			NodeList nodeList = document.getDocumentElement().getChildNodes();
+		
+			getDataFromXML(nodeList);
+			
+		}catch(ParserConfigurationException e) {
+		}catch(SAXException e) {
+		}catch(IOException e) {
+		}
+	}
+	
+	private void getDataFromXML(NodeList currentSavedContent) 
+	{
+		for (int i = 0; i < currentSavedContent.getLength(); i++) 
+		{
+			Node node = currentSavedContent.item(i);
+
+			if (node instanceof Element) 
+			{
+				String nodeName = node.getNodeName().toLowerCase();
+				String content = node.getLastChild().getTextContent().trim();
+				
+				assignContent(nodeName, content);
+				
+				NodeList childNodes = node.getChildNodes();
+				
+				getItemFromContentNode(childNodes);
+			}
+		}	
+	}
+	
+	private void getItemFromContentNode(NodeList currentItem) 
+	{
+		for (int i = 0; i < currentItem.getLength(); i++) 
+		{
+			Node cNode = currentItem.item(i);
+
+			if (cNode instanceof Element) 
+			{
+				String nodeName = cNode.getNodeName().toLowerCase();
+				String content = cNode.getLastChild().getTextContent().trim();
+				
+				assignContent(nodeName, content);
+			}
+		}
+	}
+	
+	private void assignContent(String nodeName, String content) {
+		switch(nodeName) {
+			case "courseid":
+				setCourseID(content);
+				break;
+			case "settings":
+				setSetting(Integer.parseInt(content));
+				break;
+			case "levellabel":
+				setLevelLabel(content);
+				break;
+			case "visiblestudents":
+				setVisibleStudents(Integer.parseInt(content));
+				break;
+			case "hiddenstudents":
+				setHiddenStudentAmount(Integer.parseInt(content));
+				break;
+			case "modified":
+				setModifiedValue(content);
+				break;
+			case "usercolor":
+				setUserColor(content);
+				break;
+			case "backgroundcolor":
+				setBackgroundColor(content);
+				break;
+			case "gradebooklabel":
+				addGradebookLabel(content);
+				break;
+		}
 	}
 	
 	public String getCourseID(){

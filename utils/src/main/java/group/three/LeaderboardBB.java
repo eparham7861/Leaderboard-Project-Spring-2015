@@ -34,7 +34,6 @@ public class LeaderboardBB {
 		currentCourseMembership = new CourseMembershipBB();
 		students = new ArrayList<Student>();
 		currentXML = new XMLFactory();
-		canSeeScores = false;
 		
 		setCurrentUser();
 		setCurrentCourseID();
@@ -42,6 +41,7 @@ public class LeaderboardBB {
 		setSessionUserID();
 		setSessionUserRole();
 		setCourseMemberships();
+		isInstructor();
 	}
 	
 	private void setCurrentUser() {

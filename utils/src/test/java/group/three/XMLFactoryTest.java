@@ -108,6 +108,27 @@ public class XMLFactoryTest {
 		assertEquals(userColor, currentXML.getUserColor());
 	}
 	
+	@Test
+	public void testGetPreviousXMLCourseID() {
+		String xml = "<course>";
+		xml += "<courseID>CS491</courseID>";
+		xml += "<setting>100</setting>";
+		xml += "<levelLabel>Journeyman</levelLabel>";
+		xml += "<visibleStudents>3</visibleStudents>";
+		xml += "<hiddenStudents>2</hiddenStudents>";
+		xml += "<modified>true</modified>";
+		xml += "<userColor>red</userColor>";
+		xml += "<backgroundColor>red</backgroundColor>";
+		xml += "<student>";
+		xml += "<id>1</id>";
+		xml += "<gradebookLabel>100</gradebookLabel>";
+		xml += "</student>";
+		xml += "</course>";
+		
+		currentXML.setXMLInputString(xml);
+		assertEquals("CS491", currentXML.getCourseID());
+	}
+	
 	private String getXML(int count) {
 		String xml = "<course>";
 		xml += "<courseID>" + currentXML.getCourseID() + "</courseID>";
