@@ -1,9 +1,13 @@
 package group.three;
 
-import blackboard.platform.context.Context;
+import blackboard.base.InitializationException;
 import blackboard.data.user.User;
 import blackboard.persist.*;
 import javax.servlet.http.HttpServletRequest;
+import blackboard.platform.context.ContextManager;
+import blackboard.platform.context.Context;
+import blackboard.platform.RuntimeBbServiceException;
+import java.util.*;
 
 public class LeaderboardBB {
 	private UserBB currentUser;
@@ -11,22 +15,41 @@ public class LeaderboardBB {
 	private CourseIDBB currentCourseID;
 	private Context currentContext;
 	private GradebookManagerBB currentGradebook;
+	private CourseMembershipBB currentCourseMembership;
+	private List<Student> students;
+	private double scoreToHighlight;
+	private int index, numVisible, gradeChoice;
+	private String modified;
+	private boolean canSeeScores;
+	private XMLFactory currentXML;
 	
-	public LeaderboardBB() {
-		sessionUserRole = "";
-		sessionUserID = "";
-		currentUser = new UserBB();
-		currentCourseID = new CourseIDBB();
-		currentGradebook = new GradebookManagerBB();
-	}
-	
-	public void configureBoard(Context currentContext) {
-		this.currentContext = currentContext;
-		setCurrentUser();
-		setCurrentCourseID();
-		setGradebookManager();
-		setSessionUserID();
-		setSessionUserRole();
+	public LeaderboardBB(Context currentContext) {
+		try {
+			this.currentContext = currentContext;
+			
+			sessionUserRole = "";
+			sessionUserID = "";
+			scoreToHighlight = -1.0;
+			index = 0;
+			
+			currentUser = new UserBB();
+			currentCourseID = new CourseIDBB();
+			currentGradebook = new GradebookManagerBB();
+			currentCourseMembership = new CourseMembershipBB();
+			students = new ArrayList<Student>();
+			currentXML = new XMLFactory();
+			canSeeScores = false;
+			
+			setCurrentUser();
+			setCurrentCourseID();
+			setGradebookManager();
+			setSessionUserID();
+			setSessionUserRole();
+			setCourseMemberships();
+		}
+		catch (RuntimeBbServiceException e) {
+		
+		}
 	}
 	
 	private void setCurrentUser() {
@@ -47,5 +70,19 @@ public class LeaderboardBB {
 	
 	private void setSessionUserRole() {
 		sessionUserRole = currentContext.getCourseMembership().getRoleAsString();
+		sessionUserRole = sessionUserRole.trim().toLowerCase();
+	}
+	
+	private void setCourseMemberships() {
+		currentCourseMembership.setCourseMemberships(currentCourseID);
+	}
+	
+	private void isInstructor() {
+		if (sessionUserRole.contains("instructor") || sessionUserRole.contains("faculty") || sessionUserRole.contains("teaching")) {
+			canSeeScores = true;
+		}
+		else {
+			canSeeScores = false;
+		}
 	}
 }

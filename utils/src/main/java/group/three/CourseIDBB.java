@@ -17,6 +17,7 @@ public class CourseIDBB {
 	public String toString() {
 		return currentCourseID.toString();
 	}
+	
 	public Id getCourseID() {
 		return currentCourseID;
 	}

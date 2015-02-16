@@ -1,49 +1,29 @@
 package group.three;
+
 import java.util.ArrayList;
+import java.io.*;
+import java.util.*;
+import javax.xml.parsers.*;
+import org.w3c.dom.*;
+import org.xml.sax.*;
 
 public class XMLFactory {
-	private String courseID;
-	private int settingNumber, visibleStudents, hiddenStudents;
-	private String levelLabel;
-	private String gradebookLabel;
-	private String isModified;
-	private String backgroundColor, userColor;
-	private ArrayList<String> studentScoreLabels;
 	private String XMLInputString;
+	private ArrayList<String> studentScoreLabels;
+	private SavedContent contentHolder;
 	
 	public XMLFactory(){
-		courseID = "";
-		settingNumber = 0;
-		visibleStudents = 1;
-		hiddenStudents = 0;
-		levelLabel = "";
-		gradebookLabel = "";
-		isModified = "";
-		backgroundColor = "null";
-		userColor = "null";
-		studentScoreLabels = new ArrayList<String>();
 		XMLInputString = "";
+		studentScoreLabels = new ArrayList<String>();
+		contentHolder = new SavedContent();
 	}
 	
-	public void setCourseID(String id){
-		this.courseID = id;
+	public void setContent(SavedContent.Content contentName, String item) {
+		contentHolder.setContentItem(contentName, item);
 	}
 	
-	public void setSetting(int settingNum){
-		this.settingNumber = settingNum;
-	}
-	
-	public void setLevelLabel(String label){
-		this.levelLabel = label;
-	}
-	
-	public void setGradebookLabel(String gradeLabel){
-		this.gradebookLabel = gradeLabel;
-	}
-	
-	/*Note: We are testing this version of setGradebookLabel*/
-	public void setGradebookLabel(int index, String gradeLabel){
-		studentScoreLabels.set(index, gradeLabel);
+	public String getContent(SavedContent.Content contentName) {
+		return contentHolder.getContentItem(contentName);
 	}
 	
 	public void addGradebookLabel(String gradeLabel){
@@ -57,83 +37,123 @@ public class XMLFactory {
 	public String getGradebookLabel(int index){
 		return studentScoreLabels.get(index);
 	}
-	/*End area of the functions being currently tested*/
-	
-	public void setVisibleStudents(int visibleStudents) {
-		this.visibleStudents = visibleStudents;
-	}
-	
-	public void setHiddenStudentAmount(int amount){
-		this.hiddenStudents = amount;
-	}
-	
-	public void setModifiedValue(String modifyBooleanString){
-		this.isModified = modifyBooleanString;
-	}
-	
-	public void setBackgroundColor(String colValue){
-		this.backgroundColor = colValue;
-	}
-	
-	public void setUserColor(String userColorValue){
-		this.userColor = userColorValue;
-	}
 	
 	public void setXMLInputString(String xml){
 		this.XMLInputString = xml;
+		constructXML();
 	}
 	
-	public String getCourseID(){
-		return this.courseID;
+	private void constructXML() {
+		/*
+			This process builds a document which takes the input source of XML
+			the document will be of extension XML.
+			The exceptions should only be caught during catostraphic failure.
+		*/
+		try{
+		
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document document = builder.parse(new InputSource(new StringReader(XMLInputString)));
+			NodeList nodeList = document.getDocumentElement().getChildNodes();
+		
+			getDataFromXML(nodeList);
+			
+		}catch(ParserConfigurationException e) {
+		}catch(SAXException e) {
+		}catch(IOException e) {
+		}
 	}
 	
-	public int getSetting(){
-		return this.settingNumber;
+	private void getDataFromXML(NodeList currentSavedContent) {
+		/*
+			Traverse through parent nodes and get their content.
+			getItemFromContentNode is a path to add children of these
+			parent nodes if they exist.
+		*/
+		for (int i = 0; i < currentSavedContent.getLength(); i++) 
+		{
+			Node node = currentSavedContent.item(i);
+
+			if (node instanceof Element) 
+			{
+				String nodeName = node.getNodeName().toLowerCase();
+				String content = node.getLastChild().getTextContent().trim();
+				
+				assignContent(nodeName, content);
+				
+				NodeList childNodes = node.getChildNodes();
+				
+				getItemFromContentNode(childNodes);
+			}
+		}	
 	}
 	
-	public String getLevelLabel(){
-		return this.levelLabel;
+	private void getItemFromContentNode(NodeList currentItem) {
+		for (int i = 0; i < currentItem.getLength(); i++) 
+		{
+			Node cNode = currentItem.item(i);
+
+			if (cNode instanceof Element) 
+			{
+				String nodeName = cNode.getNodeName().toLowerCase();
+				String content = cNode.getLastChild().getTextContent().trim();
+				
+				assignContent(nodeName, content);
+			}
+		}
 	}
 	
-	public int getVisibleStudents() {
-		return this.visibleStudents;
-	}
-	
-	public int getHiddenStudentAmount(){
-		return this.hiddenStudents;
-	}
-	
-	public String getGradebookLabel(){
-		return this.gradebookLabel;
-	}
-	
-	public String getModifiedValue(){
-		return this.isModified;
-	}
-	
-	public String getBackgroundColor(){
-		return this.backgroundColor;
-	}
-	
-	public String getUserColor(){
-		return this.userColor;
+	private void assignContent(String nodeName, String content) {
+		/*
+			This is a hard-coded way of handling content.
+		*/
+		switch(nodeName) {
+			case "courseid":
+				setContent(SavedContent.Content.COURSE, content);
+				break;
+			case "settings":
+				setContent(SavedContent.Content.LEVELINDEX, content);
+				break;
+			case "levellabel":
+				setContent(SavedContent.Content.LEVEL, content);
+				break;
+			case "visiblestudents":
+				setContent(SavedContent.Content.VISIBLE, content);
+				break;
+			case "hiddenstudents":
+				setContent(SavedContent.Content.HIDDEN, content);
+				break;
+			case "modified":
+				setContent(SavedContent.Content.MODIFIED, content);
+				break;
+			case "usercolor":
+				setContent(SavedContent.Content.USERCOLOR, content);
+				break;
+			case "backgroundcolor":
+				setContent(SavedContent.Content.OTHERCOLOR, content);
+				break;
+			case "gradebooklabel":
+				addGradebookLabel(content);
+				break;
+		}
 	}
 	
 	public String convertAllToXML(){
+		String visibleCount = getContent(SavedContent.Content.VISIBLE);
 		String stringToXML = "<course>";
-		stringToXML += "<courseID>" + courseID + "</courseID>";
-		stringToXML += "<setting>" + Integer.toString(settingNumber) + "</setting>";
-		stringToXML += "<levelLabel>" + levelLabel + "</levelLabel>";
-		stringToXML += "<visibleStudents>" + visibleStudents + "</visibleStudents>";
-		stringToXML += "<hiddenStudents>" + hiddenStudents  + "</hiddenStudents>";
-		stringToXML += "<modified>" + isModified + "</modified>";
-		stringToXML += "<userColor>" + userColor + "</userColor>";
-		stringToXML += "<backgroundColor>" + backgroundColor + "</backgroundColor>";
 		
-		for (int i = 0; i < visibleStudents; i++) {
+		stringToXML += "<courseID>" + getContent(SavedContent.Content.COURSE) + "</courseID>";
+		stringToXML += "<setting>" + getContent(SavedContent.Content.LEVELINDEX) + "</setting>";
+		stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL) + "</levelLabel>";
+		stringToXML += "<visibleStudents>" + visibleCount + "</visibleStudents>";
+		stringToXML += "<hiddenStudents>" + getContent(SavedContent.Content.HIDDEN)  + "</hiddenStudents>";
+		stringToXML += "<modified>" + getContent(SavedContent.Content.MODIFIED) + "</modified>";
+		stringToXML += "<userColor>" + getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
+		stringToXML += "<backgroundColor>" + getContent(SavedContent.Content.OTHERCOLOR) + "</backgroundColor>";
+		
+		for (int i = 0; i < Integer.parseInt(visibleCount); i++) {
 			stringToXML += "<student>";
 			stringToXML += "<id>" + i + "</id>";
-			//stringToXML += "<gradebookLabel>" + gradebookLabel + "</gradebookLabel>";
 			stringToXML += "<gradebookLabel>" + studentScoreLabels.get(i) + "</gradebookLabel>";
 			stringToXML += "</student>";
 		}
