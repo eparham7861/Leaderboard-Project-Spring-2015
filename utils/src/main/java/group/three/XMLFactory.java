@@ -44,7 +44,13 @@ public class XMLFactory {
 	}
 	
 	private void constructXML() {
+		/*
+			This process builds a document which takes the input source of XML
+			the document will be of extension XML.
+			The exceptions should only be caught during catostraphic failure.
+		*/
 		try{
+		
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document document = builder.parse(new InputSource(new StringReader(XMLInputString)));
@@ -58,8 +64,12 @@ public class XMLFactory {
 		}
 	}
 	
-	private void getDataFromXML(NodeList currentSavedContent) 
-	{
+	private void getDataFromXML(NodeList currentSavedContent) {
+		/*
+			Traverse through parent nodes and get their content.
+			getItemFromContentNode is a path to add children of these
+			parent nodes if they exist.
+		*/
 		for (int i = 0; i < currentSavedContent.getLength(); i++) 
 		{
 			Node node = currentSavedContent.item(i);
@@ -78,8 +88,7 @@ public class XMLFactory {
 		}	
 	}
 	
-	private void getItemFromContentNode(NodeList currentItem) 
-	{
+	private void getItemFromContentNode(NodeList currentItem) {
 		for (int i = 0; i < currentItem.getLength(); i++) 
 		{
 			Node cNode = currentItem.item(i);
@@ -95,6 +104,9 @@ public class XMLFactory {
 	}
 	
 	private void assignContent(String nodeName, String content) {
+		/*
+			This is a hard-coded way of handling content.
+		*/
 		switch(nodeName) {
 			case "courseid":
 				setContent(SavedContent.Content.COURSE, content);
