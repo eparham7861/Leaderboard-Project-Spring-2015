@@ -61,7 +61,7 @@
 		}	
 		Double scoreToHighlight = -1.0;
 		int index = 0;
-
+		
 		//Get number of visible students. This is used to determined height of the leaderboard.		
 		B2Context b2Context_numVisible = new B2Context(request);
 		//XMLFactory XMLnumVisible = new XMLFactory();  //JARED EDITED VERSION
