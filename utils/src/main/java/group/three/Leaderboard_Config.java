@@ -35,10 +35,12 @@ public class Leaderboard_Config{
 	private String visibleList;
 	private String hiddenList;
 	private String prev_grade_choice;
-	//private String[] hiddenArr;
-	//private String[] visibleArr;
+	private String[] hiddenArr;
+	private String[] visibleArr;
 	private List<MultiSelectBean> leftList;
 	private List<MultiSelectBean> rightList;
+	private MultiSelectBean leftBean;
+	private MultiSelectBean rightBean;
 	private List<CourseMembership> cmlist;
 	private List<GradableItem> lgm;
 	private GradebookManager gm;
@@ -117,23 +119,112 @@ public class Leaderboard_Config{
 			}
 		}
 	}
-	public void updateCourseRoster(){
 	
+	public void createUserInterface() throws KeyNotFoundException, PersistenceException{
+		this.leftList = new ArrayList<MultiSelectBean>();
+		this.rightList = new ArrayList<MultiSelectBean>();
+		//modified = b2Context_sh.getSetting(false, true, "modified" +  courseID.toExternalString());
+		this.cmlist = CourseMembershipDbLoader.Default.getInstance().loadByCourseIdAndRole(courseID, CourseMembership.Role.STUDENT, null, true);
 	}
-	public void initializeConfigFile(){
-	
+	public void createVisibleStudentList(){
+		//Logic to determine if the default or a saved show/hide list is used
+		//if(this.modified.equals("true")){//A save file already exists.
+			//Blackboard only saves and loads information in strings
+			//Each list is saved as one string of names with the following format:
+			//"firstName lastName, firstName lastName, etc."
+			/*B2CONTEXT*/
+			this.visibleList = "";//b2Context_sh.getSetting(false, true, "visibleStudents" +  courseID.toExternalString());
+			this.visibleArr = visibleList.split(",");
+			if(!(visibleList.trim().equals(" ")) && !(visibleList.trim().isEmpty()) && visibleList != null){
+				for(int i = 0; i < visibleArr.length; i++){//Add any saved visible to left side.
+					this.leftBean = new MultiSelectBean();
+					this.leftBean.setValue(visibleArr[i]);
+					this.leftBean.setLabel(visibleArr[i]);
+					this.leftList.add(leftBean);
+				}
+			}
+		//}
 	}
-	public void updateLevelInfoFromConfig(){
+	public void createHiddenStudentList(){
+		/*B2CONTEXT*/
+		this.hiddenList = ""; //b2Context_sh.getSetting(false, true, "hiddenStudents" +  courseID.toExternalString());
+		this.hiddenArr = hiddenList.split(",");
+		if(!(hiddenList.trim().equals(" ")) && !(hiddenList.trim().isEmpty()) && hiddenList != null){
+			for(int i = 0; i < hiddenArr.length; i++){//Add any saved hidden to right side.
+				this.rightBean = new MultiSelectBean();
+				this.rightBean.setValue(hiddenArr[i]);
+				this.rightBean.setLabel(hiddenArr[i]);
+				this.rightList.add(rightBean);
+			}
+		}
+	}
+	public void checkRosterLargerThanCurrentLists(){
+		/*
+		If the cmlist (entire course roster) is larger than both the hidden and visible lists, then
+		a student must be missing from the lists. So this checks if any new student has been added
+		to the course roster since Leaderboard has been uploaded.
+		*/
+		//if(cmlist.size() > (visibleList.length() + hiddenList.length())){
+		for(int i = 0; i < cmlist.size(); i++){//Check entire roster.
+			User student = cmlist.get(i).getUser();
+			String stuName = student.getGivenName() + " " + student.getFamilyName() + ": " + student.getUserName();
+			boolean found = false;
+			for(int j = 0; j < this.visibleArr.length; j++){//Check visible list
+				if(stuName.equals(this.visibleArr[j])){
+					found = true;
+					break;
+				}
+			}
+			if(found == false){
+				for(int j = 0; j < this.hiddenArr.length; j++){//Check hidden list
+					if(stuName.equals(this.hiddenArr[j])){
+						found = true;
+						break;
+					}
+				}
+			}
+			if(found == false){//If the name wasn't found on either list, add to visible.
+				//MultiSelectBean leftBean = new MultiSelectBean();
+				this.leftBean = new MultiSelectBean();
+				this.leftBean.setValue(stuName);
+				this.leftBean.setLabel(stuName);
+				this.leftList.add(leftBean);
+			}
+		}
+	}
+	public void setDefaultEveryoneVisible(){
+		for(int i = 0; i < this.cmlist.size(); i ++){
+			this.leftBean = new MultiSelectBean();
+			User student = this.cmlist.get(i).getUser();
+			this.leftBean.setValue(student.getGivenName() + " " + student.getFamilyName() + ": " + student.getUserName());
+			this.leftBean.setLabel(student.getGivenName() + " " + student.getFamilyName() + ": " + student.getUserName());
+			this.leftList.add(leftBean);
+		}
+	}
+	public void getGradebookData() throws BbSecurityException{
+		//Use the GradebookManager to get the gradebook data
+		this.gm = GradebookManagerFactory.getInstanceWithoutSecurityCheck();
+		this.bookData = gm.getBookData(new BookDataRequest(courseID));
+		this.lgm = gm.getGradebookItems(courseID);
+		//It is necessary to execute these two methods to obtain calculated students and extended grade data
+		bookData.addParentReferences();
+		bookData.runCumulativeGrading();
 		
-	}
-	public void obtainCalculatedStudentsGradeData(){
+		//Create list of grade columns, so the instructor can select the grade to set for the widget if it is not the overall grade
+		String[] gradeList = new String[lgm.size()];
+		for (int i = 0; i < lgm.size(); i++) {
+			GradableItem gi = (GradableItem) lgm.get(i);
+			gradeList[i] = gi.getTitle();
+		}
 		
-	}
-	public void createGradeColumnList(){
-		
-	}
-	public void loadPreviousGradeColumnChoice(){
-		
+		//Load previous grade column choice. Sets default column as "Total". 
+		String prev_grade_choice = "Total";
+		String prev_grade_string = "";
+		/*B2Context!*/
+		//B2Context b2Context_grade = new B2Context(request);
+		//prev_grade_choice = b2Context_grade.getSetting(false,true,"gradebook_column" + courseID.toExternalString());
+		if(prev_grade_choice == "") prev_grade_choice = "Total";
+		prev_grade_string = prev_grade_choice + " - (Chosen)"; //selected option on dropdown list 
 	}
 	
 	/*Setters*/
