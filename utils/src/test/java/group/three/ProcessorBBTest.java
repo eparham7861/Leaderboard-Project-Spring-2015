@@ -4,8 +4,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import blackboard.platform.context.ContextManager;
 import blackboard.platform.context.Context;
-import blackboard.platform.context.ContextManager;
-import blackboard.platform.context.Context;
+import blackboard.persist.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -35,11 +34,6 @@ public class ProcessorBBTest {
 		currentXML += "</student>";
 		currentXML += "</course>";
 		
-		currentProcessor = new ProcessorBB();
-	}
-	
-	@Test
-	public void testSaveContent() {
-		currentProcess.saveContent(currentCourseID, currentXML);
+		currentProcessor = new ProcessorBB(currentCourseID);
 	}
 }

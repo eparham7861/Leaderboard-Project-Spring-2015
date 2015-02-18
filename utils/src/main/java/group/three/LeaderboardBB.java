@@ -24,6 +24,7 @@ public class LeaderboardBB {
 	private XMLFactory currentXML;
 	
 	public LeaderboardBB(Context currentContext) {
+		
 		try {
 			this.currentContext = currentContext;
 			
@@ -46,6 +47,7 @@ public class LeaderboardBB {
 			setSessionUserID();
 			setSessionUserRole();
 			setCourseMemberships();
+			loadContent();
 		}
 		catch (RuntimeBbServiceException e) {
 		
@@ -84,5 +86,10 @@ public class LeaderboardBB {
 		else {
 			canSeeScores = false;
 		}
+	}
+	
+	private void loadContent() {
+		ProcessorBB loadProcessor = new ProcessorBB(currentCourseID.getCourseID());
+		currentXML.setXMLInputString(loadProcessor.loadContent(currentContext));
 	}
 }
