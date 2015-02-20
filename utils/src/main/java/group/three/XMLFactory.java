@@ -47,7 +47,7 @@ public class XMLFactory {
 		/*
 			This process builds a document which takes the input source of XML
 			the document will be of extension XML.
-			The exceptions should only be caught during catostraphic failure.
+			The exceptions should only be caught during catastrophic failure.
 		*/
 		try{
 		

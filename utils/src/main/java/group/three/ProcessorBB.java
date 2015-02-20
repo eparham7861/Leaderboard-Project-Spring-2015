@@ -121,13 +121,13 @@ public class ProcessorBB {
 		}
 	}
 	
-	public String LoadContent(Context ctx) throws PersistenceException {
+	public String loadContent(Context courseContext) throws PersistenceException {
 		String contentXML = " ";
 		
 		cTocLoader = CourseTocDbLoader.Default.getInstance();
 		cntDbLoader = ContentDbLoader.Default.getInstance();
 
-		tableOfContents = cTocLoader.loadByCourseId(ctx.getCourseId());
+		tableOfContents = cTocLoader.loadByCourseId(courseContext.getCourseId());
 		
 		tableChildren = new ArrayList<Content>();
 		
@@ -139,16 +139,13 @@ public class ProcessorBB {
 		
 		for (Content item : tableChildren) {
 			if (item.getTitle().equalsIgnoreCase("Leaderboard")) {
-				if(item.getBody().getText() != null) {
+				if (item.getBody().getText() != null) {
 					contentXML += item.getBody().getText();
-				}
-				else {
-					contentXML = "empty";
 				}
 			}
 		}
 		
-		if(contentXML.equals(" ")){
+		if (contentXML.equals(" ")){
 			contentXML = "empty";
 		}
 		

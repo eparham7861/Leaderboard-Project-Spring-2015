@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import blackboard.platform.context.ContextManager;
 import blackboard.platform.context.Context;
 import blackboard.platform.RuntimeBbServiceException;
+import blackboard.platform.gradebook2.*;
+import blackboard.platform.gradebook2.impl.*;
+import blackboard.platform.plugin.PlugInUtil;
 import java.util.*;
 
 public class LeaderboardBB {
@@ -24,7 +27,6 @@ public class LeaderboardBB {
 	private XMLFactory currentXML;
 	
 	public LeaderboardBB(Context currentContext) {
-		
 		try {
 			this.currentContext = currentContext;
 			
@@ -89,7 +91,13 @@ public class LeaderboardBB {
 	}
 	
 	private void loadContent() {
-		ProcessorBB loadProcessor = new ProcessorBB(currentCourseID.getCourseID());
-		currentXML.setXMLInputString(loadProcessor.loadContent(currentContext));
+		try {
+			ProcessorBB loadProcessor = new ProcessorBB(currentCourseID.getCourseID());
+			currentXML.setXMLInputString(loadProcessor.loadContent(currentContext));
+		}
+		catch (PersistenceException e) {
+		
+		}
+		
 	}
 }
