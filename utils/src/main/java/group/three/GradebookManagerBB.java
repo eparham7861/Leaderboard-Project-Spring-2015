@@ -11,6 +11,7 @@ public class GradebookManagerBB {
 	private GradebookManager currentGradebookManager;
 	private BookData currentBookData;
 	private List<GradableItem> gradeItems;
+	private String gradebookChoice;
 	
 	public void setGradebookManager(CourseIDBB currentCourseID) {
 		try {
@@ -24,5 +25,18 @@ public class GradebookManagerBB {
 		}
 		catch (BbSecurityException e) {
 		}	
+	}
+	
+	public void setGradebookColumn(String gradebookChoice) {
+		for (GradableItem item : gradeItems) {
+			if (item.getTitle().equals(gradebookChoice)) {
+				this.gradebookChoice = gradebookChoice;
+			}
+		}
+		this.gradebookChoice = "total";
+	}
+	
+	public String getGradebookColumn() {
+		return gradebookChoice;
 	}
 }

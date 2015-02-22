@@ -13,18 +13,17 @@ import blackboard.platform.plugin.PlugInUtil;
 import java.util.*;
 
 public class LeaderboardBB {
-	private UserBB currentUser;
-	private String sessionUserRole, sessionUserID;
+	private UserBB sessionUser;
 	private CourseIDBB currentCourseID;
 	private Context currentContext;
 	private GradebookManagerBB currentGradebook;
 	private CourseMembershipBB currentCourseMembership;
 	private List<Student> students;
+	private XMLFactory currentXML;
+	private String sessionUserRole, sessionUserID, modified;
 	private double scoreToHighlight;
 	private int index, numVisible, gradeChoice;
-	private String modified;
 	private boolean canSeeScores;
-	private XMLFactory currentXML;
 	
 	public LeaderboardBB(Context currentContext) {
 		try {
@@ -35,7 +34,7 @@ public class LeaderboardBB {
 			scoreToHighlight = -1.0;
 			index = 0;
 			
-			currentUser = new UserBB();
+			sessionUser = new UserBB();
 			currentCourseID = new CourseIDBB();
 			currentGradebook = new GradebookManagerBB();
 			currentCourseMembership = new CourseMembershipBB();
@@ -43,21 +42,33 @@ public class LeaderboardBB {
 			currentXML = new XMLFactory();
 			canSeeScores = false;
 			
+			loadContent();
 			setCurrentUser();
 			setCurrentCourseID();
 			setGradebookManager();
 			setSessionUserID();
 			setSessionUserRole();
 			setCourseMemberships();
-			loadContent();
+			setNumberOfVisibleStudents();
 		}
 		catch (RuntimeBbServiceException e) {
 		
 		}
 	}
 	
+	private void loadContent() {
+		try {
+			ProcessorBB loadProcessor = new ProcessorBB(currentCourseID.getCourseID());
+			currentXML.setXMLInputString(loadProcessor.loadContent(currentContext));
+		}
+		catch (PersistenceException e) {
+		
+		}
+		
+	}
+	
 	private void setCurrentUser() {
-		currentUser.setCurrentUser(currentContext.getUser());
+		sessionUser.setCurrentUser(currentContext.getUser());
 	}
 	
 	private void setCurrentCourseID() {
@@ -66,10 +77,11 @@ public class LeaderboardBB {
 	
 	private void setGradebookManager() {
 		currentGradebook.setGradebookManager(currentCourseID);
+		currentGradebook.setGradebookColumn(currentXML.getContent(SavedContent.Content.GRADECHOICE));
 	}
 	
 	private void setSessionUserID() {
-		sessionUserID = currentUser.getID();
+		sessionUserID = sessionUser.getID();
 	}
 	
 	private void setSessionUserRole() {
@@ -90,14 +102,16 @@ public class LeaderboardBB {
 		}
 	}
 	
-	private void loadContent() {
-		try {
-			ProcessorBB loadProcessor = new ProcessorBB(currentCourseID.getCourseID());
-			currentXML.setXMLInputString(loadProcessor.loadContent(currentContext));
+	private void setNumberOfVisibleStudents() {
+		if (isModified()) {
+			numVisible = Integer.parseInt(currentXML.getContent(SavedContent.Content.VISIBLE));
 		}
-		catch (PersistenceException e) {
-		
+		else {
+			numVisible = currentCourseMembership.getCourseMemberships().size();
 		}
-		
+	}
+	
+	private boolean isModified() {
+		return Boolean.parseBoolean(currentXML.getContent(SavedContent.Content.MODIFIED));
 	}
 }

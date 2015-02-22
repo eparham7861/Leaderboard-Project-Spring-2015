@@ -13,7 +13,10 @@ public class GradebookManagerBBTest {
 	@Before
 	public void startUp() {
 		GradebookManager mockGradebook = mock(GradebookManager.class);
-				
+	}
+	
+	@Test
+	public void testStartGradebook() {
 		currentGradebook = new GradebookManagerBB();
 	}
 }

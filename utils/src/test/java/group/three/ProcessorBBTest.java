@@ -33,7 +33,10 @@ public class ProcessorBBTest {
 		currentXML += "<gradebookLabel>100</gradebookLabel>";
 		currentXML += "</student>";
 		currentXML += "</course>";
-		
+	}
+	
+	@Test
+	public void testStartProcessor() {
 		currentProcessor = new ProcessorBB(currentCourseID);
 	}
 }
