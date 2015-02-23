@@ -9,6 +9,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ProcessorBBTest {
+/*
 	private ProcessorBB currentProcessor;
 	private Id currentCourseID;
 	private String currentXML;
@@ -39,4 +40,5 @@ public class ProcessorBBTest {
 	public void testStartProcessor() {
 		currentProcessor = new ProcessorBB(currentCourseID);
 	}
+	*/
 }
