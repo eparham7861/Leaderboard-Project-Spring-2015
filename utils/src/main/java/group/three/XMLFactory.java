@@ -11,6 +11,7 @@ public class XMLFactory {
 	private String XMLInputString;
 	private ArrayList<String> studentScoreLabels;
 	private SavedContent contentHolder;
+	//private int InstanceID = 0;
 	
 	public XMLFactory(){
 		XMLInputString = "";
@@ -84,6 +85,8 @@ public class XMLFactory {
 				NodeList childNodes = node.getChildNodes();
 				
 				getItemFromContentNode(childNodes);
+				
+				
 			}
 		}	
 	}
@@ -111,11 +114,69 @@ public class XMLFactory {
 			case "courseid":
 				setContent(SavedContent.Content.COURSE, content);
 				break;
-			case "settings":
-				setContent(SavedContent.Content.LEVELINDEX, content);
+			case "levelPoints":
+				if (InstanceID = 0){
+					setContent(SavedContent.Content.LEVELINDEX0, content);
+				}
+				else if (InstanceID = 1){
+					setContent(SavedContent.Content.LEVELINDEX1, content);
+				}
+				else if (InstanceID = 2){
+					setContent(SavedContent.Content.LEVELINDEX2, content);
+				}
+				else if (InstanceID = 3){
+					setContent(SavedContent.Content.LEVELINDEX3, content);
+				}
+				else if (InstanceID = 4){
+					setContent(SavedContent.Content.LEVELINDEX4, content);
+				}
+				else if (InstanceID = 5){
+					setContent(SavedContent.Content.LEVELINDEX5, content);
+				}
+				else if (InstanceID = 6){
+					setContent(SavedContent.Content.LEVELINDEX6, content);
+				}
+				else if (InstanceID = 7){
+					setContent(SavedContent.Content.LEVELINDEX7, content);
+				}
+				else if (InstanceID = 8){
+					setContent(SavedContent.Content.LEVELINDEX8, content);
+				}
+				else if (InstanceID = 9){
+					setContent(SavedContent.Content.LEVELINDEX9, content);
+				}
 				break;
 			case "levellabel":
-				setContent(SavedContent.Content.LEVEL, content);
+				if (InstanceID = 0){
+				setContent(SavedContent.Content.LEVEL0, content);
+				}
+				if (InstanceID = 1){
+				setContent(SavedContent.Content.LEVEL1, content);
+				}
+				if (InstanceID = 2){
+				setContent(SavedContent.Content.LEVEL2, content);
+				}
+				if (InstanceID = 3){
+				setContent(SavedContent.Content.LEVEL3, content);
+				}
+				if (InstanceID = 4){
+				setContent(SavedContent.Content.LEVEL4, content);
+				}
+				if (InstanceID = 5){
+				setContent(SavedContent.Content.LEVEL5, content);
+				}
+				if (InstanceID = 6){
+				setContent(SavedContent.Content.LEVEL6, content);
+				}
+				if (InstanceID = 7){
+				setContent(SavedContent.Content.LEVEL7, content);
+				}
+				if (InstanceID = 8){
+				setContent(SavedContent.Content.LEVEL8, content);
+				}
+				if (InstanceID = 9){
+				setContent(SavedContent.Content.LEVEL9, content);
+				}
 				break;
 			case "visiblestudents":
 				setContent(SavedContent.Content.VISIBLE, content);
@@ -133,7 +194,7 @@ public class XMLFactory {
 				setContent(SavedContent.Content.OTHERCOLOR, content);
 				break;
 			case "gradebooklabel":
-				addGradebookLabel(content);
+				setContent(SavedContent.Content.GRADECHOICE, content);
 				break;
 		}
 	}
@@ -143,8 +204,6 @@ public class XMLFactory {
 		String stringToXML = "<course>";
 		
 		stringToXML += "<courseID>" + getContent(SavedContent.Content.COURSE) + "</courseID>";
-		stringToXML += "<setting>" + getContent(SavedContent.Content.LEVELINDEX) + "</setting>";
-		stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL) + "</levelLabel>";
 		stringToXML += "<visibleStudents>" + visibleCount + "</visibleStudents>";
 		stringToXML += "<hiddenStudents>" + getContent(SavedContent.Content.HIDDEN)  + "</hiddenStudents>";
 		stringToXML += "<modified>" + getContent(SavedContent.Content.MODIFIED) + "</modified>";
@@ -158,8 +217,50 @@ public class XMLFactory {
 			stringToXML += "</student>";
 		}
 		
+		for (int i = 0; i<10; i++){
+			stringToXML += "<level>";
+			stringToXML += "<id>" + i + "</id>";
+			if (i == 0)
+				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX0) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL0) + "</levelLabel>";
+			else if (i == 1)
+				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX1) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL1) + "</levelLabel>";
+			else if (i == 2)
+				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX2) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL2) + "</levelLabel>";
+			else if (i == 3)
+				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX3) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL3) + "</levelLabel>";
+			else if (i == 4)
+				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX4) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL4) + "</levelLabel>";
+			else if (i == 5)
+				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX5) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL5) + "</levelLabel>";
+			else if (i == 6)
+				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX6) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL6) + "</levelLabel>";
+			else if (i == 7)
+				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX7) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL7) + "</levelLabel>";
+			else if (i == 8)
+				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX8) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL8) + "</levelLabel>";
+			else if (i == 9)
+				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX9) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL9) + "</levelLabel>";
+			stringToXML += "</level>";
+		}
+		
 		stringToXML += "</course>";
 		
 		return stringToXML;
 	}
+	public void compareLevelIndexAndLevel(nodeName, content)
+		private int loop = 10;
+		for (int i = 0; i<loop; i++){
+			
+		}
+		
 }
