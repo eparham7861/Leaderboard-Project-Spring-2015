@@ -115,66 +115,66 @@ public class XMLFactory {
 				setContent(SavedContent.Content.COURSE, content);
 				break;
 			case "levelPoints":
-				if (InstanceID = 0){
+				if (InstanceID == 0){
 					setContent(SavedContent.Content.LEVELINDEX0, content);
 				}
-				else if (InstanceID = 1){
+				else if (InstanceID == 1){
 					setContent(SavedContent.Content.LEVELINDEX1, content);
 				}
-				else if (InstanceID = 2){
+				else if (InstanceID == 2){
 					setContent(SavedContent.Content.LEVELINDEX2, content);
 				}
-				else if (InstanceID = 3){
+				else if (InstanceID == 3){
 					setContent(SavedContent.Content.LEVELINDEX3, content);
 				}
-				else if (InstanceID = 4){
+				else if (InstanceID == 4){
 					setContent(SavedContent.Content.LEVELINDEX4, content);
 				}
-				else if (InstanceID = 5){
+				else if (InstanceID == 5){
 					setContent(SavedContent.Content.LEVELINDEX5, content);
 				}
-				else if (InstanceID = 6){
+				else if (InstanceID == 6){
 					setContent(SavedContent.Content.LEVELINDEX6, content);
 				}
-				else if (InstanceID = 7){
+				else if (InstanceID == 7){
 					setContent(SavedContent.Content.LEVELINDEX7, content);
 				}
-				else if (InstanceID = 8){
+				else if (InstanceID == 8){
 					setContent(SavedContent.Content.LEVELINDEX8, content);
 				}
-				else if (InstanceID = 9){
+				else if (InstanceID == 9){
 					setContent(SavedContent.Content.LEVELINDEX9, content);
 				}
 				break;
 			case "levellabel":
-				if (InstanceID = 0){
+				if (InstanceID == 0){
 				setContent(SavedContent.Content.LEVEL0, content);
 				}
-				if (InstanceID = 1){
+				if (InstanceID == 1){
 				setContent(SavedContent.Content.LEVEL1, content);
 				}
-				if (InstanceID = 2){
+				if (InstanceID == 2){
 				setContent(SavedContent.Content.LEVEL2, content);
 				}
-				if (InstanceID = 3){
+				if (InstanceID == 3){
 				setContent(SavedContent.Content.LEVEL3, content);
 				}
-				if (InstanceID = 4){
+				if (InstanceID == 4){
 				setContent(SavedContent.Content.LEVEL4, content);
 				}
-				if (InstanceID = 5){
+				if (InstanceID == 5){
 				setContent(SavedContent.Content.LEVEL5, content);
 				}
-				if (InstanceID = 6){
+				if (InstanceID == 6){
 				setContent(SavedContent.Content.LEVEL6, content);
 				}
-				if (InstanceID = 7){
+				if (InstanceID == 7){
 				setContent(SavedContent.Content.LEVEL7, content);
 				}
-				if (InstanceID = 8){
+				if (InstanceID == 8){
 				setContent(SavedContent.Content.LEVEL8, content);
 				}
-				if (InstanceID = 9){
+				if (InstanceID == 9){
 				setContent(SavedContent.Content.LEVEL9, content);
 				}
 				break;
@@ -267,10 +267,12 @@ public class XMLFactory {
 		
 		return stringToXML;
 	}
-	public void compareLevelIndexAndLevel(nodeName, content)
-		private int loop = 10;
+	/*
+	public void compareLevelIndexAndLevel(nodeName, content){
+		int loop = 10;
 		for (int i = 0; i<loop; i++){
 			
 		}
-		
+	}	
+	*/
 }

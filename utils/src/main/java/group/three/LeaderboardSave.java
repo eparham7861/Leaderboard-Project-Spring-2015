@@ -10,7 +10,8 @@ import java.util.*;
 import blackboard.platform.plugin.PlugInUtil;
 import blackboard.servlet.data.MultiSelectBean;
 
-public class LeaderboardSave(){
+public class LeaderboardSave{
+	/*
 	if (request.getMethod().toLowerCase.equals("post")){
 		if(request.getParameter("instructor").equals("true")){
 			// b2 context was used on this line. make new persistance object
@@ -35,7 +36,6 @@ public class LeaderboardSave(){
 						numFilledLevels--;
 				}
 			}
-			*/
 			//Add number of levels key-pair to the persistance object
 			//b2Context_c.setSetting(false, true, "gradebook_column" + courseID, gradeLabel);
 			XMLContextC.setSetting();
@@ -92,4 +92,5 @@ public class LeaderboardSave(){
 		//b2Context_u.persistSettings(true, false);
 		XMLcontextU.persistSettings();		
 	}	
+	*/
 }

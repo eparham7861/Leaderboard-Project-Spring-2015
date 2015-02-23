@@ -77,7 +77,7 @@ public class LeaderboardBB {
 	
 	private void setGradebookManager() {
 		currentGradebook.setGradebookManager(currentCourseID);
-		currentGradebook.setGradebookColumn(currentXML.getContent(SavedContent.Content.GRADECHOICE));
+		//currentGradebook.setGradebookColumn(currentXML.getContent(SavedContent.Content.GRADECHOICE));
 	}
 	
 	private void setSessionUserID() {
