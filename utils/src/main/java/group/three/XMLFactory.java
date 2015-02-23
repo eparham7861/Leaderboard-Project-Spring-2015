@@ -11,7 +11,7 @@ public class XMLFactory {
 	private String XMLInputString;
 	private ArrayList<String> studentScoreLabels;
 	private SavedContent contentHolder;
-	//private int InstanceID = 0;
+	private int InstanceID = 0;
 	
 	public XMLFactory(){
 		XMLInputString = "";
@@ -220,36 +220,46 @@ public class XMLFactory {
 		for (int i = 0; i<10; i++){
 			stringToXML += "<level>";
 			stringToXML += "<id>" + i + "</id>";
-			if (i == 0)
+			if (i == 0){
 				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX0) + "</levelPoints>";
 				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL0) + "</levelLabel>";
-			else if (i == 1)
+			}
+			else if (i == 1){
 				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX1) + "</levelPoints>";
 				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL1) + "</levelLabel>";
-			else if (i == 2)
+			}
+			else if (i == 2){
 				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX2) + "</levelPoints>";
 				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL2) + "</levelLabel>";
-			else if (i == 3)
+			}
+			else if (i == 3){
 				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX3) + "</levelPoints>";
 				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL3) + "</levelLabel>";
-			else if (i == 4)
+			}
+			else if (i == 4){
 				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX4) + "</levelPoints>";
 				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL4) + "</levelLabel>";
-			else if (i == 5)
+			}
+			else if (i == 5){
 				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX5) + "</levelPoints>";
 				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL5) + "</levelLabel>";
-			else if (i == 6)
+			}
+			else if (i == 6){
 				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX6) + "</levelPoints>";
 				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL6) + "</levelLabel>";
-			else if (i == 7)
+			}
+			else if (i == 7){
 				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX7) + "</levelPoints>";
 				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL7) + "</levelLabel>";
-			else if (i == 8)
+			}
+			else if (i == 8){
 				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX8) + "</levelPoints>";
 				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL8) + "</levelLabel>";
-			else if (i == 9)
+			}
+			else if (i == 9){
 				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX9) + "</levelPoints>";
 				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL9) + "</levelLabel>";
+			}
 			stringToXML += "</level>";
 		}
 		
