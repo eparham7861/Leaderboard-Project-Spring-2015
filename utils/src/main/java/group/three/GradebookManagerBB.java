@@ -22,6 +22,7 @@ public class GradebookManagerBB {
 			
 			currentBookData.addParentReferences();
 			currentBookData.runCumulativeGrading();
+			gradebookChoice = "";
 		}
 		catch (BbSecurityException e) {
 		}	
@@ -33,10 +34,25 @@ public class GradebookManagerBB {
 				this.gradebookChoice = gradebookChoice;
 			}
 		}
-		this.gradebookChoice = "total";
+		if (this.gradebookChoice.equals("")) {
+			this.gradebookChoice = "total";
+		}
+		
 	}
 	
 	public String getGradebookColumn() {
 		return gradebookChoice;
+	}
+	
+	public int getGradebookSize() {
+		return gradeItems.size();
+	}
+	
+	public GradeWithAttemptScore getGradebookAttemptedScore(CourseMembership currentMembership, int choice) {
+		return currentBookData.get(currentMembership.getId(), gradeItems.get(choice));
+	}
+	
+	public GradableItem getGradebookItem(int choice) {
+		return gradeItems.get(choice);
 	}
 }
