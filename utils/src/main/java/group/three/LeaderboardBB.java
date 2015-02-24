@@ -1,9 +1,12 @@
 package group.three;
 
-import blackboard.base.InitializationException;
+import blackboard.base.*;
 import blackboard.data.user.User;
 import blackboard.persist.*;
 import javax.servlet.http.HttpServletRequest;
+import blackboard.data.course.*;
+import blackboard.persist.*;
+import blackboard.persist.course.*;
 import blackboard.platform.context.ContextManager;
 import blackboard.platform.context.Context;
 import blackboard.platform.RuntimeBbServiceException;
@@ -123,10 +126,10 @@ public class LeaderboardBB {
 			String currentUserID = selectedMember.getUserId().toString();
 			
 			for (int x = 0; x < currentGradebook.getGradebookSize(); x++) {
-				GradeWithAttempScore attemptedScore = currentGradebook.getGradebookAttemptedScore(selectedMember.getId(), x);
+				GradeWithAttemptScore attemptedScore = currentGradebook.getGradebookAttemptedScore(selectedMember, x);
 				
 				double currentScore = 0.0;
-				if (attemptedScore != null && !attemptedScore.IsNullGrade()) {
+				if (attemptedScore != null) {
 					currentScore = attemptedScore.getScoreValue();
 				}
 				if (currentGradebook.getGradebookItem(x).getTitle().trim().toLowerCase().equalsIgnoreCase(currentGradebook.getGradebookColumn())) {

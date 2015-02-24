@@ -105,8 +105,6 @@ public class XMLFactoryTest {
 	public void testGetPreviousXMLContent() {
 		String xml = "<course>";
 		xml += "<courseID>CS491</courseID>";
-		//xml += "<levelPoints>100</levelPoints>";
-		//xml += "<levelLabel>Journeyman</levelLabel>";
 		xml += "<visibleStudents>3</visibleStudents>";
 		xml += "<hiddenStudents>2</hiddenStudents>";
 		xml += "<modified>true</modified>";
@@ -117,12 +115,12 @@ public class XMLFactoryTest {
 		xml += "<gradebookLabel>100</gradebookLabel>";
 		xml += "</student>";
 		xml += "<level>";
-		xml += "<id>1</id>";
+		xml += "<levelID>1</levelID>";
 		xml += "<levelPoints>100</levelPoints>";
 		xml += "<levelLabel>Journeyman</levelLabel>";
 		xml += "</level>";
 		xml += "<level>";
-		xml += "<id>2</id>";
+		xml += "<levelID>2</levelID>";
 		xml += "<levelPoints>300</levelPoints>";
 		xml += "<levelLabel>Boss</levelLabel>";
 		xml+= "</level>";
@@ -144,13 +142,12 @@ public class XMLFactoryTest {
 		for (int i = 0; i < Integer.parseInt(currentXML.getContent(SavedContent.Content.VISIBLE)); i++) {
 			stringToXML += "<student>";
 			stringToXML += "<id>" + i + "</id>";
-			stringToXML += "<gradebookLabel>" + currentXML.getContent(SavedContent.Content.GRADECHOICE) + "</gradebookLabel>";
 			stringToXML += "</student>";
 		}
 		
 		for (int i = 0; i<10; i++){
 			stringToXML += "<level>";
-			stringToXML += "<id>" + i + "</id>";
+			stringToXML += "<levelID>" + i + "</levelID>";
 			if (i == 0){
 				stringToXML += "<levelPoints>" + currentXML.getContent(SavedContent.Content.LEVELINDEX0) + "</levelPoints>";
 				stringToXML += "<levelLabel>" + currentXML.getContent(SavedContent.Content.LEVEL0) + "</levelLabel>";

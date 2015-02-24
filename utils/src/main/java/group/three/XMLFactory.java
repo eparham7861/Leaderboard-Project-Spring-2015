@@ -11,7 +11,7 @@ public class XMLFactory {
 	private String XMLInputString;
 	private ArrayList<String> studentScoreLabels;
 	private SavedContent contentHolder;
-	private int InstanceID = 0;
+	private int instanceID;
 	
 	public XMLFactory(){
 		XMLInputString = "";
@@ -114,67 +114,69 @@ public class XMLFactory {
 			case "courseid":
 				setContent(SavedContent.Content.COURSE, content);
 				break;
+			case "levelid":
+				instanceID = Integer.parseInt(content);
 			case "levelPoints":
-				if (InstanceID == 0){
+				if (instanceID == 0){
 					setContent(SavedContent.Content.LEVELINDEX0, content);
 				}
-				else if (InstanceID == 1){
+				else if (instanceID == 1){
 					setContent(SavedContent.Content.LEVELINDEX1, content);
 				}
-				else if (InstanceID == 2){
+				else if (instanceID == 2){
 					setContent(SavedContent.Content.LEVELINDEX2, content);
 				}
-				else if (InstanceID == 3){
+				else if (instanceID == 3){
 					setContent(SavedContent.Content.LEVELINDEX3, content);
 				}
-				else if (InstanceID == 4){
+				else if (instanceID == 4){
 					setContent(SavedContent.Content.LEVELINDEX4, content);
 				}
-				else if (InstanceID == 5){
+				else if (instanceID == 5){
 					setContent(SavedContent.Content.LEVELINDEX5, content);
 				}
-				else if (InstanceID == 6){
+				else if (instanceID == 6){
 					setContent(SavedContent.Content.LEVELINDEX6, content);
 				}
-				else if (InstanceID == 7){
+				else if (instanceID == 7){
 					setContent(SavedContent.Content.LEVELINDEX7, content);
 				}
-				else if (InstanceID == 8){
+				else if (instanceID == 8){
 					setContent(SavedContent.Content.LEVELINDEX8, content);
 				}
-				else if (InstanceID == 9){
+				else if (instanceID == 9){
 					setContent(SavedContent.Content.LEVELINDEX9, content);
 				}
 				break;
 			case "levellabel":
-				if (InstanceID == 0){
+				if (instanceID == 0){
 				setContent(SavedContent.Content.LEVEL0, content);
 				}
-				if (InstanceID == 1){
+				if (instanceID == 1){
 				setContent(SavedContent.Content.LEVEL1, content);
 				}
-				if (InstanceID == 2){
+				if (instanceID == 2){
 				setContent(SavedContent.Content.LEVEL2, content);
 				}
-				if (InstanceID == 3){
+				if (instanceID == 3){
 				setContent(SavedContent.Content.LEVEL3, content);
 				}
-				if (InstanceID == 4){
+				if (instanceID == 4){
 				setContent(SavedContent.Content.LEVEL4, content);
 				}
-				if (InstanceID == 5){
+				if (instanceID == 5){
 				setContent(SavedContent.Content.LEVEL5, content);
 				}
-				if (InstanceID == 6){
+				if (instanceID == 6){
 				setContent(SavedContent.Content.LEVEL6, content);
 				}
-				if (InstanceID == 7){
+				if (instanceID == 7){
 				setContent(SavedContent.Content.LEVEL7, content);
 				}
-				if (InstanceID == 8){
+				if (instanceID == 8){
 				setContent(SavedContent.Content.LEVEL8, content);
 				}
-				if (InstanceID == 9){
+				if (instanceID == 9){
 				setContent(SavedContent.Content.LEVEL9, content);
 				}
 				break;
@@ -213,13 +215,12 @@ public class XMLFactory {
 		for (int i = 0; i < Integer.parseInt(visibleCount); i++) {
 			stringToXML += "<student>";
 			stringToXML += "<id>" + i + "</id>";
-			stringToXML += "<gradebookLabel>" + studentScoreLabels.get(i) + "</gradebookLabel>";
 			stringToXML += "</student>";
 		}
 		
 		for (int i = 0; i<10; i++){
 			stringToXML += "<level>";
-			stringToXML += "<id>" + i + "</id>";
+			stringToXML += "<levelID>" + i + "</levelID>";
 			if (i == 0){
 				stringToXML += "<levelPoints>" + getContent(SavedContent.Content.LEVELINDEX0) + "</levelPoints>";
 				stringToXML += "<levelLabel>" + getContent(SavedContent.Content.LEVEL0) + "</levelLabel>";
@@ -267,12 +268,4 @@ public class XMLFactory {
 		
 		return stringToXML;
 	}
-	/*
-	public void compareLevelIndexAndLevel(nodeName, content){
-		int loop = 10;
-		for (int i = 0; i<loop; i++){
-			
-		}
-	}	
-	*/
 }
