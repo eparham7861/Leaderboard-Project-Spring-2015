@@ -23,24 +23,14 @@ import blackboard.platform.context.Context;
 public class Leaderboard_Config{
 
 	/*Variables*/
-	private String color_value;
-	private String user_color_value;
+	private XMLFactory xmlFactory;
+	private String color_value, user_color_value;
 	private Id courseID;
-	private String [] level_values;
-	private String [] level_labels;
-	private String[] gradeList;
-	private String jsConfigFormPath;
-	private String sessionUserRole;
-	private String modified;
-	private String visibleList;
-	private String hiddenList;
-	private String prev_grade_choice;
-	private String[] hiddenArr;
-	private String[] visibleArr;
-	private List<MultiSelectBean> leftList;
-	private List<MultiSelectBean> rightList;
-	private MultiSelectBean leftBean;
-	private MultiSelectBean rightBean;
+	private String[] level_values, level_labels, gradeList, hiddenArr, visibleArr;
+	private String jsConfigFormPath, sessionUserRole, modified;
+	private String visibleList, hiddenList, prev_grade_choice;
+	private List<MultiSelectBean> leftList, rightList;
+	private MultiSelectBean leftBean, rightBean;
 	private List<CourseMembership> cmlist;
 	private List<GradableItem> lgm;
 	private GradebookManager gm;
@@ -50,14 +40,11 @@ public class Leaderboard_Config{
 	private Context ctx;
 	//String jsConfigFormPath = PlugInUtil.getUri("dt", "leaderboardblock11", "js/config_form.js");
 
-	public Leaderboard_Config(Context context) throws KeyNotFoundException, PersistenceException, BbSecurityException{
-		color_value = "";
-		user_color_value = "";
+	public Leaderboard_Config(Context context){
+		try{
+		xmlFactory = new XMLFactory();
 		level_values = new String[NUM_LABELS];
 		level_labels = new String[NUM_LABELS];
-		sessionUserRole = "";
-		modified = "";
-		visibleList = "";
 		prev_grade_choice = "Total";
 		isUserAnInstructor = false;
 		leftList = new ArrayList<MultiSelectBean>(); //Used for UI
@@ -68,33 +55,43 @@ public class Leaderboard_Config{
 		ctx = context;
 		courseID = ctx.getCourseId();
 		cmlist = CourseMembershipDbLoader.Default.getInstance().loadByCourseIdAndRole(courseID, CourseMembership.Role.STUDENT, null, true);
-		jsConfigFormPath = ""; //Needs changing to ctx
+		jsConfigFormPath = PlugInUtil.getUri("dt", "leaderboardblock11", "js/config_form.js");
+		}
+		catch(KeyNotFoundException e){}
+		catch(BbSecurityException e){}
+		catch(PersistenceException e){}
 	}
 	
 	/*Main Functions*/
 	public void loadPreviousColorValues(){
 		/*Load color_value and user_color_value from XML instead
 		of b2Context*/
+		// Grab previously saved color value
+		this.color_value = xmlFactory.getContent(SavedContent.Content.OTHERCOLOR);
+		this.user_color_value = xmlFactory.getContent(SavedContent.Content.USERCOLOR);
 	}
 	public void loadPreviousLevelInformation(){
 		/*Load level_values and level_labels from XML instead of 
 		b2Context*/
-	}
-	public void loadVisibleStudentInformation(){
-		/*Need to get visibleList from XML instead of b2Context*/
-	}
-	public void loadHiddenStudentInformation(){
-		/*Need to get visibleList from XML instead of b2Context*/
-	}
-	public void ensureUserIsInstructor(){
-		//this.sessionUserRole = ctx.getCourseMembership().getRoleAsString();
-		this.isUserAnInstructor = false;
-		if (sessionUserRole.trim().toLowerCase().equals("instructor")){
-			isUserAnInstructor = true;
+		// Grab previously saved level values and labels
+		for(int i = 0; i < NUM_LABELS; i++){
+		//this.level_values[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Points" + courseID.toExternalString());
+		//XMLlevelValues[i] = xmlFactory.getSetting(); //JARED EDITED VERSION
+		//this.level_labels[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Labels" + courseID.toExternalString());
+		//XMLlevelLabels[i] = xmlFactory.getSetting(); //JARED EDITED VERSION
+
 		}
 	}
+	public boolean ensureUserIsInstructor(){
+		this.sessionUserRole = ctx.getCourseMembership().getRoleAsString();
+		//this.isUserAnInstructor = false;
+		if (sessionUserRole.trim().toLowerCase().equals("instructor")){
+			return true;
+		}
+		return false;
+	}
 	public void establishStudentLevels(){
-		for(int i = 2; i <= 10; i++) { 
+		for(int i = 2; i <= NUM_LABELS; i++) { 
 			//Sets default level titles
 			String levelLabel;
 			String levelPoints;
@@ -120,11 +117,15 @@ public class Leaderboard_Config{
 		}
 	}
 	
-	public void createUserInterface() throws KeyNotFoundException, PersistenceException{
-		this.leftList = new ArrayList<MultiSelectBean>();
-		this.rightList = new ArrayList<MultiSelectBean>();
-		//modified = b2Context_sh.getSetting(false, true, "modified" +  courseID.toExternalString());
-		this.cmlist = CourseMembershipDbLoader.Default.getInstance().loadByCourseIdAndRole(courseID, CourseMembership.Role.STUDENT, null, true);
+	public void createUserInterface(){
+		try{
+			this.leftList = new ArrayList<MultiSelectBean>();
+			this.rightList = new ArrayList<MultiSelectBean>();
+			this.modified = xmlFactory.getContent(SavedContent.Content.MODIFIED);//b2Context_sh.getSetting(false, true, "modified" +  courseID.toExternalString());
+			this.cmlist = CourseMembershipDbLoader.Default.getInstance().loadByCourseIdAndRole(courseID, CourseMembership.Role.STUDENT, null, true);
+		}
+		catch(KeyNotFoundException e){}
+		catch(PersistenceException e){}
 	}
 	public void createVisibleStudentList(){
 		//Logic to determine if the default or a saved show/hide list is used
@@ -133,7 +134,7 @@ public class Leaderboard_Config{
 			//Each list is saved as one string of names with the following format:
 			//"firstName lastName, firstName lastName, etc."
 			/*B2CONTEXT*/
-			this.visibleList = "";//b2Context_sh.getSetting(false, true, "visibleStudents" +  courseID.toExternalString());
+			this.visibleList = xmlFactory.getContent(SavedContent.Content.VISIBLE);//b2Context_sh.getSetting(false, true, "visibleStudents" +  courseID.toExternalString());
 			this.visibleArr = visibleList.split(",");
 			if(!(visibleList.trim().equals(" ")) && !(visibleList.trim().isEmpty()) && visibleList != null){
 				for(int i = 0; i < visibleArr.length; i++){//Add any saved visible to left side.
@@ -147,7 +148,7 @@ public class Leaderboard_Config{
 	}
 	public void createHiddenStudentList(){
 		/*B2CONTEXT*/
-		this.hiddenList = ""; //b2Context_sh.getSetting(false, true, "hiddenStudents" +  courseID.toExternalString());
+		this.hiddenList = xmlFactory.getContent(SavedContent.Content.HIDDEN); //b2Context_sh.getSetting(false, true, "hiddenStudents" +  courseID.toExternalString());
 		this.hiddenArr = hiddenList.split(",");
 		if(!(hiddenList.trim().equals(" ")) && !(hiddenList.trim().isEmpty()) && hiddenList != null){
 			for(int i = 0; i < hiddenArr.length; i++){//Add any saved hidden to right side.
@@ -223,6 +224,7 @@ public class Leaderboard_Config{
 		/*B2Context!*/
 		//B2Context b2Context_grade = new B2Context(request);
 		//prev_grade_choice = b2Context_grade.getSetting(false,true,"gradebook_column" + courseID.toExternalString());
+		//prev_grade_choice = xmlFactory.getContent(SavedContent.Content.GRADECHOICE);
 		if(prev_grade_choice == "") prev_grade_choice = "Total";
 		prev_grade_string = prev_grade_choice + " - (Chosen)"; //selected option on dropdown list 
 	}
