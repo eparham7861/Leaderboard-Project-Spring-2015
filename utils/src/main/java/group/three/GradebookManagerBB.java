@@ -3,6 +3,7 @@ package group.three;
 import blackboard.platform.gradebook2.*;
 import blackboard.platform.gradebook2.impl.*;
 import blackboard.persist.*;
+import blackboard.data.course.*;
 import blackboard.platform.security.authentication.BbSecurityException;
 import java.util.*;
 
@@ -22,6 +23,7 @@ public class GradebookManagerBB {
 			
 			currentBookData.addParentReferences();
 			currentBookData.runCumulativeGrading();
+			gradebookChoice = "";
 		}
 		catch (BbSecurityException e) {
 		}	
@@ -33,10 +35,25 @@ public class GradebookManagerBB {
 				this.gradebookChoice = gradebookChoice;
 			}
 		}
-		this.gradebookChoice = "total";
+		if (this.gradebookChoice.equals("")) {
+			this.gradebookChoice = "total";
+		}
+		
 	}
 	
 	public String getGradebookColumn() {
 		return gradebookChoice;
+	}
+	
+	public int getGradebookSize() {
+		return gradeItems.size();
+	}
+	
+	public GradeWithAttemptScore getGradebookAttemptedScore(CourseMembership currentMembership, int choice) {
+		return currentBookData.get(currentMembership.getId(), gradeItems.get(choice).getId());
+	}
+	
+	public GradableItem getGradebookItem(int choice) {
+		return gradeItems.get(choice);
 	}
 }

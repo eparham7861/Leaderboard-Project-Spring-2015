@@ -10,6 +10,7 @@ import java.util.*;
 import blackboard.platform.plugin.PlugInUtil;
 import blackboard.servlet.data.MultiSelectBean;
 
+<<<<<<< HEAD
 if (request.getMethod().toLowerCase.equals("post")){
 	public class LeaderboardSave(){
 		
@@ -39,6 +40,34 @@ if (request.getMethod().toLowerCase.equals("post")){
 		
 		public void saveCourseID(XMLFactory XMLcontextC){
 			String courseID = request.getParameter("courseID");
+=======
+public class LeaderboardSave{
+	/*
+	if (request.getMethod().toLowerCase.equals("post")){
+		if(request.getParameter("instructor").equals("true")){
+			// b2 context was used on this line. make new persistance object
+			XMLFactory XMLcontextC = new XMLFactory();
+			XMLcontextC.setSaveEmptyValues();
+			
+			int numFilledLevels = 10;
+			String setting = "";
+			String levelLabel = ""; // added 9/27/2013
+			String courseID = request.getParameter("courseID");
+			/*
+			for(int i = 1; i <= 10; i++) {
+				setting = (i == 1)? "0":request.getParameter("Level_" + i + "_Points");
+				levelLabel = (i == 1)? "0":request.getParameter("Level_" + i + "_Labels"); //ADDED 09/27/2013
+				
+				//b2Context_c.setSetting(false, true, "Level_" + i + "_Points" + courseID, setting);
+				XMLcontextC.setSetting(); //JARED EDITED VERSION
+				//b2Context_c.setSetting(false, true, "Level_" + i + "_Labels" + courseID, levelLabel); //ADDED 09/27/2013
+				XMLcontextC.setSetting(); //JARED EDITED VERSION
+				//Count the number of levels by subtracting empty strings from total available levels.
+				if(setting == ""){
+						numFilledLevels--;
+				}
+			}
+>>>>>>> origin/master
 			//Add number of levels key-pair to the persistance object
 			//b2Context_c.setSetting(false, true, "gradebook_column" + courseID, gradeLabel);
 			XMLContextC.setSetting();
@@ -97,10 +126,18 @@ if (request.getMethod().toLowerCase.equals("post")){
 			XMLcontextU.setSetting(); //JARED EDITED VERSION
 		}
 		
+<<<<<<< HEAD
 		public void saveStudentSettings(XMLFactory XMLcontextU){
 			// Save the settings (USER-SPECIFIC)
 			//b2Context_u.persistSettings(true, false);
 			XMLcontextU.persistSettings();
 		}
 	}
+=======
+		// Save the settings (USER-SPECIFIC)
+		//b2Context_u.persistSettings(true, false);
+		XMLcontextU.persistSettings();		
+	}	
+	*/
+>>>>>>> origin/master
 }

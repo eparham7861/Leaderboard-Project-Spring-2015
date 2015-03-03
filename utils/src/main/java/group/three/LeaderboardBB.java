@@ -1,9 +1,12 @@
 package group.three;
 
-import blackboard.base.InitializationException;
+import blackboard.base.*;
 import blackboard.data.user.User;
 import blackboard.persist.*;
 import javax.servlet.http.HttpServletRequest;
+import blackboard.data.course.*;
+import blackboard.persist.*;
+import blackboard.persist.course.*;
 import blackboard.platform.context.ContextManager;
 import blackboard.platform.context.Context;
 import blackboard.platform.RuntimeBbServiceException;
@@ -20,9 +23,9 @@ public class LeaderboardBB {
 	private CourseMembershipBB currentCourseMembership;
 	private List<Student> students;
 	private XMLFactory currentXML;
-	private String sessionUserRole, sessionUserID, modified;
+	private String sessionUserRole, sessionUserID, modified, gradeChoice;
 	private double scoreToHighlight;
-	private int index, numVisible, gradeChoice;
+	private int index, numVisible;
 	private boolean canSeeScores;
 	
 	public LeaderboardBB(Context currentContext) {
@@ -78,6 +81,7 @@ public class LeaderboardBB {
 	private void setGradebookManager() {
 		currentGradebook.setGradebookManager(currentCourseID);
 		currentGradebook.setGradebookColumn(currentXML.getContent(SavedContent.Content.GRADECHOICE));
+		gradeChoice = currentGradebook.getGradebookColumn();
 	}
 	
 	private void setSessionUserID() {
@@ -113,5 +117,28 @@ public class LeaderboardBB {
 	
 	private boolean isModified() {
 		return Boolean.parseBoolean(currentXML.getContent(SavedContent.Content.MODIFIED));
+	}
+	
+	private void studentSetup() {
+		Iterator<CourseMembership> memberships = currentCourseMembership.getIterator();
+		while (memberships.hasNext()) {
+			CourseMembership selectedMember = memberships.next();
+			String currentUserID = selectedMember.getUserId().toString();
+			
+			for (int x = 0; x < currentGradebook.getGradebookSize(); x++) {
+				GradeWithAttemptScore attemptedScore = currentGradebook.getGradebookAttemptedScore(selectedMember, x);
+				
+				double currentScore = 0.0;
+				if (attemptedScore != null) {
+					currentScore = attemptedScore.getScoreValue();
+				}
+				if (currentGradebook.getGradebookItem(x).getTitle().trim().toLowerCase().equalsIgnoreCase(currentGradebook.getGradebookColumn())) {
+					if (sessionUserID.equals(currentUserID)) {
+						scoreToHighlight = currentScore;
+					}
+				}
+			}
+		}
+		
 	}
 }

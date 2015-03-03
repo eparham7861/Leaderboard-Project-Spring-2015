@@ -21,14 +21,14 @@ public class XMLFactoryTest {
 	
 	@Test
 	public void testContentHolderLevelIndex() {
-		currentXML.setContent(SavedContent.Content.LEVELINDEX, "200");
-		assertEquals("200", currentXML.getContent(SavedContent.Content.LEVELINDEX));
+		currentXML.setContent(SavedContent.Content.LEVELINDEX0, "200");
+		assertEquals("200", currentXML.getContent(SavedContent.Content.LEVELINDEX0));
 	}
 	
 	@Test
 	public void testContentHolderLevel() {
-		currentXML.setContent(SavedContent.Content.LEVEL, "Journeyman");
-		assertEquals("Journeyman", currentXML.getContent(SavedContent.Content.LEVEL));
+		currentXML.setContent(SavedContent.Content.LEVEL0, "Journeyman");
+		assertEquals("Journeyman", currentXML.getContent(SavedContent.Content.LEVEL0));
 	}
 	
 	@Test
@@ -71,8 +71,8 @@ public class XMLFactoryTest {
 	@Test
 	public void convertToXMLStringOneStudent(){
 		currentXML.setContent(SavedContent.Content.COURSE, "CS491");
-		currentXML.setContent(SavedContent.Content.LEVELINDEX, "200");
-		currentXML.setContent(SavedContent.Content.LEVEL, "Journeyman");
+		currentXML.setContent(SavedContent.Content.LEVELINDEX0, "200");
+		currentXML.setContent(SavedContent.Content.LEVEL0, "Journeyman");
 		currentXML.setContent(SavedContent.Content.VISIBLE, "1");
 		currentXML.setContent(SavedContent.Content.HIDDEN, "1");
 		currentXML.setContent(SavedContent.Content.MODIFIED, "true");
@@ -86,8 +86,8 @@ public class XMLFactoryTest {
 	@Test
 	public void testConvertToXMLMultipleStudents() {
 		currentXML.setContent(SavedContent.Content.COURSE, "CS491");
-		currentXML.setContent(SavedContent.Content.LEVELINDEX, "200");
-		currentXML.setContent(SavedContent.Content.LEVEL, "Journeyman");
+		currentXML.setContent(SavedContent.Content.LEVELINDEX0, "200");
+		currentXML.setContent(SavedContent.Content.LEVEL0, "Journeyman");
 		currentXML.setContent(SavedContent.Content.VISIBLE, "5");
 		currentXML.setContent(SavedContent.Content.HIDDEN, "1");
 		currentXML.setContent(SavedContent.Content.MODIFIED, "true");
@@ -105,8 +105,6 @@ public class XMLFactoryTest {
 	public void testGetPreviousXMLContent() {
 		String xml = "<course>";
 		xml += "<courseID>CS491</courseID>";
-		xml += "<setting>100</setting>";
-		xml += "<levelLabel>Journeyman</levelLabel>";
 		xml += "<visibleStudents>3</visibleStudents>";
 		xml += "<hiddenStudents>2</hiddenStudents>";
 		xml += "<modified>true</modified>";
@@ -116,6 +114,16 @@ public class XMLFactoryTest {
 		xml += "<id>1</id>";
 		xml += "<gradebookLabel>100</gradebookLabel>";
 		xml += "</student>";
+		xml += "<level>";
+		xml += "<levelID>1</levelID>";
+		xml += "<levelPoints>100</levelPoints>";
+		xml += "<levelLabel>Journeyman</levelLabel>";
+		xml += "</level>";
+		xml += "<level>";
+		xml += "<levelID>2</levelID>";
+		xml += "<levelPoints>300</levelPoints>";
+		xml += "<levelLabel>Boss</levelLabel>";
+		xml+= "</level>";
 		xml += "</course>";
 		
 		currentXML.setXMLInputString(xml);
@@ -123,26 +131,68 @@ public class XMLFactoryTest {
 	}
 	
 	private String getXML(int count) {
-		String xml = "<course>";
-		xml += "<courseID>" + currentXML.getContent(SavedContent.Content.COURSE) + "</courseID>";
-		xml += "<setting>" + currentXML.getContent(SavedContent.Content.LEVELINDEX) + "</setting>";
-		xml += "<levelLabel>" + currentXML.getContent(SavedContent.Content.LEVEL) + "</levelLabel>";
-		xml += "<visibleStudents>" + currentXML.getContent(SavedContent.Content.VISIBLE) + "</visibleStudents>";
-		xml += "<hiddenStudents>" + currentXML.getContent(SavedContent.Content.HIDDEN)  + "</hiddenStudents>";
-		xml += "<modified>" + currentXML.getContent(SavedContent.Content.MODIFIED) + "</modified>";
-		xml += "<userColor>" + currentXML.getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
-		xml += "<backgroundColor>" + currentXML.getContent(SavedContent.Content.OTHERCOLOR) + "</backgroundColor>";
+		String stringToXML = "<course>";
+		stringToXML += "<courseID>" + currentXML.getContent(SavedContent.Content.COURSE) + "</courseID>";
+		stringToXML += "<visibleStudents>" + currentXML.getContent(SavedContent.Content.VISIBLE) + "</visibleStudents>";
+		stringToXML += "<hiddenStudents>" + currentXML.getContent(SavedContent.Content.HIDDEN)  + "</hiddenStudents>";
+		stringToXML += "<modified>" + currentXML.getContent(SavedContent.Content.MODIFIED) + "</modified>";
+		stringToXML += "<userColor>" + currentXML.getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
+		stringToXML += "<backgroundColor>" + currentXML.getContent(SavedContent.Content.OTHERCOLOR) + "</backgroundColor>";
 		
-		for (int i = 0; i < count; i++) {
-			xml += "<student>";
-			xml += "<id>" + i + "</id>";
-			xml += "<gradebookLabel>" + currentXML.getGradebookLabel(i) + "</gradebookLabel>";
-			xml += "</student>";
-			
+		for (int i = 0; i < Integer.parseInt(currentXML.getContent(SavedContent.Content.VISIBLE)); i++) {
+			stringToXML += "<student>";
+			stringToXML += "<id>" + i + "</id>";
+			stringToXML += "</student>";
 		}
 		
-		xml += "</course>";
+		for (int i = 0; i<10; i++){
+			stringToXML += "<level>";
+			stringToXML += "<levelID>" + i + "</levelID>";
+			if (i == 0){
+				stringToXML += "<levelPoints>" + currentXML.getContent(SavedContent.Content.LEVELINDEX0) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + currentXML.getContent(SavedContent.Content.LEVEL0) + "</levelLabel>";
+			}
+			else if (i == 1){
+				stringToXML += "<levelPoints>" + currentXML.getContent(SavedContent.Content.LEVELINDEX1) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + currentXML.getContent(SavedContent.Content.LEVEL1) + "</levelLabel>";
+			}
+			else if (i == 2){
+				stringToXML += "<levelPoints>" + currentXML.getContent(SavedContent.Content.LEVELINDEX2) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + currentXML.getContent(SavedContent.Content.LEVEL2) + "</levelLabel>";
+			}
+			else if (i == 3){
+				stringToXML += "<levelPoints>" + currentXML.getContent(SavedContent.Content.LEVELINDEX3) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + currentXML.getContent(SavedContent.Content.LEVEL3) + "</levelLabel>";
+			}
+			else if (i == 4){
+				stringToXML += "<levelPoints>" + currentXML.getContent(SavedContent.Content.LEVELINDEX4) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + currentXML.getContent(SavedContent.Content.LEVEL4) + "</levelLabel>";
+			}
+			else if (i == 5){
+				stringToXML += "<levelPoints>" + currentXML.getContent(SavedContent.Content.LEVELINDEX5) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + currentXML.getContent(SavedContent.Content.LEVEL5) + "</levelLabel>";
+			}
+			else if (i == 6){
+				stringToXML += "<levelPoints>" + currentXML.getContent(SavedContent.Content.LEVELINDEX6) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + currentXML.getContent(SavedContent.Content.LEVEL6) + "</levelLabel>";
+			}
+			else if (i == 7){
+				stringToXML += "<levelPoints>" + currentXML.getContent(SavedContent.Content.LEVELINDEX7) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + currentXML.getContent(SavedContent.Content.LEVEL7) + "</levelLabel>";
+			}
+			else if (i == 8){
+				stringToXML += "<levelPoints>" + currentXML.getContent(SavedContent.Content.LEVELINDEX8) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + currentXML.getContent(SavedContent.Content.LEVEL8) + "</levelLabel>";
+			}
+			else if (i == 9){
+				stringToXML += "<levelPoints>" + currentXML.getContent(SavedContent.Content.LEVELINDEX9) + "</levelPoints>";
+				stringToXML += "<levelLabel>" + currentXML.getContent(SavedContent.Content.LEVEL9) + "</levelLabel>";
+			}
+			stringToXML += "</level>";
+		}
 		
-		return xml;
+		stringToXML += "</course>";
+		
+		return stringToXML;
 	}
 }

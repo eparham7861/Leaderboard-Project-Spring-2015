@@ -117,11 +117,15 @@ public class Leaderboard_Config{
 		}
 	}
 	
-	public void createUserInterface() throws KeyNotFoundException, PersistenceException{
-		this.leftList = new ArrayList<MultiSelectBean>();
-		this.rightList = new ArrayList<MultiSelectBean>();
-		this.modified = xmlFactory.getContent(SavedContent.Content.MODIFIED);//b2Context_sh.getSetting(false, true, "modified" +  courseID.toExternalString());
-		this.cmlist = CourseMembershipDbLoader.Default.getInstance().loadByCourseIdAndRole(courseID, CourseMembership.Role.STUDENT, null, true);
+	public void createUserInterface(){
+		try{
+			this.leftList = new ArrayList<MultiSelectBean>();
+			this.rightList = new ArrayList<MultiSelectBean>();
+			this.modified = xmlFactory.getContent(SavedContent.Content.MODIFIED);//b2Context_sh.getSetting(false, true, "modified" +  courseID.toExternalString());
+			this.cmlist = CourseMembershipDbLoader.Default.getInstance().loadByCourseIdAndRole(courseID, CourseMembership.Role.STUDENT, null, true);
+		}
+		catch(KeyNotFoundException e){}
+		catch(PersistenceException e){}
 	}
 	public void createVisibleStudentList(){
 		//Logic to determine if the default or a saved show/hide list is used
@@ -130,7 +134,7 @@ public class Leaderboard_Config{
 			//Each list is saved as one string of names with the following format:
 			//"firstName lastName, firstName lastName, etc."
 			/*B2CONTEXT*/
-			this.visibleList = "";//b2Context_sh.getSetting(false, true, "visibleStudents" +  courseID.toExternalString());
+			this.visibleList = xmlFactory.getContent(SavedContent.Content.VISIBLE);//b2Context_sh.getSetting(false, true, "visibleStudents" +  courseID.toExternalString());
 			this.visibleArr = visibleList.split(",");
 			if(!(visibleList.trim().equals(" ")) && !(visibleList.trim().isEmpty()) && visibleList != null){
 				for(int i = 0; i < visibleArr.length; i++){//Add any saved visible to left side.
@@ -144,7 +148,7 @@ public class Leaderboard_Config{
 	}
 	public void createHiddenStudentList(){
 		/*B2CONTEXT*/
-		this.hiddenList = ""; //b2Context_sh.getSetting(false, true, "hiddenStudents" +  courseID.toExternalString());
+		this.hiddenList = xmlFactory.getContent(SavedContent.Content.HIDDEN); //b2Context_sh.getSetting(false, true, "hiddenStudents" +  courseID.toExternalString());
 		this.hiddenArr = hiddenList.split(",");
 		if(!(hiddenList.trim().equals(" ")) && !(hiddenList.trim().isEmpty()) && hiddenList != null){
 			for(int i = 0; i < hiddenArr.length; i++){//Add any saved hidden to right side.
@@ -220,6 +224,7 @@ public class Leaderboard_Config{
 		/*B2Context!*/
 		//B2Context b2Context_grade = new B2Context(request);
 		//prev_grade_choice = b2Context_grade.getSetting(false,true,"gradebook_column" + courseID.toExternalString());
+		//prev_grade_choice = xmlFactory.getContent(SavedContent.Content.GRADECHOICE);
 		if(prev_grade_choice == "") prev_grade_choice = "Total";
 		prev_grade_string = prev_grade_choice + " - (Chosen)"; //selected option on dropdown list 
 	}
