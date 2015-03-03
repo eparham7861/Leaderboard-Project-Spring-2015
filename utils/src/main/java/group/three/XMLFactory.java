@@ -21,12 +21,20 @@ public class XMLFactory {
 	
 	public void setContent(SavedContent.Content contentName, String item) {
 		contentHolder.setContentItem(contentName, item);
+		setNumberOfVisibleStudents(contentName);
 	}
 	
 	public String getContent(SavedContent.Content contentName) {
 		return contentHolder.getContentItem(contentName);
 	}
 	
+	private void setNumberOfVisibleStudents(SavedContent.Content contentName) {
+		if (contentName == SavedContent.Content.VISIBLE) {
+			String visibleStudents = contentHolder.getContentItem(contentName);
+			String[] students = visibleStudents.split(",");
+			contentHolder.setContentItem(SavedContent.Content.NUMVISIBLE, Integer.toString(students.length));
+		}
+	}
 	public void addGradebookLabel(String gradeLabel){
 		studentScoreLabels.add(gradeLabel);
 	}
@@ -214,7 +222,7 @@ public class XMLFactory {
 		
 		for (int i = 0; i < Integer.parseInt(visibleCount); i++) {
 			stringToXML += "<student>";
-			stringToXML += "<id>" + i + "</id>";
+			stringToXML += "<studentID>" + i + "</studentID>";
 			stringToXML += "</student>";
 		}
 		

@@ -34,11 +34,26 @@ public class LeaderboardBBTest {
 		currentContext = mock(Context.class);
 		when(currentContext.getUser()).thenReturn(currentUser);
 		when(currentContext.getCourseId()).thenReturn(currentCourseID);
-		
+		currentLeaderboard = new LeaderboardBB(currentContext);
 	}
 	
 	@Test
-	public void testNewLeaderboard() {
-		currentLeaderboard = new LeaderboardBB(currentContext);	
+	public void testSeriesValues() {
+		assertEquals("];", currentLeaderboard.getSeriesValues());
+	}
+	
+	@Test
+	public void testStudentNames() {
+		assertEquals("];", currentLeaderboard.getStudentNames());
+	}
+	
+	@Test
+	public void testNumberOfVisibleStudents() {
+		assertEquals(0, currentLeaderboard.getNumberOfVisibleStudents());
+	}
+	
+	@Test
+	public void testPlotbands() {
+		assertEquals("", currentLeaderboard.getPlotbands());
 	}
 }

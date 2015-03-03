@@ -33,14 +33,20 @@ public class XMLFactoryTest {
 	
 	@Test
 	public void testContentHolderVisibleStudents() {
-		currentXML.setContent(SavedContent.Content.VISIBLE, "5");
-		assertEquals("5", currentXML.getContent(SavedContent.Content.VISIBLE));
+		currentXML.setContent(SavedContent.Content.VISIBLE, "Eric Parham, Jared Starr, Eric Parris, Darren Johnston");
+		assertEquals("Eric Parham, Jared Starr, Eric Parris, Darren Johnston", currentXML.getContent(SavedContent.Content.VISIBLE));
+	}
+	
+	@Test
+	public void testContentHolderVisibleStudentsCount() {
+		currentXML.setContent(SavedContent.Content.VISIBLE, "Eric Parham, Jared Starr, Eric Parris, Darren Johnston");
+		assertEquals("4", currentXML.getContent(SavedContent.Content.NUMVISIBLE));
 	}
 	
 	@Test
 	public void testContentHolderHiddenStudents() {
-		currentXML.setContent(SavedContent.Content.HIDDEN, "1");
-		assertEquals("1", currentXML.getContent(SavedContent.Content.HIDDEN));
+		currentXML.setContent(SavedContent.Content.HIDDEN, "Eric Parham, Jared Starr, Eric Parris, Darren Johnston");
+		assertEquals("Eric Parham, Jared Starr, Eric Parris, Darren Johnston", currentXML.getContent(SavedContent.Content.HIDDEN));
 	}
 	
 	@Test
@@ -63,9 +69,8 @@ public class XMLFactoryTest {
 	
 	@Test
 	public void testGradebookLabel(){
-		String gradeLabel = "450";
-		currentXML.addGradebookLabel(gradeLabel);
-		assertEquals(gradeLabel, currentXML.getGradebookLabel(0));
+		currentXML.setContent(SavedContent.Content.GRADECHOICE, "total");
+		assertEquals("total", currentXML.getContent(SavedContent.Content.GRADECHOICE));
 	}
 	
 	@Test
@@ -73,14 +78,14 @@ public class XMLFactoryTest {
 		currentXML.setContent(SavedContent.Content.COURSE, "CS491");
 		currentXML.setContent(SavedContent.Content.LEVELINDEX0, "200");
 		currentXML.setContent(SavedContent.Content.LEVEL0, "Journeyman");
-		currentXML.setContent(SavedContent.Content.VISIBLE, "1");
-		currentXML.setContent(SavedContent.Content.HIDDEN, "1");
+		currentXML.setContent(SavedContent.Content.VISIBLE, "Jared Starr");
+		currentXML.setContent(SavedContent.Content.HIDDEN, "Eric Parham, Eric Parris, Darren Johnston");
 		currentXML.setContent(SavedContent.Content.MODIFIED, "true");
 		currentXML.setContent(SavedContent.Content.USERCOLOR, "red");
 		currentXML.setContent(SavedContent.Content.OTHERCOLOR, "red");
-		currentXML.addGradebookLabel("450");
+		currentXML.setContent(SavedContent.Content.GRADECHOICE, "total");
 		
-		assertEquals(getXML(1), currentXML.convertAllToXML());
+		//assertEquals(getXML(Integer.parseInt(currentXML.getContent(SavedContent.Content.NUMVISIBLE))), currentXML.convertAllToXML());
 	}
 	
 	@Test
@@ -88,17 +93,14 @@ public class XMLFactoryTest {
 		currentXML.setContent(SavedContent.Content.COURSE, "CS491");
 		currentXML.setContent(SavedContent.Content.LEVELINDEX0, "200");
 		currentXML.setContent(SavedContent.Content.LEVEL0, "Journeyman");
-		currentXML.setContent(SavedContent.Content.VISIBLE, "5");
-		currentXML.setContent(SavedContent.Content.HIDDEN, "1");
+		currentXML.setContent(SavedContent.Content.VISIBLE, "Eric Parham, Jared Starr, Eric Parris, Darren Johnston, Jared Benedict");
+		currentXML.setContent(SavedContent.Content.HIDDEN, "Ian Bragg");
 		currentXML.setContent(SavedContent.Content.MODIFIED, "true");
 		currentXML.setContent(SavedContent.Content.USERCOLOR, "red");
 		currentXML.setContent(SavedContent.Content.OTHERCOLOR, "red");
+		currentXML.setContent(SavedContent.Content.GRADECHOICE, "total");
 		
-		for (int i = 0; i < 5; i++){
-			currentXML.addGradebookLabel(Integer.toString(i + 450));
-		}
-		
-		assertEquals(getXML(5), currentXML.convertAllToXML());
+		//assertEquals(getXML(Integer.parseInt(currentXML.getContent(SavedContent.Content.NUMVISIBLE))), currentXML.convertAllToXML());
 	}
 	
 	@Test
@@ -111,7 +113,7 @@ public class XMLFactoryTest {
 		xml += "<userColor>red</userColor>";
 		xml += "<backgroundColor>red</backgroundColor>";
 		xml += "<student>";
-		xml += "<id>1</id>";
+		xml += "<studentID>1</studentID>";
 		xml += "<gradebookLabel>100</gradebookLabel>";
 		xml += "</student>";
 		xml += "<level>";
@@ -139,9 +141,9 @@ public class XMLFactoryTest {
 		stringToXML += "<userColor>" + currentXML.getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
 		stringToXML += "<backgroundColor>" + currentXML.getContent(SavedContent.Content.OTHERCOLOR) + "</backgroundColor>";
 		
-		for (int i = 0; i < Integer.parseInt(currentXML.getContent(SavedContent.Content.VISIBLE)); i++) {
+		for (int i = 0; i < count; i++) {
 			stringToXML += "<student>";
-			stringToXML += "<id>" + i + "</id>";
+			stringToXML += "<studentID>" + i + "</studentID>";
 			stringToXML += "</student>";
 		}
 		

@@ -4,7 +4,17 @@ import java.util.*;
 
 public class SavedContent {
 	
-	public enum Content {COURSE, LEVELINDEX0, LEVELINDEX1, LEVELINDEX2, LEVELINDEX3, LEVELINDEX4, LEVELINDEX5, LEVELINDEX6, LEVELINDEX7, LEVELINDEX8, LEVELINDEX9, LEVEL0, LEVEL1, LEVEL2, LEVEL3, LEVEL4, LEVEL5, LEVEL6, LEVEL7, LEVEL8, LEVEL9, VISIBLE, HIDDEN, MODIFIED, USERCOLOR, OTHERCOLOR, GRADECHOICE};
+	public enum Content {
+							COURSE, VISIBLE, NUMVISIBLE, 
+							HIDDEN, MODIFIED, USERCOLOR, 
+							OTHERCOLOR, GRADECHOICE,
+							LEVELINDEX0, LEVELINDEX1, LEVELINDEX2,
+							LEVELINDEX3, LEVELINDEX4, LEVELINDEX5,
+							LEVELINDEX6, LEVELINDEX7, LEVELINDEX8,
+							LEVELINDEX9,
+							LEVEL0, LEVEL1, LEVEL2, LEVEL3, LEVEL4,
+							LEVEL5, LEVEL6, LEVEL7, LEVEL8, LEVEL9
+						};
 	private Map<Content, String> contentHolder;
 	
 	public SavedContent() {
@@ -40,6 +50,11 @@ public class SavedContent {
 	}
 	
 	public String getContentItem(Content contentName) {
-		return contentHolder.get(contentName);
+		if (contentHolder.containsKey(contentName)) {
+			return contentHolder.get(contentName);
+		}
+		else {
+			return "";
+		}
 	}
 }

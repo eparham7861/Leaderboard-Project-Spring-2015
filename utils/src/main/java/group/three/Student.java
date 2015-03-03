@@ -1,6 +1,6 @@
 package group.three;
 
-public class Student {
+public class Student implements Comparable<Student> {
 	private double score;
 	private String fName, lName, userName;
 	private boolean hidden;
@@ -99,4 +99,16 @@ public class Student {
 			return false;
 		}
 	}
+	
+	public int compareTo(Student s) {
+		if (this.score > s.getScore()) {
+			return 1;
+		}
+		else if (this.score < s.getScore()) {
+			return -1;
+		}
+		else {
+			return 0;
+		}	    	
+    }
 }
