@@ -203,7 +203,7 @@ public class XMLFactory {
 			case "backgroundcolor":
 				setContent(SavedContent.Content.OTHERCOLOR, content);
 				break;
-			case "gradebooklabel":
+			case "selectedGradebookColumn":
 				setContent(SavedContent.Content.GRADECHOICE, content);
 				break;
 		}
@@ -219,6 +219,7 @@ public class XMLFactory {
 		stringToXML += "<modified>" + getContent(SavedContent.Content.MODIFIED) + "</modified>";
 		stringToXML += "<userColor>" + getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
 		stringToXML += "<backgroundColor>" + getContent(SavedContent.Content.OTHERCOLOR) + "</backgroundColor>";
+		stringToXML += "<selectedGradebookColumn>" + getContent(SavedContent.Content.GRADECHOICE) + "</selectedGradebookColumn>";
 		
 		for (int i = 0; i < Integer.parseInt(visibleCount); i++) {
 			stringToXML += "<student>";

@@ -85,7 +85,7 @@ public class XMLFactoryTest {
 		currentXML.setContent(SavedContent.Content.OTHERCOLOR, "red");
 		currentXML.setContent(SavedContent.Content.GRADECHOICE, "total");
 		
-		//assertEquals(getXML(Integer.parseInt(currentXML.getContent(SavedContent.Content.NUMVISIBLE))), currentXML.convertAllToXML());
+		assertEquals(getXML(Integer.parseInt(currentXML.getContent(SavedContent.Content.NUMVISIBLE))), currentXML.convertAllToXML());
 	}
 	
 	@Test
@@ -100,7 +100,7 @@ public class XMLFactoryTest {
 		currentXML.setContent(SavedContent.Content.OTHERCOLOR, "red");
 		currentXML.setContent(SavedContent.Content.GRADECHOICE, "total");
 		
-		//assertEquals(getXML(Integer.parseInt(currentXML.getContent(SavedContent.Content.NUMVISIBLE))), currentXML.convertAllToXML());
+		assertEquals(getXML(Integer.parseInt(currentXML.getContent(SavedContent.Content.NUMVISIBLE))), currentXML.convertAllToXML());
 	}
 	
 	@Test
@@ -114,7 +114,7 @@ public class XMLFactoryTest {
 		xml += "<backgroundColor>red</backgroundColor>";
 		xml += "<student>";
 		xml += "<studentID>1</studentID>";
-		xml += "<gradebookLabel>100</gradebookLabel>";
+		xml += "<selectedGradebookColumn>100</selectedGradebookColumn>";
 		xml += "</student>";
 		xml += "<level>";
 		xml += "<levelID>1</levelID>";
@@ -140,6 +140,7 @@ public class XMLFactoryTest {
 		stringToXML += "<modified>" + currentXML.getContent(SavedContent.Content.MODIFIED) + "</modified>";
 		stringToXML += "<userColor>" + currentXML.getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
 		stringToXML += "<backgroundColor>" + currentXML.getContent(SavedContent.Content.OTHERCOLOR) + "</backgroundColor>";
+		stringToXML += "<selectedGradebookColumn>" + currentXML.getContent(SavedContent.Content.GRADECHOICE) + "</selectedGradebookColumn>";
 		
 		for (int i = 0; i < count; i++) {
 			stringToXML += "<student>";

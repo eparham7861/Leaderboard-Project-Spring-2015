@@ -10,7 +10,7 @@ import java.util.*;
 import blackboard.platform.plugin.PlugInUtil;
 import blackboard.servlet.data.MultiSelectBean;
 
-if (request.getMethod().toLowerCase.equals("post")){
+/*if (request.getMethod().toLowerCase.equals("post")){
 	public class LeaderboardSave(){
 		
 		public void saveToPersistanceObject(){
@@ -103,4 +103,4 @@ if (request.getMethod().toLowerCase.equals("post")){
 			XMLcontextU.persistSettings();
 		}
 	}
-}
+}*/
