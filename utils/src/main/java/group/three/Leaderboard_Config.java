@@ -42,20 +42,20 @@ public class Leaderboard_Config{
 
 	public Leaderboard_Config(Context context){
 		try{
-		xmlFactory = new XMLFactory();
-		level_values = new String[NUM_LABELS];
-		level_labels = new String[NUM_LABELS];
-		prev_grade_choice = "Total";
-		isUserAnInstructor = false;
-		leftList = new ArrayList<MultiSelectBean>(); //Used for UI
-		rightList = new ArrayList<MultiSelectBean>(); //Used for UI
-		gm = GradebookManagerFactory.getInstanceWithoutSecurityCheck();
-		bookData = gm.getBookData(new BookDataRequest(courseID));
-		lgm = gm.getGradebookItems(courseID);
-		ctx = context;
-		courseID = ctx.getCourseId();
-		cmlist = CourseMembershipDbLoader.Default.getInstance().loadByCourseIdAndRole(courseID, CourseMembership.Role.STUDENT, null, true);
-		jsConfigFormPath = PlugInUtil.getUri("dt", "leaderboardblock11", "js/config_form.js");
+			xmlFactory = new XMLFactory();
+			level_values = new String[NUM_LABELS];
+			level_labels = new String[NUM_LABELS];
+			prev_grade_choice = "Total";
+			isUserAnInstructor = false;
+			leftList = new ArrayList<MultiSelectBean>(); //Used for UI
+			rightList = new ArrayList<MultiSelectBean>(); //Used for UI
+			gm = GradebookManagerFactory.getInstanceWithoutSecurityCheck();
+			bookData = gm.getBookData(new BookDataRequest(courseID));
+			lgm = gm.getGradebookItems(courseID);
+			ctx = context;
+			courseID = ctx.getCourseId();
+			cmlist = CourseMembershipDbLoader.Default.getInstance().loadByCourseIdAndRole(courseID, CourseMembership.Role.STUDENT, null, true);
+			jsConfigFormPath = PlugInUtil.getUri("dt", "leaderboardblock11", "js/config_form.js");
 		}
 		catch(KeyNotFoundException e){}
 		catch(BbSecurityException e){}
@@ -202,31 +202,34 @@ public class Leaderboard_Config{
 			this.leftList.add(leftBean);
 		}
 	}
-	public void getGradebookData() throws BbSecurityException{
-		//Use the GradebookManager to get the gradebook data
-		this.gm = GradebookManagerFactory.getInstanceWithoutSecurityCheck();
-		this.bookData = gm.getBookData(new BookDataRequest(courseID));
-		this.lgm = gm.getGradebookItems(courseID);
-		//It is necessary to execute these two methods to obtain calculated students and extended grade data
-		bookData.addParentReferences();
-		bookData.runCumulativeGrading();
-		
-		//Create list of grade columns, so the instructor can select the grade to set for the widget if it is not the overall grade
-		String[] gradeList = new String[lgm.size()];
-		for (int i = 0; i < lgm.size(); i++) {
-			GradableItem gi = (GradableItem) lgm.get(i);
-			gradeList[i] = gi.getTitle();
+	public void getGradebookData(){
+		try{
+			//Use the GradebookManager to get the gradebook data
+			this.gm = GradebookManagerFactory.getInstanceWithoutSecurityCheck();
+			this.bookData = gm.getBookData(new BookDataRequest(courseID));
+			this.lgm = gm.getGradebookItems(courseID);
+			//It is necessary to execute these two methods to obtain calculated students and extended grade data
+			bookData.addParentReferences();
+			bookData.runCumulativeGrading();
+			
+			//Create list of grade columns, so the instructor can select the grade to set for the widget if it is not the overall grade
+			String[] gradeList = new String[lgm.size()];
+			for (int i = 0; i < lgm.size(); i++) {
+				GradableItem gi = (GradableItem) lgm.get(i);
+				gradeList[i] = gi.getTitle();
+			}
+			
+			//Load previous grade column choice. Sets default column as "Total". 
+			String prev_grade_choice = "Total";
+			String prev_grade_string = "";
+			/*B2Context!*/
+			//B2Context b2Context_grade = new B2Context(request);
+			//prev_grade_choice = b2Context_grade.getSetting(false,true,"gradebook_column" + courseID.toExternalString());
+			prev_grade_choice = xmlFactory.getContent(SavedContent.Content.GRADECHOICE);
+			if(prev_grade_choice == "") prev_grade_choice = "Total";
+			prev_grade_string = prev_grade_choice + " - (Chosen)"; //selected option on dropdown list 
 		}
-		
-		//Load previous grade column choice. Sets default column as "Total". 
-		String prev_grade_choice = "Total";
-		String prev_grade_string = "";
-		/*B2Context!*/
-		//B2Context b2Context_grade = new B2Context(request);
-		//prev_grade_choice = b2Context_grade.getSetting(false,true,"gradebook_column" + courseID.toExternalString());
-		//prev_grade_choice = xmlFactory.getContent(SavedContent.Content.GRADECHOICE);
-		if(prev_grade_choice == "") prev_grade_choice = "Total";
-		prev_grade_string = prev_grade_choice + " - (Chosen)"; //selected option on dropdown list 
+		catch(BbSecurityException e){}
 	}
 	
 	/*Setters*/
