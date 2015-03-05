@@ -75,6 +75,8 @@ public class Leaderboard_Config{
 		b2Context*/
 		// Grab previously saved level values and labels
 		for(int i = 0; i < NUM_LABELS; i++){
+		this.level_values[i] = xmlFactory.getLevelValue(i);
+		this.level_labels[i] = xmlFactory.getLevelName(i);
 		//this.level_values[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Points" + courseID.toExternalString());
 		//XMLlevelValues[i] = xmlFactory.getSetting(); //JARED EDITED VERSION
 		//this.level_labels[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Labels" + courseID.toExternalString());

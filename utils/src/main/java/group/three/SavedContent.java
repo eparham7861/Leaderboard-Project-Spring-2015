@@ -57,4 +57,72 @@ public class SavedContent {
 			return "";
 		}
 	}
+	
+	public String getContentLevelLabel(int index){
+			if (index == 0){
+				return contentHolder.get(Content.LEVEL0);
+			}
+			else if (index == 1){
+				return contentHolder.get(Content.LEVEL1);
+			}
+			else if (index == 2){
+				return contentHolder.get(Content.LEVEL2);
+			}
+			else if (index == 3){
+				return contentHolder.get(Content.LEVEL3);
+			}
+			else if (index == 4){
+				return contentHolder.get(Content.LEVEL4);
+			}
+			else if (index == 5){
+				return contentHolder.get(Content.LEVEL5);
+			}
+			else if (index == 6){
+				return contentHolder.get(Content.LEVEL6);
+			}
+			else if (index == 7){
+				return contentHolder.get(Content.LEVEL7);
+			}
+			else if (index == 8){
+				return contentHolder.get(Content.LEVEL8);
+			}
+			else if (index == 9){
+				return contentHolder.get(Content.LEVEL9);
+			}
+			return "";
+	}
+	
+	public String getContentLevelValue(int index){
+			if (index == 0){
+				return contentHolder.get(Content.LEVELINDEX0);
+			}
+			else if (index == 1){
+				return contentHolder.get(Content.LEVELINDEX1);
+			}
+			else if (index == 2){
+				return contentHolder.get(Content.LEVELINDEX2);
+			}
+			else if (index == 3){
+				return contentHolder.get(Content.LEVELINDEX3);
+			}
+			else if (index == 4){
+				return contentHolder.get(Content.LEVELINDEX4);
+			}
+			else if (index == 5){
+				return contentHolder.get(Content.LEVELINDEX5);
+			}
+			else if (index == 6){
+				return contentHolder.get(Content.LEVELINDEX6);
+			}
+			else if (index == 7){
+				return contentHolder.get(Content.LEVELINDEX7);
+			}
+			else if (index == 8){
+				return contentHolder.get(Content.LEVELINDEX8);
+			}
+			else if (index == 9){
+				return contentHolder.get(Content.LEVELINDEX9);
+			}
+			return "";
+	}
 }

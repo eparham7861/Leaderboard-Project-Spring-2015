@@ -28,6 +28,14 @@ public class XMLFactory {
 		return contentHolder.getContentItem(contentName);
 	}
 	
+	public String getLevelName(int index){
+		return contentHolder.getContentLevelLabel(index);
+	}
+	
+	public String getLevelValue(int index){
+		return contentHolder.getContentLevelValue(index);
+	}
+	
 	private void setNumberOfVisibleStudents(SavedContent.Content contentName) {
 		if (contentName == SavedContent.Content.VISIBLE) {
 			String visibleStudents = contentHolder.getContentItem(contentName);
