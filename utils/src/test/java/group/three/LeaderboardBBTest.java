@@ -18,6 +18,7 @@ public class LeaderboardBBTest {
 	private Context currentContext;
 	private Id currentCourseID;
 	private User currentUser;
+	private String defaultPlotbands;
 	
 	@Before
 	public void startUp() {
@@ -35,6 +36,8 @@ public class LeaderboardBBTest {
 		when(currentContext.getUser()).thenReturn(currentUser);
 		when(currentContext.getCourseId()).thenReturn(currentCourseID);
 		currentLeaderboard = new LeaderboardBB(currentContext);
+		
+		defaultPlotbands = "{ color: 'rgb(228, 228, 228)', from: 0, to: 0, label: { text: '',rotation: -35,align: 'center',textAlign: 'left', verticalAlign: 'top', y: -10, style: { color: '#666666'}}}, { color: 'rgb(216, 216, 216)', from: 0, to: 0, label: { text: 'Level 2',rotation: -35,textAlign: 'left',align: 'center', verticalAlign: 'top', y: -10, style: { color: '#666666', fontFamily: 'Verdana, sans-serif'}}}, { color: 'rgb(204, 204, 204)', from: 0, to: 0, label: { text: 'Level 3',rotation: -35,textAlign: 'left',align: 'center', verticalAlign: 'top', y: -10, style: { color: '#666666', fontFamily: 'Verdana, sans-serif'}}}, { color: 'rgb(192, 192, 192)', from: 0, to: 0, label: { text: 'Level 4',rotation: -35,textAlign: 'left',align: 'center', verticalAlign: 'top', y: -10, style: { color: '#666666', fontFamily: 'Verdana, sans-serif'}}}, { color: 'rgb(180, 180, 180)', from: 0, to: 0, label: { text: 'Level 5',rotation: -35,textAlign: 'left',align: 'center', verticalAlign: 'top', y: -10, style: { color: '#666666', fontFamily: 'Verdana, sans-serif'}}}, { color: 'rgb(168, 168, 168)', from: 0, to: 0, label: { text: 'Level 6',rotation: -35,textAlign: 'left',align: 'center', verticalAlign: 'top', y: -10, style: { color: '#666666', fontFamily: 'Verdana, sans-serif'}}}, { color: 'rgb(156, 156, 156)', from: 0, to: 0, label: { text: 'Level 7',rotation: -35,textAlign: 'left',align: 'center', verticalAlign: 'top', y: -10, style: { color: '#666666', fontFamily: 'Verdana, sans-serif'}}}, { color: 'rgb(144, 144, 144)', from: 0, to: 0, label: { text: 'Level 8',rotation: -35,textAlign: 'left',align: 'center', verticalAlign: 'top', y: -10, style: { color: '#666666', fontFamily: 'Verdana, sans-serif'}}}, { color: 'rgb(132, 132, 132)', from: 0, to: 0, label: { text: 'Level 9',rotation: -35,textAlign: 'left',align: 'center', verticalAlign: 'top', y: -10, style: { color: '#666666', fontFamily: 'Verdana, sans-serif'}}}, { color: 'rgb(120, 120, 120)', from: 0, to: 0, label: { text: 'Level 10',rotation: -35,textAlign: 'left',align: 'center', verticalAlign: 'top', y: -10, style: { color: '#666666', fontFamily: 'Verdana, sans-serif'}}}";
 	}
 	
 	@Test
@@ -54,6 +57,6 @@ public class LeaderboardBBTest {
 	
 	@Test
 	public void testPlotbands() {
-		assertEquals("", currentLeaderboard.getPlotbands());
+		assertEquals(defaultPlotbands, currentLeaderboard.getPlotbands());
 	}
 }

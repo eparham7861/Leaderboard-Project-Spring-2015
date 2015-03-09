@@ -23,16 +23,16 @@ public class SavedContent {
 	}
 	
 	private void setupLevels() {
-		contentHolder.put(Content.LEVELINDEX0, "");
-		contentHolder.put(Content.LEVELINDEX1, "");
-		contentHolder.put(Content.LEVELINDEX2, "");
-		contentHolder.put(Content.LEVELINDEX3, "");
-		contentHolder.put(Content.LEVELINDEX4, "");
-		contentHolder.put(Content.LEVELINDEX5, "");
-		contentHolder.put(Content.LEVELINDEX6, "");
-		contentHolder.put(Content.LEVELINDEX7, "");
-		contentHolder.put(Content.LEVELINDEX8, "");
-		contentHolder.put(Content.LEVELINDEX9, "");
+		contentHolder.put(Content.LEVELINDEX0, "0");
+		contentHolder.put(Content.LEVELINDEX1, "0");
+		contentHolder.put(Content.LEVELINDEX2, "0");
+		contentHolder.put(Content.LEVELINDEX3, "0");
+		contentHolder.put(Content.LEVELINDEX4, "0");
+		contentHolder.put(Content.LEVELINDEX5, "0");
+		contentHolder.put(Content.LEVELINDEX6, "0");
+		contentHolder.put(Content.LEVELINDEX7, "0");
+		contentHolder.put(Content.LEVELINDEX8, "0");
+		contentHolder.put(Content.LEVELINDEX9, "0");
 		contentHolder.put(Content.LEVEL0, "");
 		contentHolder.put(Content.LEVEL1, "");
 		contentHolder.put(Content.LEVEL2, "");

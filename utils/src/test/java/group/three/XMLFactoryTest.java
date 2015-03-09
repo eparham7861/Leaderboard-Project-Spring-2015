@@ -110,10 +110,10 @@ public class XMLFactoryTest {
 		xml += "<visibleStudents>3</visibleStudents>";
 		xml += "<hiddenStudents>2</hiddenStudents>";
 		xml += "<modified>true</modified>";
-		xml += "<userColor>red</userColor>";
-		xml += "<backgroundColor>red</backgroundColor>";
 		xml += "<student>";
 		xml += "<studentID>1</studentID>";
+		xml += "<userColor>red</userColor>";
+		xml += "<backgroundColor>red</backgroundColor>";
 		xml += "<selectedGradebookColumn>100</selectedGradebookColumn>";
 		xml += "</student>";
 		xml += "<level>";
@@ -138,13 +138,14 @@ public class XMLFactoryTest {
 		stringToXML += "<visibleStudents>" + currentXML.getContent(SavedContent.Content.VISIBLE) + "</visibleStudents>";
 		stringToXML += "<hiddenStudents>" + currentXML.getContent(SavedContent.Content.HIDDEN)  + "</hiddenStudents>";
 		stringToXML += "<modified>" + currentXML.getContent(SavedContent.Content.MODIFIED) + "</modified>";
-		stringToXML += "<userColor>" + currentXML.getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
-		stringToXML += "<backgroundColor>" + currentXML.getContent(SavedContent.Content.OTHERCOLOR) + "</backgroundColor>";
+		
 		stringToXML += "<selectedGradebookColumn>" + currentXML.getContent(SavedContent.Content.GRADECHOICE) + "</selectedGradebookColumn>";
 		
 		for (int i = 0; i < count; i++) {
 			stringToXML += "<student>";
 			stringToXML += "<studentID>" + i + "</studentID>";
+			stringToXML += "<userColor>" + currentXML.getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
+			stringToXML += "<backgroundColor>" + currentXML.getContent(SavedContent.Content.OTHERCOLOR) + "</backgroundColor>";
 			stringToXML += "</student>";
 		}
 		

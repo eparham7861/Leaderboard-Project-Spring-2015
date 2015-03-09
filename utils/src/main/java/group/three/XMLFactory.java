@@ -218,20 +218,22 @@ public class XMLFactory {
 	}
 	
 	public String convertAllToXML(){
-		String visibleCount = getContent(SavedContent.Content.VISIBLE);
+		String visibleStudents = getContent(SavedContent.Content.VISIBLE);
 		String stringToXML = "<course>";
+		int visibleStudentCount = getStudentCount(visibleStudents);
 		
 		stringToXML += "<courseID>" + getContent(SavedContent.Content.COURSE) + "</courseID>";
-		stringToXML += "<visibleStudents>" + visibleCount + "</visibleStudents>";
+		stringToXML += "<visibleStudents>" + visibleStudents + "</visibleStudents>";
 		stringToXML += "<hiddenStudents>" + getContent(SavedContent.Content.HIDDEN)  + "</hiddenStudents>";
 		stringToXML += "<modified>" + getContent(SavedContent.Content.MODIFIED) + "</modified>";
-		stringToXML += "<userColor>" + getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
-		stringToXML += "<backgroundColor>" + getContent(SavedContent.Content.OTHERCOLOR) + "</backgroundColor>";
+		
 		stringToXML += "<selectedGradebookColumn>" + getContent(SavedContent.Content.GRADECHOICE) + "</selectedGradebookColumn>";
 		
-		for (int i = 0; i < Integer.parseInt(visibleCount); i++) {
+		for (int i = 0; i < visibleStudentCount; i++) {
 			stringToXML += "<student>";
 			stringToXML += "<studentID>" + i + "</studentID>";
+			stringToXML += "<userColor>" + getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
+			stringToXML += "<backgroundColor>" + getContent(SavedContent.Content.OTHERCOLOR) + "</backgroundColor>";
 			stringToXML += "</student>";
 		}
 		
@@ -284,5 +286,11 @@ public class XMLFactory {
 		stringToXML += "</course>";
 		
 		return stringToXML;
+	}
+	
+	private int getStudentCount(String visibleStudents) {
+		String[] students = visibleStudents.split(",");
+		
+		return students.length;
 	}
 }
