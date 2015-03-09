@@ -14,7 +14,7 @@ public class StudentTest {
 	
 	@Test
 	public void testAddStudentID(){
-		int id = 1111;
+		String id = "1111";
 		currentStudent.setStudentID(id);
 		assertEquals(id, currentStudent.getStudentID());
 	}

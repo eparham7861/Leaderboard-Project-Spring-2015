@@ -145,6 +145,7 @@ public class LeaderboardBB {
 					for (int i = 0; i < hiddenArr.length; i++) {
 						if (studentName.equals(sessionUserName)){
 							Student currentStudent = new Student();
+							currentStudent.setStudentID(selectedMember.getUser().getStudentId());
 							currentStudent.setFirstName(selectedMember.getUser().getGivenName());
 							currentStudent.setLastName(selectedMember.getUser().getFamilyName());
 							currentStudent.setScore(currentScore);
@@ -157,6 +158,7 @@ public class LeaderboardBB {
 						}
 						else if(!studentName.equals(hiddenArr[i]) && i == hiddenArr.length - 1) {
 							Student currentStudent = new Student();
+							currentStudent.setStudentID(selectedMember.getUser().getStudentId());
 							currentStudent.setFirstName(selectedMember.getUser().getGivenName());
 							currentStudent.setLastName(selectedMember.getUser().getFamilyName());
 							currentStudent.setScore(currentScore);
@@ -167,6 +169,7 @@ public class LeaderboardBB {
 				}
 				else {
 					Student currentStudent = new Student();
+					currentStudent.setStudentID(selectedMember.getUser().getStudentId());
 					currentStudent.setFirstName(selectedMember.getUser().getGivenName());
 					currentStudent.setLastName(selectedMember.getUser().getFamilyName());
 					currentStudent.setScore(currentScore);

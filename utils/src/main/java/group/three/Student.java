@@ -2,9 +2,8 @@ package group.three;
 
 public class Student implements Comparable<Student> {
 	private double score;
-	private String fName, lName, userName;
+	private String fName, lName, userName, studentID;
 	private boolean hidden;
-	private int studentID;
 	private String studentHighlightColor;
 	private String studentGeneralColor;
 	
@@ -13,7 +12,7 @@ public class Student implements Comparable<Student> {
 	public Student () {
 		hidden = false;
 	}
-	public void setStudentID(int ID){
+	public void setStudentID(String ID){
 		this.studentID = ID;
 	}
 
@@ -43,7 +42,7 @@ public class Student implements Comparable<Student> {
 		this.studentGeneralColor = Color;
 	}
 	
-	public int getStudentID(){
+	public String getStudentID(){
 		return studentID;
 	}
 	
