@@ -9,11 +9,6 @@ import blackboard.platform.gradebook2.*;
 import blackboard.platform.gradebook2.impl.*;
 import java.util.*;
 import blackboard.platform.plugin.PlugInUtil;
-/*
-<%@ taglib uri="/bbData" prefix="bbData"%> 					<!-- for tags -->
-<%@ taglib uri="/bbNG" prefix="bbNG"%>
-<%@ taglib prefix="bbUI" uri="/bbUI" %>
-*/
 import blackboard.servlet.data.MultiSelectBean;
 import blackboard.platform.security.authentication.BbSecurityException;
 import blackboard.platform.context.Context;
@@ -28,7 +23,7 @@ public class Leaderboard_Config{
 	private Id courseID;
 	private String[] level_values, level_labels, gradeList, hiddenArr, visibleArr;
 	private String jsConfigFormPath, sessionUserRole, modified;
-	private String visibleList, hiddenList, prev_grade_choice;
+	private String visibleList, hiddenList, prev_grade_choice, prev_grade_string;
 	private List<MultiSelectBean> leftList, rightList;
 	private MultiSelectBean leftBean, rightBean;
 	private List<CourseMembership> cmlist;
@@ -38,7 +33,6 @@ public class Leaderboard_Config{
 	private boolean isUserAnInstructor;
 	private final int NUM_LABELS = 10;
 	private Context ctx;
-	//String jsConfigFormPath = PlugInUtil.getUri("dt", "leaderboardblock11", "js/config_form.js");
 
 	public Leaderboard_Config(Context context){
 		try{
@@ -46,6 +40,7 @@ public class Leaderboard_Config{
 			level_values = new String[NUM_LABELS];
 			level_labels = new String[NUM_LABELS];
 			prev_grade_choice = "Total";
+			prev_grade_string = "";
 			isUserAnInstructor = false;
 			leftList = new ArrayList<MultiSelectBean>(); //Used for UI
 			rightList = new ArrayList<MultiSelectBean>(); //Used for UI
@@ -64,24 +59,17 @@ public class Leaderboard_Config{
 	
 	/*Main Functions*/
 	public void loadPreviousColorValues(){
-		/*Load color_value and user_color_value from XML instead
-		of b2Context*/
+		/*Load color_value and user_color_value from XML instead of b2Context*/
 		// Grab previously saved color value
 		this.color_value = xmlFactory.getContent(SavedContent.Content.OTHERCOLOR);
 		this.user_color_value = xmlFactory.getContent(SavedContent.Content.USERCOLOR);
 	}
 	public void loadPreviousLevelInformation(){
-		/*Load level_values and level_labels from XML instead of 
-		b2Context*/
+		/*Load level_values and level_labels from XML instead of b2Context*/
 		// Grab previously saved level values and labels
 		for(int i = 0; i < NUM_LABELS; i++){
-		this.level_values[i] = xmlFactory.getLevelValue(i);
-		this.level_labels[i] = xmlFactory.getLevelName(i);
-		//this.level_values[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Points" + courseID.toExternalString());
-		//XMLlevelValues[i] = xmlFactory.getSetting(); //JARED EDITED VERSION
-		//this.level_labels[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Labels" + courseID.toExternalString());
-		//XMLlevelLabels[i] = xmlFactory.getSetting(); //JARED EDITED VERSION
-
+			this.level_values[i] = xmlFactory.getLevelValue(i);
+			this.level_labels[i] = xmlFactory.getLevelName(i);
 		}
 	}
 	public boolean ensureUserIsInstructor(){
@@ -92,31 +80,43 @@ public class Leaderboard_Config{
 		}
 		return false;
 	}
-	public void establishStudentLevels(){
-		for(int i = 2; i <= NUM_LABELS; i++) { 
-			//Sets default level titles
-			String levelLabel;
-			String levelPoints;
-			levelLabel = level_labels[i-1];
-			levelPoints = level_values[i-1];
-			//Sets some default values if none is set
-			if(i == 2 && levelLabel.equals("") && levelPoints.equals("")) {
-				levelLabel = "Apprentice";
-				levelPoints = "100";
-			}
-			if(i == 3 && levelLabel.equals("") && levelPoints.equals("")) {
-				levelLabel = "Journeyman";
-				levelPoints = "300";
-			}
-			if(i == 4 && levelLabel.equals("") && levelPoints.equals("")) {
-				levelLabel = "Master Craftsman";
-				levelPoints = "700";
-			}
-			if(i == 5 && levelLabel.equals("") && levelPoints.equals("")) {
-				levelLabel = "Grand Master";
-				levelPoints = "1000";
-			}
+	
+	public String establishLevelLabel(int i){
+		String levelLabel;
+		levelLabel = level_labels[i-1];
+		
+		if(i == 2 && levelLabel.equals("")) {
+			levelLabel = "Apprentice";
 		}
+		if(i == 3 && levelLabel.equals("")) {
+			levelLabel = "Journeyman";
+		}
+		if(i == 4 && levelLabel.equals("")) {
+			levelLabel = "Master Craftsman";
+		}
+		if(i == 5 && levelLabel.equals("")) {
+			levelLabel = "Grand Master";
+		}
+		return levelLabel;
+	}
+	
+	public String establishLevelValue(int i){
+		String levelPoints;
+		levelPoints = level_values[i-1];
+		
+		if(i == 2 && levelPoints.equals("")) {
+			levelPoints = "100";
+		}
+		if(i == 3 && levelPoints.equals("")) {
+			levelPoints = "300";
+		}
+		if(i == 4 && levelPoints.equals("")) {
+			levelPoints = "700";
+		}
+		if(i == 5 && levelPoints.equals("")) {
+			levelPoints = "1000";
+		}
+		return levelPoints;
 	}
 	
 	public void createUserInterface(){
@@ -222,14 +222,14 @@ public class Leaderboard_Config{
 			}
 			
 			//Load previous grade column choice. Sets default column as "Total". 
-			String prev_grade_choice = "Total";
-			String prev_grade_string = "";
+			this.prev_grade_choice = "Total";
+			this.prev_grade_string = "";
 			/*B2Context!*/
 			//B2Context b2Context_grade = new B2Context(request);
 			//prev_grade_choice = b2Context_grade.getSetting(false,true,"gradebook_column" + courseID.toExternalString());
-			prev_grade_choice = xmlFactory.getContent(SavedContent.Content.GRADECHOICE);
-			if(prev_grade_choice == "") prev_grade_choice = "Total";
-			prev_grade_string = prev_grade_choice + " - (Chosen)"; //selected option on dropdown list 
+			this.prev_grade_choice = xmlFactory.getContent(SavedContent.Content.GRADECHOICE);
+			if(this.prev_grade_choice == "") this.prev_grade_choice = "Total";
+			this.prev_grade_string = this.prev_grade_choice + " - (Chosen)"; //selected option on dropdown list 
 		}
 		catch(BbSecurityException e){}
 	}
@@ -309,6 +309,12 @@ public class Leaderboard_Config{
 	public String getModified(){
 		return this.modified;
 	}
+	public String getPrevGradeChoice(){
+		return this.prev_grade_choice;
+	}
+	public String getPrevGradeString(){
+		return this.prev_grade_string;
+	}
 	public MultiSelectBean getLeftListValue(int index){
 		return this.leftList.get(index);
 	}
@@ -326,11 +332,5 @@ public class Leaderboard_Config{
 	}
 	public List<CourseMembership> getCourseMembershipList(){
 		return this.cmlist;
-	}
-	public static void debug(){
-		
-	}
-	public static void main(String[] args){
-		debug();
 	}
 }

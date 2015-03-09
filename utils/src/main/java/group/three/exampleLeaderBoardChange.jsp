@@ -16,34 +16,13 @@
 <%@page import="com.spvsoftwareproducts.blackboard.utils.B2Context"%>
 <bbNG:modulePage type="personalize" ctxId="ctx">
 <%
-	//This is a test
 	Leaderboard_Config leaderboardConfig = new Leaderboard_Config(ctx);
-	String color_value = "";
-	String user_color_value = "";
-	Id courseID = ctx.getCourseId();
-	String [] level_values = new String[10];
-	String [] level_labels = new String[10];
-	String jsConfigFormPath = PlugInUtil.getUri("dt", "leaderboardblock11", "js/config_form.js");
-	
-		
-	// Create a new persistence object.  Don't save empty fields.
-	B2Context b2Context = new B2Context(request);
-	//XMLFactory xmlFactory = new XMLFactory(); //JARED EDITED VERSION
-	b2Context.setSaveEmptyValues(false);
-	//xmlFactory.setSaveEmptyValues(false); //JARED EDITED VERSION
-	
 	
 	// Grab previously saved color value
 	leaderboardConfig.loadPreviousColorValues();
 	
 	// Grab previously saved level values and labels
-	for(int i = 0; i < 10; i++){
-		level_values[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Points" + courseID.toExternalString());
-		//XMLlevelValues[i] = xmlFactory.getSetting(); //JARED EDITED VERSION
-		level_labels[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Labels" + courseID.toExternalString());
-		//XMLlevelLabels[i] = xmlFactory.getSetting(); //JARED EDITED VERSION
-
-	}
+	leaderboardConfig.loadPreviousLevelInformation();
 %>
 
 <%@include file="leaderboard_student.jsp" %>
@@ -61,15 +40,15 @@
 			%>
 			
 			<!-- Instructor flag submitted to save page - MAY BE UNSAFE -->
-			<input type="hidden" name="instructor" value="<%= isUserAnInstructor %>" />
+			<input type="hidden" name="instructor" value="<%= leaderboardConfig.ensureUserIsInstructor() %>" />
 			
 			<!-- Plotbands Configuration Form -->
-			<% if (leaderboardConfig.ensureUserIsInstructor()){//if (isUserAnInstructor) { %>
+			<% if (leaderboardConfig.ensureUserIsInstructor()){ %>
 				<!-- Color Picker -->
 				<bbNG:step title="Primary Bar Color">
 					<bbNG:dataElement>
 						<bbNG:elementInstructions text="Select a general plotband color."/>
-						<bbNG:colorPicker name="color" initialColor="<%= color_value %>"/>
+						<bbNG:colorPicker name="color" initialColor="<%= leaderboardConfig.getColorValue() %>"/>
 					</bbNG:dataElement>
 				</bbNG:step>
 			
@@ -88,20 +67,20 @@
 							//Establish levels for students based on XP
 							//Currently, students start at an unnamed Level 1 and have a lelvel cap of 10.
 							//We may want to change this where they start at 0 and can go to as many levels as the teacher allows.
-							
-							leaderboardConfig.establishStudentLevels();
+
+							for (int i = 2; i<= 10; i++){
 							%>
 								<tr id="Level_<%= i %>">
 									<td>Level <%= i %> </td>
-									<input type="hidden" name="courseID" value="<%= courseID.toExternalString() %>" /> <!--Have to use toExternalString() to get the courseID Key ;Used to pass the CourseID to leaderboard_save.jsp   -->
-									<td><input type="text" name="Level_<%= i %>_Points" size="12" value="<%=levelPoints%>" onkeyup="checkForm()"/></td>
-									<td><input type="text" name="Level_<%= i %>_Labels" size="18" value="<%=levelLabel%> " /></td>
+									<input type="hidden" name="courseID" value="<%= leaderboardConfig.getCourseID().toExternalString() %>" /> <!--Have to use toExternalString() to get the courseID Key ;Used to pass the CourseID to leaderboard_save.jsp   -->
+									<td><input type="text" name="Level_<%= i %>_Points" size="12" value="<%=leaderboardConfig.establishLevelValue(i)%>" onkeyup="checkForm()"/></td>
+									<td><input type="text" name="Level_<%= i %>_Labels" size="18" value="<%=leaderboardConfig.establishLevelLabel(i)%> " /></td>
 								</tr>
 								
 							<% } %>
 						</table>
 						<!-- Javascript Form Logic //-->
-						<script type="text/javascript" src="<%= jsConfigFormPath %>"></script>
+						<script type="text/javascript" src="<%= leaderboardConfig.getJSConfigFormpath() %>"></script>
 					</bbNG:dataElement>
 				</bbNG:step>
 				
@@ -113,14 +92,6 @@
 				Last edit 3-9-14 by Tim Burch.
 				*/
 				
-				//Create B2Context object for show/hide feature
-				B2Context b2Context_sh = new B2Context(request);
-				//XMLFactory XMLcontextShowHide = new xmlFactory(); //JARED EDITED VERSION
-				b2Context_sh.setSaveEmptyValues(false);
-				//XMLcontextShowHide.setSaveEmptyValues(false); //JARED EDITED VERSION
-				
-				
-						
 				//Create show/hide UI
 				leaderboardConfig.createUserInterface();
 				//Logic to determine if the default or a saved show/hide list is used
@@ -152,13 +123,6 @@
 				<!-- Grade Column Chooser -->
 				<%
 					//Create a string array for the levels and point values from the config file
-					for(int i = 0; i < 10; i++){
-						level_values[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Points" + courseID.toExternalString());
-						//levelValues[i] = xmlFactory.getSetting(); //JARED EDITED VERSION
-						level_labels[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Labels" + courseID.toExternalString());
-						//levelLabels[i] = xmlFactory.getSetting(); //JARED EDITED VERSION
-					}
-					
 					leaderboardConfig.getGradebookData();
 				%>
 				<bbNG:step title="Choose Grade Column">
@@ -166,10 +130,10 @@
 					 	<bbNG:elementInstructions text=" Choose Grade column to be used." />
 				        <bbNG:selectElement name="gradebook_column"  multiple= "false" >
 				        	
-				   				<bbNG:selectOptionElement value="<%= prev_grade_choice %>" optionLabel="<%= prev_grade_string %>" />
+				   				<bbNG:selectOptionElement value="<%= leaderboardConfig.getPrevGradeChoice() %>" optionLabel="<%= leaderboardConfig.getPrevGradeString() %>" />
 				        	<% for(int i = 0; i < lgm.size(); i++) { 
 				        		String gradeItem = gradeList[i]; 
-				        		if(!gradeItem.equals(prev_grade_choice)) {%>
+				        		if(!gradeItem.equals(leaderboardConfig.getPrevGradeChoice())) {%>
 				        		 <bbNG:selectOptionElement value="<%= gradeItem %>" optionLabel="<%= gradeItem %>"/>
 				        	<% } 
 				        	} %>
@@ -181,12 +145,12 @@
 				<!-- Color Picker -->
 				<bbNG:step title="Everyone else's color">
 					<bbNG:dataElement>
-						<bbNG:colorPicker name="color" initialColor="<%= color_value %>" helpText="Select a general plotband color."/>
+						<bbNG:colorPicker name="color" initialColor="<%= leaderboardConfig.getColorValue() %>" helpText="Select a general plotband color."/>
 					</bbNG:dataElement>
 				</bbNG:step>
 				<bbNG:step title="Your bar's color">
 					<bbNG:dataElement>
-						<bbNG:colorPicker name="user_color" initialColor="<%= user_color_value %>" helpText="Choose a color for your own bar."/>
+						<bbNG:colorPicker name="user_color" initialColor="<%= leaderboardConfig.getUserColorValue() %>" helpText="Choose a color for your own bar."/>
 					</bbNG:dataElement>
 				</bbNG:step>
 			<% } %>
