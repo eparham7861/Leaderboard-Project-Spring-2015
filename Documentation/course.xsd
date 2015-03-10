@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+		<xs:element name="course">
+		   <xs:complexType>
+				 <xs:sequence>
+					   <xs:element name="courseID" type="xs:string"></xs:element>
+					   <xs:element name="courseColor" type="xs:string"></xs:element>
+					   <xs:element name="fileExists" type="xs:string"></xs:element>
+					   <xs:element name="selectedGradebookColumn" type="xs:string"></xs:element>
+					   <xs:element name="hiddenStudents" type="xs:string"></xs:element>
+					   <xs:element name="level" maxOccurs="unbounded">
+							 <xs:complexType>
+								   <xs:sequence>
+										 <xs:element name="levelID" type="xs:int"></xs:element>
+										 <xs:element name="levelPoints" type="xs:int"></xs:element>
+										 <xs:element name="levelLabel" type="xs:string"></xs:element>
+								   </xs:sequence>
+							 </xs:complexType>
+					   </xs:element>
+					   <xs:element name="student" maxOccurs="unbounded">
+							 <xs:complexType>
+								   <xs:sequence>
+										 <xs:element name="studentID" type="xs:int"></xs:element>
+										 <xs:element name="userColor" type="xs:string"></xs:element>
+										 <xs:element name="otherColor" type="xs:string"></xs:element>
+										 <xs:element name="studentColumnChoice"></xs:element>
+										 <xs:element name="studentTimePeriod"></xs:element>
+								   </xs:sequence>
+							 </xs:complexType>
+					   </xs:element>
+				 </xs:sequence>
+		   </xs:complexType>
+        </xs:element>
+	</xs:schema>
