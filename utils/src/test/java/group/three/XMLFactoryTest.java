@@ -50,7 +50,7 @@ public class XMLFactoryTest {
 	}
 	
 	@Test
-	public void testContentHolderFileExists) {
+	public void testContentHolderFileExists() {
 		currentXML.setContent(SavedContent.Content.FILEEXISTS, "true");
 		assertEquals("true", currentXML.getContent(SavedContent.Content.FILEEXISTS));
 	}
@@ -107,8 +107,9 @@ public class XMLFactoryTest {
 	public void testGetPreviousXMLContent() {
 		String xml = "<course>";
 		xml += "<courseID>CS491</courseID>";
-		xml += "<visibleStudents>3</visibleStudents>";
-		xml += "<hiddenStudents>2</hiddenStudents>";
+		xml += "<courseColor>blue</courseColor>";
+		xml += "<visibleStudents>Jared Starr</visibleStudents>";
+		xml += "<hiddenStudents>Eric Parham, Eric Parris, Darren Johnston</hiddenStudents>";
 		xml += "<fileExists>true</fileExists>";
 		xml += "<student>";
 		xml += "<studentID>1</studentID>";
@@ -135,17 +136,19 @@ public class XMLFactoryTest {
 	private String getXML(int count) {
 		String stringToXML = "<course>";
 		stringToXML += "<courseID>" + currentXML.getContent(SavedContent.Content.COURSE) + "</courseID>";
+		stringToXML += "<courseColor>" + currentXML.getContent(SavedContent.Content.COURSECOLOR) + "</courseColor>";
 		stringToXML += "<visibleStudents>" + currentXML.getContent(SavedContent.Content.VISIBLE) + "</visibleStudents>";
 		stringToXML += "<hiddenStudents>" + currentXML.getContent(SavedContent.Content.HIDDEN)  + "</hiddenStudents>";
 		stringToXML += "<fileExists>" + currentXML.getContent(SavedContent.Content.FILEEXISTS) + "</fileExists>";
-		
 		stringToXML += "<selectedGradebookColumn>" + currentXML.getContent(SavedContent.Content.GRADECHOICE) + "</selectedGradebookColumn>";
 		
 		for (int i = 0; i < count; i++) {
 			stringToXML += "<student>";
 			stringToXML += "<studentID>" + i + "</studentID>";
 			stringToXML += "<userColor>" + currentXML.getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
-			stringToXML += "<backgroundColor>" + currentXML.getContent(SavedContent.Content.OTHERCOLOR) + "</backgroundColor>";
+			stringToXML += "<otherColor>" + currentXML.getContent(SavedContent.Content.OTHERCOLOR) + "</otherColor>";
+			stringToXML += "<studentColumnChoice>" + currentXML.getContent(SavedContent.Content.COLUMNCHOICE) + "</studentColumnChoice>";
+			stringToXML += "<studentTimePeriod>" + currentXML.getContent(SavedContent.Content.PERIOD) + "</studentTimePeriod>";
 			stringToXML += "</student>";
 		}
 		

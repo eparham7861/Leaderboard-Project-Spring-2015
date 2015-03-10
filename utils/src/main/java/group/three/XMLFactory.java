@@ -224,10 +224,10 @@ public class XMLFactory {
 		int visibleStudentCount = getStudentCount(visibleStudents);
 		
 		stringToXML += "<courseID>" + getContent(SavedContent.Content.COURSE) + "</courseID>";
-		stringToXML += "<visibleStudents>" + visibleStudents + "</visibleStudents>";
+		stringToXML += "<courseColor>" + getContent(SavedContent.Content.COURSECOLOR) + "</courseColor>";
+		stringToXML += "<visibleStudents>" + visibleStudents  + "</visibleStudents>";
 		stringToXML += "<hiddenStudents>" + getContent(SavedContent.Content.HIDDEN)  + "</hiddenStudents>";
 		stringToXML += "<fileExists>" + getContent(SavedContent.Content.FILEEXISTS) + "</fileExists>";
-		
 		stringToXML += "<selectedGradebookColumn>" + getContent(SavedContent.Content.GRADECHOICE) + "</selectedGradebookColumn>";
 		
 		for (int i = 0; i < visibleStudentCount; i++) {
@@ -235,6 +235,8 @@ public class XMLFactory {
 			stringToXML += "<studentID>" + i + "</studentID>";
 			stringToXML += "<userColor>" + getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
 			stringToXML += "<otherColor>" + getContent(SavedContent.Content.OTHERCOLOR) + "</otherColor>";
+			stringToXML += "<studentColumnChoice>" + getContent(SavedContent.Content.COLUMNCHOICE) + "</studentColumnChoice>";
+			stringToXML += "<studentTimePeriod>" + getContent(SavedContent.Content.PERIOD) + "</studentTimePeriod>";
 			stringToXML += "</student>";
 		}
 		
