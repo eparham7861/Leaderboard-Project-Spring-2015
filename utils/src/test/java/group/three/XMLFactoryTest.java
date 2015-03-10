@@ -1,5 +1,5 @@
 package group.three;
-
+// Visible is used here - JS
 import org.junit.*;
 import static org.junit.Assert.*;
 import java.util.*;
@@ -50,9 +50,9 @@ public class XMLFactoryTest {
 	}
 	
 	@Test
-	public void testContentHolderModified() {
-		currentXML.setContent(SavedContent.Content.MODIFIED, "true");
-		assertEquals("true", currentXML.getContent(SavedContent.Content.MODIFIED));
+	public void testContentHolderFileExists) {
+		currentXML.setContent(SavedContent.Content.FILEEXISTS, "true");
+		assertEquals("true", currentXML.getContent(SavedContent.Content.FILEEXISTS));
 	}
 	
 	@Test
@@ -80,7 +80,7 @@ public class XMLFactoryTest {
 		currentXML.setContent(SavedContent.Content.LEVEL0, "Journeyman");
 		currentXML.setContent(SavedContent.Content.VISIBLE, "Jared Starr");
 		currentXML.setContent(SavedContent.Content.HIDDEN, "Eric Parham, Eric Parris, Darren Johnston");
-		currentXML.setContent(SavedContent.Content.MODIFIED, "true");
+		currentXML.setContent(SavedContent.Content.FILEEXISTS, "true");
 		currentXML.setContent(SavedContent.Content.USERCOLOR, "red");
 		currentXML.setContent(SavedContent.Content.OTHERCOLOR, "red");
 		currentXML.setContent(SavedContent.Content.GRADECHOICE, "total");
@@ -95,7 +95,7 @@ public class XMLFactoryTest {
 		currentXML.setContent(SavedContent.Content.LEVEL0, "Journeyman");
 		currentXML.setContent(SavedContent.Content.VISIBLE, "Eric Parham, Jared Starr, Eric Parris, Darren Johnston, Jared Benedict");
 		currentXML.setContent(SavedContent.Content.HIDDEN, "Ian Bragg");
-		currentXML.setContent(SavedContent.Content.MODIFIED, "true");
+		currentXML.setContent(SavedContent.Content.FILEEXISTS, "true");
 		currentXML.setContent(SavedContent.Content.USERCOLOR, "red");
 		currentXML.setContent(SavedContent.Content.OTHERCOLOR, "red");
 		currentXML.setContent(SavedContent.Content.GRADECHOICE, "total");
@@ -109,7 +109,7 @@ public class XMLFactoryTest {
 		xml += "<courseID>CS491</courseID>";
 		xml += "<visibleStudents>3</visibleStudents>";
 		xml += "<hiddenStudents>2</hiddenStudents>";
-		xml += "<modified>true</modified>";
+		xml += "<fileExists>true</fileExists>";
 		xml += "<student>";
 		xml += "<studentID>1</studentID>";
 		xml += "<userColor>red</userColor>";
@@ -137,7 +137,7 @@ public class XMLFactoryTest {
 		stringToXML += "<courseID>" + currentXML.getContent(SavedContent.Content.COURSE) + "</courseID>";
 		stringToXML += "<visibleStudents>" + currentXML.getContent(SavedContent.Content.VISIBLE) + "</visibleStudents>";
 		stringToXML += "<hiddenStudents>" + currentXML.getContent(SavedContent.Content.HIDDEN)  + "</hiddenStudents>";
-		stringToXML += "<modified>" + currentXML.getContent(SavedContent.Content.MODIFIED) + "</modified>";
+		stringToXML += "<fileExists>" + currentXML.getContent(SavedContent.Content.FILEEXISTS) + "</fileExists>";
 		
 		stringToXML += "<selectedGradebookColumn>" + currentXML.getContent(SavedContent.Content.GRADECHOICE) + "</selectedGradebookColumn>";
 		

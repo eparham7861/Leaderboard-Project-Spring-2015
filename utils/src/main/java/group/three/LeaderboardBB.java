@@ -1,4 +1,5 @@
 package group.three;
+// Visible is used here - JS
 
 import blackboard.base.*;
 import blackboard.data.user.User;
@@ -23,7 +24,7 @@ public class LeaderboardBB {
 	private CourseMembershipBB currentCourseMembership;
 	private List<Student> students;
 	private XMLFactory currentXML;
-	private String sessionUserRole, sessionUserID, modified, gradeChoice;
+	private String sessionUserRole, sessionUserID, fileExists, gradeChoice;
 	private double scoreToHighlight;
 	private int index, numVisible;
 	private boolean canSeeScores;
@@ -108,7 +109,7 @@ public class LeaderboardBB {
 	}
 	
 	private void setNumberOfVisibleStudents() {
-		if (isModified()) {
+		if (fileExists()) {
 			numVisible = Integer.parseInt(currentXML.getContent(SavedContent.Content.VISIBLE));
 		}
 		else {
@@ -116,8 +117,8 @@ public class LeaderboardBB {
 		}
 	}
 	
-	private boolean isModified() {
-		return Boolean.parseBoolean(currentXML.getContent(SavedContent.Content.MODIFIED));
+	private boolean fileExists() {
+		return Boolean.parseBoolean(currentXML.getContent(SavedContent.Content.FILEEXISTS));
 	}
 	
 	private void studentSetup() {
@@ -139,7 +140,7 @@ public class LeaderboardBB {
 					}
 				}
 				String sessionUserName = sessionUser.getName() + ": " + sessionUser.getUserName();
-				if (isModified()) {
+				if (fileExists()) {
 					String[] hiddenArr = currentXML.getContent(SavedContent.Content.HIDDEN).split(",");
 					String studentName = selectedMember.getUser().getGivenName() + " " + selectedMember.getUser().getFamilyName() + ": " + selectedMember.getUser().getUserName();
 					for (int i = 0; i < hiddenArr.length; i++) {

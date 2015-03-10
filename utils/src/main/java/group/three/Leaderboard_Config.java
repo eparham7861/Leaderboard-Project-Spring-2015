@@ -1,5 +1,8 @@
 package group.three;
 
+
+// Visible is used in this file - JS
+
 import blackboard.base.*;
 import blackboard.data.course.*;
 import blackboard.data.user.*;
@@ -22,7 +25,7 @@ public class Leaderboard_Config{
 	private String color_value, user_color_value;
 	private Id courseID;
 	private String[] level_values, level_labels, gradeList, hiddenArr, visibleArr;
-	private String jsConfigFormPath, sessionUserRole, modified;
+	private String jsConfigFormPath, sessionUserRole, fileExists;
 	private String visibleList, hiddenList, prev_grade_choice, prev_grade_string;
 	private List<MultiSelectBean> leftList, rightList;
 	private MultiSelectBean leftBean, rightBean;
@@ -123,7 +126,7 @@ public class Leaderboard_Config{
 		try{
 			this.leftList = new ArrayList<MultiSelectBean>();
 			this.rightList = new ArrayList<MultiSelectBean>();
-			this.modified = xmlFactory.getContent(SavedContent.Content.MODIFIED);//b2Context_sh.getSetting(false, true, "modified" +  courseID.toExternalString());
+			this.fileExists = xmlFactory.getContent(SavedContent.Content.FILEEXISTS);//b2Context_sh.getSetting(false, true, "modified" +  courseID.toExternalString());
 			this.cmlist = CourseMembershipDbLoader.Default.getInstance().loadByCourseIdAndRole(courseID, CourseMembership.Role.STUDENT, null, true);
 		}
 		catch(KeyNotFoundException e){}
@@ -259,8 +262,8 @@ public class Leaderboard_Config{
 	public void setSessionUserRole(String str){
 		this.sessionUserRole = str;
 	}
-	public void setModified(String str){
-		this.modified = str;
+	public void setFileExists(String str){
+		this.fileExists = str;
 	}
 	public void addLeftListValue(MultiSelectBean beanValue){
 		this.leftList.add(beanValue);
@@ -306,8 +309,8 @@ public class Leaderboard_Config{
 	public String getSessionUserRole(){
 		return this.sessionUserRole;
 	}
-	public String getModified(){
-		return this.modified;
+	public String getFileExists(){
+		return this.fileExists;
 	}
 	public String getPrevGradeChoice(){
 		return this.prev_grade_choice;

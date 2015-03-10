@@ -1,12 +1,13 @@
 package group.three;
 
+// Visible is used here - JS
 import java.util.*;
 
 public class SavedContent {
 	
 	public enum Content {
 							COURSE, VISIBLE, NUMVISIBLE, 
-							HIDDEN, MODIFIED, USERCOLOR, 
+							HIDDEN, FILEEXISTS, USERCOLOR, 
 							OTHERCOLOR, GRADECHOICE,
 							LEVELINDEX0, LEVELINDEX1, LEVELINDEX2,
 							LEVELINDEX3, LEVELINDEX4, LEVELINDEX5,

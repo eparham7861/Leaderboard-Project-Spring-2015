@@ -1,4 +1,5 @@
 package group.three;
+// Visible is used here - JS
 
 import java.util.ArrayList;
 import java.io.*;
@@ -202,13 +203,13 @@ public class XMLFactory {
 			case "hiddenstudents":
 				setContent(SavedContent.Content.HIDDEN, content);
 				break;
-			case "modified":
-				setContent(SavedContent.Content.MODIFIED, content);
+			case "fileExists":
+				setContent(SavedContent.Content.FILEEXISTS, content);
 				break;
 			case "usercolor":
 				setContent(SavedContent.Content.USERCOLOR, content);
 				break;
-			case "backgroundcolor":
+			case "othercolor":
 				setContent(SavedContent.Content.OTHERCOLOR, content);
 				break;
 			case "selectedGradebookColumn":
@@ -225,7 +226,7 @@ public class XMLFactory {
 		stringToXML += "<courseID>" + getContent(SavedContent.Content.COURSE) + "</courseID>";
 		stringToXML += "<visibleStudents>" + visibleStudents + "</visibleStudents>";
 		stringToXML += "<hiddenStudents>" + getContent(SavedContent.Content.HIDDEN)  + "</hiddenStudents>";
-		stringToXML += "<modified>" + getContent(SavedContent.Content.MODIFIED) + "</modified>";
+		stringToXML += "<fileExists>" + getContent(SavedContent.Content.FILEEXISTS) + "</fileExists>";
 		
 		stringToXML += "<selectedGradebookColumn>" + getContent(SavedContent.Content.GRADECHOICE) + "</selectedGradebookColumn>";
 		
@@ -233,7 +234,7 @@ public class XMLFactory {
 			stringToXML += "<student>";
 			stringToXML += "<studentID>" + i + "</studentID>";
 			stringToXML += "<userColor>" + getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
-			stringToXML += "<backgroundColor>" + getContent(SavedContent.Content.OTHERCOLOR) + "</backgroundColor>";
+			stringToXML += "<otherColor>" + getContent(SavedContent.Content.OTHERCOLOR) + "</otherColor>";
 			stringToXML += "</student>";
 		}
 		

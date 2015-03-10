@@ -1,4 +1,5 @@
 package group.three;
+// Visible is used here - JS
 
 import org.junit.*;
 import static org.junit.Assert.*;
