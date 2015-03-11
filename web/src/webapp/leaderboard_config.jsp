@@ -16,39 +16,13 @@
 <%@page import="com.spvsoftwareproducts.blackboard.utils.B2Context"%>
 <bbNG:modulePage type="personalize" ctxId="ctx">
 <%
-	//This is a test
-	String color_value = "";
-	//String colorValue = ""; //JARED EDITED VERSION
-	String user_color_value = "";
-	//String userColorValue = ""; //JARED EDITED VERSION
-	Id courseID = ctx.getCourseId();
-	String [] level_values = new String[10];
-	//String[] XMLlevelValues = new String[10]; //JARED EDITED VERSION
-	String [] level_labels = new String[10];
-	//String[] XMLlevelLabels = new String [10]; //JARED EDITED VERSION
-	String jsConfigFormPath = PlugInUtil.getUri("dt", "leaderboardblock11", "js/config_form.js");
-	
-		
-	// Create a new persistence object.  Don't save empty fields.
-	B2Context b2Context = new B2Context(request);
-	//XMLFactory xmlFactory = new XMLFactory(); //JARED EDITED VERSION
-	b2Context.setSaveEmptyValues(false);
-	//xmlFactory.setSaveEmptyValues(false); //JARED EDITED VERSION
+	Leaderboard_Config leaderboardConfig = new Leaderboard_Config(ctx);
 	
 	// Grab previously saved color value
-	color_value = b2Context.getSetting(true, false, "color");
-	//colorValue = xmlFactory.getSetting(); //JARED EDITED VERSION
-	user_color_value = b2Context.getSetting(true, false, "user_color");
-	//userColorValue = xmlFactory.getSetting(); //JARED EDITED VERSION
+	leaderboardConfig.loadPreviousColorValues();
 	
 	// Grab previously saved level values and labels
-	for(int i = 0; i < 10; i++){
-		level_values[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Points" + courseID.toExternalString());
-		//XMLlevelValues[i] = xmlFactory.getSetting(); //JARED EDITED VERSION
-		level_labels[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Labels" + courseID.toExternalString());
-		//XMLlevelLabels[i] = xmlFactory.getSetting(); //JARED EDITED VERSION
-
-	}
+	leaderboardConfig.loadPreviousLevelInformation();
 %>
 
 <%@include file="leaderboard_student.jsp" %>
@@ -62,24 +36,19 @@
 	<bbNG:dataCollection>
 		
 			<%	
-				//Ensure user accessing configuration is an instructor
-				String sessionUserRole = ctx.getCourseMembership().getRoleAsString();
-				boolean isUserAnInstructor = false;
-				if (sessionUserRole.trim().toLowerCase().equals("instructor")) {
-					isUserAnInstructor = true;
-				}	
+			//Changed to the below ensure is intructor
 			%>
 			
 			<!-- Instructor flag submitted to save page - MAY BE UNSAFE -->
-			<input type="hidden" name="instructor" value="<%= isUserAnInstructor %>" />
+			<input type="hidden" name="instructor" value="<%= leaderboardConfig.ensureUserIsInstructor() %>" />
 			
 			<!-- Plotbands Configuration Form -->
-			<% if (isUserAnInstructor) { %>
+			<% if (leaderboardConfig.ensureUserIsInstructor()){ %>
 				<!-- Color Picker -->
 				<bbNG:step title="Primary Bar Color">
 					<bbNG:dataElement>
 						<bbNG:elementInstructions text="Select a general plotband color."/>
-						<bbNG:colorPicker name="color" initialColor="<%= color_value %>"/>
+						<bbNG:colorPicker name="color" initialColor="<%= leaderboardConfig.getColorValue() %>"/>
 					</bbNG:dataElement>
 				</bbNG:step>
 			
@@ -98,44 +67,20 @@
 							//Establish levels for students based on XP
 							//Currently, students start at an unnamed Level 1 and have a lelvel cap of 10.
 							//We may want to change this where they start at 0 and can go to as many levels as the teacher allows.
-							for(int i = 2; i <= 10; i++) { 
-								//Sets default level titles
-								String levelLabel;
-								String levelPoints;
-								levelLabel = level_labels[i-1];
-								//levelLabel = XMLlevelLabels[i-1]; //JARED EDITED VERSION
-								levelPoints = level_values[i-1];
-								//levelPoints = XMLlevelPoints[i-1]; //JARED EDITED VERSION
-								//Sets some default values if none are set
-								if(i == 2 && levelLabel.equals("") && levelPoints.equals("")) {
-									levelLabel = "Apprentice";
-									levelPoints = "100";
-								}
-								if(i == 3 && levelLabel.equals("") && levelPoints.equals("")) {
-									levelLabel = "Journeyman";
-									levelPoints = "300";
-								}
-								if(i == 4 && levelLabel.equals("") && levelPoints.equals("")) {
-									levelLabel = "Master Craftsman";
-									levelPoints = "700";
-								}
-								if(i == 5 && levelLabel.equals("") && levelPoints.equals("")) {
-									levelLabel = "Grand Master";
-									levelPoints = "1000";
-								}
-								
+
+							for (int i = 2; i<= 10; i++){
 							%>
 								<tr id="Level_<%= i %>">
 									<td>Level <%= i %> </td>
-									<input type="hidden" name="courseID" value="<%= courseID.toExternalString() %>" /> <!--Have to use toExternalString() to get the courseID Key ;Used to pass the CourseID to leaderboard_save.jsp   -->
-									<td><input type="text" name="Level_<%= i %>_Points" size="12" value="<%=levelPoints%>" onkeyup="checkForm()"/></td>
-									<td><input type="text" name="Level_<%= i %>_Labels" size="18" value="<%=levelLabel%> " /></td>
+									<input type="hidden" name="courseID" value="<%= leaderboardConfig.getCourseID().toExternalString() %>" /> <!--Have to use toExternalString() to get the courseID Key ;Used to pass the CourseID to leaderboard_save.jsp   -->
+									<td><input type="text" name="Level_<%= i %>_Points" size="12" value="<%=leaderboardConfig.establishLevelValue(i)%>" onkeyup="checkForm()"/></td>
+									<td><input type="text" name="Level_<%= i %>_Labels" size="18" value="<%=leaderboardConfig.establishLevelLabel(i)%> " /></td>
 								</tr>
 								
 							<% } %>
 						</table>
 						<!-- Javascript Form Logic //-->
-						<script type="text/javascript" src="<%= jsConfigFormPath %>"></script>
+						<script type="text/javascript" src="<%= leaderboardConfig.getJSConfigFormpath() %>"></script>
 					</bbNG:dataElement>
 				</bbNG:step>
 				
@@ -147,89 +92,26 @@
 				Last edit 3-9-14 by Tim Burch.
 				*/
 				
-				//Create B2Context object for show/hide feature
-				B2Context b2Context_sh = new B2Context(request);
-				//XMLFactory XMLcontextShowHide = new xmlFactory(); //JARED EDITED VERSION
-				b2Context_sh.setSaveEmptyValues(false);
-				//XMLcontextShowHide.setSaveEmptyValues(false); //JARED EDITED VERSION
-				
-				
-						
 				//Create show/hide UI
-				List<MultiSelectBean> leftList = new ArrayList<MultiSelectBean>();
-				List<MultiSelectBean> rightList = new ArrayList<MultiSelectBean>();
-				String modified = b2Context_sh.getSetting(false, true, "modified" +  courseID.toExternalString());
-				//String modified = XMLcontextShowHide.getSetting(); //JARED EDITED VERSION
-				List<CourseMembership> cmlist = CourseMembershipDbLoader.Default.getInstance().loadByCourseIdAndRole(courseID, CourseMembership.Role.STUDENT, null, true);
-				
+				leaderboardConfig.createUserInterface();
 				//Logic to determine if the default or a saved show/hide list is used
-				if(modified.equals("true")){//A save file already exists.
+				if(leaderboardConfig.getModified().equals("true")){//modified.equals("true")){//A save file already exists.
 					//Blackboard only saves and loads information in strings
 					//Each list is saved as one string of names with the following format:
 					//"firstName lastName, firstName lastName, etc."
-					String visibleList = b2Context_sh.getSetting(false, true, "visibleStudents" +  courseID.toExternalString());
-					//String visibleList = XMLcontextShowHide(); //JARED EDITED VERSION
-					String[] visibleArr = visibleList.split(",");
-					if(!(visibleList.trim().equals(" ")) && !(visibleList.trim().isEmpty()) && visibleList != null){
-						for(int i = 0; i < visibleArr.length; i++){//Add any saved visible to left side.
-							MultiSelectBean leftBean = new MultiSelectBean();
-							leftBean.setValue(visibleArr[i]);
-							leftBean.setLabel(visibleArr[i]);
-							leftList.add(leftBean);
-						}
-					}
-					String hiddenList = b2Context_sh.getSetting(false, true, "hiddenStudents" +  courseID.toExternalString());
-					//String hiddenList = XMLcontextShowHide.getSetting(); //JARED EDITED VERSION
-					String[] hiddenArr = hiddenList.split(",");
-					if(!(hiddenList.trim().equals(" ")) && !(hiddenList.trim().isEmpty()) && hiddenList != null){
-						for(int i = 0; i < hiddenArr.length; i++){//Add any saved hidden to right side.
-							MultiSelectBean rightBean = new MultiSelectBean();
-							rightBean.setValue(hiddenArr[i]);
-							rightBean.setLabel(hiddenArr[i]);
-							rightList.add(rightBean);
-						}
-					}
+					leaderboardConfig.createVisibleStudentList();
+					leaderboardConfig.createHiddenStudentList();
 					/*
 					If the cmlist (entire course roster) is larger than both the hidden and visible lists, then
 					a student must be missing from the lists. So this checks if any new student has been added
 					to the course roster since Leaderboard has been uploaded.
 					*/
-					//if(cmlist.size() > (visibleList.length() + hiddenList.length())){
-						for(int i = 0; i < cmlist.size(); i++){//Check entire roster.
-							User student = cmlist.get(i).getUser();
-							String studentName = student.getGivenName() + " " + student.getFamilyName() + ": " + student.getUserName();
-							boolean found = false;
-							for(int j = 0; j < visibleArr.length; j++){//Check visible list
-								if(studentName.equals(visibleArr[j])){
-									found = true;
-									break;
-								}
-							}
-							if(found == false){
-								for(int j = 0; j < hiddenArr.length; j++){//Check hidden list
-									if(studentName.equals(hiddenArr[j])){
-										found = true;
-										break;
-									}
-								}
-							}
-							if(found == false){//If the name wasn't found on either list, add to visible.
-								MultiSelectBean leftBean = new MultiSelectBean();
-								leftBean.setValue(studentName);
-								leftBean.setLabel(studentName);
-								leftList.add(leftBean);
-							}
-						}
+					leaderboardConfig.checkRosterLargerThanCurrentLists();
+					
 					}// end of check for newly added student
 				//}// end of if a save file already exists
 				else{//If there isn't a config file saved, set default with everyone visible since lists haven't been created yet.
-					for(int i = 0; i < cmlist.size(); i ++){
-						MultiSelectBean leftBean = new MultiSelectBean();
-						User student = cmlist.get(i).getUser();
-						leftBean.setValue(student.getGivenName() + " " + student.getFamilyName() + ": " + student.getUserName());
-						leftBean.setLabel(student.getGivenName() + " " + student.getFamilyName() + ": " + student.getUserName());
-						leftList.add(leftBean);
-					}
+					leaderboardConfig.setDefaultEveryoneVisible();
 				}
 				
 
@@ -241,47 +123,17 @@
 				<!-- Grade Column Chooser -->
 				<%
 					//Create a string array for the levels and point values from the config file
-					for(int i = 0; i < 10; i++){
-						level_values[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Points" + courseID.toExternalString());
-						//levelValues[i] = xmlFactory.getSetting(); //JARED EDITED VERSION
-						level_labels[i] = b2Context.getSetting(false, true, "Level_" + (i+1) + "_Labels" + courseID.toExternalString());
-						//levelLabels[i] = xmlFactory.getSetting(); //JARED EDITED VERSION
-					}
-					
-					//Use the GradebookManager to get the gradebook data
-					GradebookManager gm = GradebookManagerFactory.getInstanceWithoutSecurityCheck();
-					BookData bookData = gm.getBookData(new BookDataRequest(courseID));
-					List<GradableItem> lgm = gm.getGradebookItems(courseID);
-					//It is necessary to execute these two methods to obtain calculated students and extended grade data
-					bookData.addParentReferences();
-					bookData.runCumulativeGrading();
-						
-					//Create list of grade columns, so the instructor can select the grade to set for the widget if it is not the overall grade
-					String[] gradeList = new String[lgm.size()];
-					for (int i = 0; i < lgm.size(); i++) {
-						GradableItem gi = (GradableItem) lgm.get(i);
-						gradeList[i] = gi.getTitle();
-					}
-					
-					//Load previous grade column choice. Sets default column as "Total". 
-					String prev_grade_choice = "Total";
-					String prev_grade_string = "";
-					B2Context b2Context_grade = new B2Context(request);
-					//XMLFactory XMLcontextGrade = new XMLFactory(); //JARED EDITED VERSION
-					prev_grade_choice = b2Context_grade.getSetting(false,true,"gradebook_column" + courseID.toExternalString());
-					//prevGradeChoice = XMLcontextGrade.getSetting(); // JARED EDITED VERSION
-					if(prev_grade_choice == "") prev_grade_choice = "Total";
-					prev_grade_string = prev_grade_choice + " - (Chosen)"; //selected option on dropdown list 
+					leaderboardConfig.getGradebookData();
 				%>
 				<bbNG:step title="Choose Grade Column">
 					 <bbNG:dataElement>
 					 	<bbNG:elementInstructions text=" Choose Grade column to be used." />
 				        <bbNG:selectElement name="gradebook_column"  multiple= "false" >
 				        	
-				   				<bbNG:selectOptionElement value="<%= prev_grade_choice %>" optionLabel="<%= prev_grade_string %>" />
+				   				<bbNG:selectOptionElement value="<%= leaderboardConfig.getPrevGradeChoice() %>" optionLabel="<%= leaderboardConfig.getPrevGradeString() %>" />
 				        	<% for(int i = 0; i < lgm.size(); i++) { 
 				        		String gradeItem = gradeList[i]; 
-				        		if(!gradeItem.equals(prev_grade_choice)) {%>
+				        		if(!gradeItem.equals(leaderboardConfig.getPrevGradeChoice())) {%>
 				        		 <bbNG:selectOptionElement value="<%= gradeItem %>" optionLabel="<%= gradeItem %>"/>
 				        	<% } 
 				        	} %>
@@ -293,12 +145,12 @@
 				<!-- Color Picker -->
 				<bbNG:step title="Everyone else's color">
 					<bbNG:dataElement>
-						<bbNG:colorPicker name="color" initialColor="<%= color_value %>" helpText="Select a general plotband color."/>
+						<bbNG:colorPicker name="color" initialColor="<%= leaderboardConfig.getColorValue() %>" helpText="Select a general plotband color."/>
 					</bbNG:dataElement>
 				</bbNG:step>
 				<bbNG:step title="Your bar's color">
 					<bbNG:dataElement>
-						<bbNG:colorPicker name="user_color" initialColor="<%= user_color_value %>" helpText="Choose a color for your own bar."/>
+						<bbNG:colorPicker name="user_color" initialColor="<%= leaderboardConfig.getUserColorValue() %>" helpText="Choose a color for your own bar."/>
 					</bbNG:dataElement>
 				</bbNG:step>
 			<% } %>
