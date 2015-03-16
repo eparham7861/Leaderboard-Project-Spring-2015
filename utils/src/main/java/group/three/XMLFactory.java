@@ -14,6 +14,7 @@ public class XMLFactory {
 	private SavedContent contentHolder;
 	private int instanceID;
 	private boolean isStudent;
+	private UserBB sessionUser;
 	
 	public XMLFactory(){
 		XMLInputString = "";
@@ -34,6 +35,10 @@ public class XMLFactory {
 	
 	public void setStudentList(ArrayList<Student> students) {
 		this.students = students;
+	}
+	
+	public void setSessionUser(UserBB sessionUser) {
+		this.sessionUser = sessionUser;
 	}
 	
 	public String getLevelName(int index){
@@ -238,6 +243,8 @@ public class XMLFactory {
 		String stringToXML = "<course>";
 		int visibleStudentCount = getStudentCount(visibleStudents);
 		
+		
+		
 		stringToXML += "<courseID>" + getContent(SavedContent.Content.COURSE) + "</courseID>";
 		stringToXML += "<courseColor>" + getContent(SavedContent.Content.COURSECOLOR) + "</courseColor>";
 		stringToXML += "<visibleStudents>" + visibleStudents  + "</visibleStudents>";
@@ -245,7 +252,7 @@ public class XMLFactory {
 		stringToXML += "<fileExists>" + getContent(SavedContent.Content.FILEEXISTS) + "</fileExists>";
 		stringToXML += "<selectedGradebookColumn>" + getContent(SavedContent.Content.GRADECHOICE) + "</selectedGradebookColumn>";
 		
-		for (int i = 0; i < visibleStudentCount; i++) {
+		for (int i = 0; i < students.size(); i++) {
 			//this is a dirty temporary fix for our current tests
 			//the else statement should be the only statement
 			if (students.size() == 0) {
@@ -259,11 +266,21 @@ public class XMLFactory {
 				stringToXML += "<student>";
 				stringToXML += "<studentID>" + studentID + "</studentID>";
 			}
-			stringToXML += "<userColor>" + getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
-			stringToXML += "<otherColor>" + getContent(SavedContent.Content.OTHERCOLOR) + "</otherColor>";
-			stringToXML += "<studentColumnChoice>" + getContent(SavedContent.Content.COLUMNCHOICE) + "</studentColumnChoice>";
-			stringToXML += "<studentTimePeriod>" + getContent(SavedContent.Content.PERIOD) + "</studentTimePeriod>";
-			stringToXML += "</student>";
+			if (sessionUser.getUserName() == students.get(i).getUserName()) {
+				stringToXML += "<userColor>" + students.get(i).getStudentHighlightColor() + "</userColor>";
+				stringToXML += "<otherColor>" + students.get(i).getStudentGeneralColor() + "</otherColor>";
+				stringToXML += "<studentColumnChoice>" + students.get(i).getGradeColumn() + "</studentColumnChoice>";
+				stringToXML += "<studentTimePeriod>" + students.get(i).getTimePeriod() + "</studentTimePeriod>";
+				stringToXML += "</student>";
+			}
+			else {
+				stringToXML += "<userColor>" + getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
+				stringToXML += "<otherColor>" + getContent(SavedContent.Content.OTHERCOLOR) + "</otherColor>";
+				stringToXML += "<studentColumnChoice>" + getContent(SavedContent.Content.COLUMNCHOICE) + "</studentColumnChoice>";
+				stringToXML += "<studentTimePeriod>" + getContent(SavedContent.Content.PERIOD) + "</studentTimePeriod>";
+				stringToXML += "</student>";
+			}
+			
 		}
 		
 		for (int i = 0; i<10; i++){

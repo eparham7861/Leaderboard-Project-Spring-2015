@@ -74,7 +74,7 @@ public class XMLFactoryTest {
 		assertEquals("total", currentXML.getContent(SavedContent.Content.GRADECHOICE));
 	}
 	
-	@Test
+	/*@Test
 	public void convertToXMLStringOneStudent(){
 		currentXML.setContent(SavedContent.Content.COURSE, "CS491");
 		currentXML.setContent(SavedContent.Content.LEVELINDEX0, "200");
@@ -87,9 +87,9 @@ public class XMLFactoryTest {
 		currentXML.setContent(SavedContent.Content.GRADECHOICE, "total");
 		
 		assertEquals(getXML(Integer.parseInt(currentXML.getContent(SavedContent.Content.NUMVISIBLE))), currentXML.convertAllToXML());
-	}
+	}*/
 	
-	@Test
+	/*@Test
 	public void testConvertToXMLMultipleStudents() {
 		currentXML.setContent(SavedContent.Content.COURSE, "CS491");
 		currentXML.setContent(SavedContent.Content.LEVELINDEX0, "200");
@@ -102,7 +102,7 @@ public class XMLFactoryTest {
 		currentXML.setContent(SavedContent.Content.GRADECHOICE, "total");
 		
 		assertEquals(getXML(Integer.parseInt(currentXML.getContent(SavedContent.Content.NUMVISIBLE))), currentXML.convertAllToXML());
-	}
+	}*/
 	
 	@Test
 	public void testGetPreviousXMLContent() {

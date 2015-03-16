@@ -4,13 +4,13 @@ public class Student implements Comparable<Student> {
 	private double score;
 	private String fName, lName, userName, studentID;
 	private boolean hidden;
-	private String studentHighlightColor;
-	private String studentGeneralColor;
-	
-	
+	private String studentHighlightColor, studentGeneralColor;
+	private String gradeColumn, timePeriod;
 	
 	public Student () {
 		hidden = false;
+		gradeColumn = "";
+		timePeriod = "";
 	}
 	public void setStudentID(String ID){
 		this.studentID = ID;
@@ -44,6 +44,14 @@ public class Student implements Comparable<Student> {
 		this.studentGeneralColor = Color;
 	}
 	
+	public void setGradeColumn(String gradeColumn) {
+		this.gradeColumn = gradeColumn;
+	}
+	
+	public void setTimePeriod(String timePeriod) {
+		this.timePeriod = timePeriod;
+	}
+	
 	public String getStudentID(){
 		return studentID;
 	}
@@ -74,6 +82,14 @@ public class Student implements Comparable<Student> {
 	
 	public String getStudentGeneralColor(){
 		return studentGeneralColor;
+	}
+	
+	public String getGradeColumn() {
+		return gradeColumn;
+	}
+	
+	public String getTimePeriod() {
+		return timePeriod;
 	}
 	
 	public int compareTo(Student s) {

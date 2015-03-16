@@ -2,10 +2,10 @@
 <manifest>
 	<!-- core extension information -->
 	<plugin>
-		<name value= "Gamegogy Leaderboard 1.4"/>
-		<handle value= "gamegogyleaderboard14"/>
+		<name value= "Gamegogy Leaderboard 1.5"/>
+		<handle value= "gamegogyleaderboard15"/>
 		<description value= "This module displays students' total points and their rank compared to their classmates.  An instructor will see the students' names displayed, while students will only see an anonymized rank."/>
-		<version value= "1.4"/>
+		<version value= "1.5"/>
 		<requires>
 			<bbversion value="9.0.0"/>
 		</requires>
