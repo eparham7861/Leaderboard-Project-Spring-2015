@@ -130,6 +130,7 @@ public class XMLFactoryTest {
 		xml += "</course>";
 		
 		currentXML.setXMLInputString(xml);
+		currentXML.setCurrentStudent("1");
 		assertEquals("CS491", currentXML.getContent(SavedContent.Content.COURSE));
 	}
 	

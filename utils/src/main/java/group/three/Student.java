@@ -35,9 +35,11 @@ public class Student implements Comparable<Student> {
 	public void setHidden() {
 		hidden = true;
 	}
+	
 	public void setStudentHighlightColor(String Color){
 		this.studentHighlightColor = Color;
 	}
+	
 	public void setStudentGeneralColor(String Color){
 		this.studentGeneralColor = Color;
 	}
@@ -65,38 +67,13 @@ public class Student implements Comparable<Student> {
 	public boolean isHidden() {
 		return hidden;
 	}
+	
 	public String getStudentHighlightColor(){
 		return studentHighlightColor;
 	}
+	
 	public String getStudentGeneralColor(){
 		return studentGeneralColor;
-	}
-	
-	public boolean isScoreHigher(Double score) {
-		if (this.score > score) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	
-	public boolean isScoreLower(Double score) {
-		if (this.score < score) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	
-	public boolean isScoreEqual(Double score) {
-		if (this.score == score) {
-			return true;
-		}
-		else {
-			return false;
-		}
 	}
 	
 	public int compareTo(Student s) {

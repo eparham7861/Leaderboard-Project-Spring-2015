@@ -11,8 +11,8 @@
 					   <xs:element name="level" maxOccurs="unbounded">
 							 <xs:complexType>
 								   <xs:sequence>
-										 <xs:element name="levelID" type="xs:int"></xs:element>
-										 <xs:element name="levelPoints" type="xs:int"></xs:element>
+										 <xs:element name="levelID" type="xs:string"></xs:element>
+										 <xs:element name="levelPoints" type="xs:string"></xs:element>
 										 <xs:element name="levelLabel" type="xs:string"></xs:element>
 								   </xs:sequence>
 							 </xs:complexType>
@@ -20,11 +20,11 @@
 					   <xs:element name="student" maxOccurs="unbounded">
 							 <xs:complexType>
 								   <xs:sequence>
-										 <xs:element name="studentID" type="xs:int"></xs:element>
+										 <xs:element name="studentID" type="xs:string"></xs:element>
 										 <xs:element name="userColor" type="xs:string"></xs:element>
 										 <xs:element name="otherColor" type="xs:string"></xs:element>
-										 <xs:element name="studentColumnChoice"></xs:element>
-										 <xs:element name="studentTimePeriod"></xs:element>
+										 <xs:element name="studentColumnChoice" type="xs:string"></xs:element>
+										 <xs:element name="studentTimePeriod" type="xs:string"></xs:element>
 								   </xs:sequence>
 							 </xs:complexType>
 					   </xs:element>

@@ -1,0 +1,38 @@
+<course>
+	<courseID>CS491</courseID>
+	<courseColor>blue</courseColor>
+	<fileExists>true</fileExists>
+	<selectedGradebookColumn>Homework1</selectedGradebookColumn>
+	<hiddenStudents>Eric Parham, Eric Parris, Darren Johnston, Jared Starr</hiddenStudents>
+	<level>
+		<levelID>1</levelID>
+		<levelPoints>0</levelPoints>
+		<levelLabel>Novice</levelLabel>
+	</level>
+	<level>
+		<levelID>2</levelID>
+		<levelPoints>100</levelPoints>
+		<levelLabel>Apprentice</levelLabel>
+	</level>
+	<student>
+		<studentID>01234</studentID>
+		<userColor>red</userColor>
+		<otherColor>black</otherColor>
+		<studentColumnChoice>Homework1</studentColumnChoice>
+		<studentTimePeriod>Week1</studentTimePeriod>
+	</student>
+	<student>
+		<studentID>12345</studentID>
+		<userColor>pink</userColor>
+		<otherColor>blue</otherColor>
+		<studentColumnChoice>Homework2</studentColumnChoice>
+		<studentTimePeriod>Week4</studentTimePeriod>
+	</student>
+	<student>
+		<studentID>23456</studentID>
+		<userColor>green</userColor>
+		<otherColor>purple</otherColor>
+		<studentColumnChoice>None</studentColumnChoice>
+		<studentTimePeriod>None</studentTimePeriod>
+	</student>
+</course>

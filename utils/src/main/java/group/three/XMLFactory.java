@@ -9,15 +9,18 @@ import org.w3c.dom.*;
 import org.xml.sax.*;
 
 public class XMLFactory {
-	private String XMLInputString;
+	private String XMLInputString, studentID;
 	private ArrayList<String> studentScoreLabels;
 	private SavedContent contentHolder;
 	private int instanceID;
+	private boolean isStudent;
 	
 	public XMLFactory(){
 		XMLInputString = "";
+		studentID = "";
 		studentScoreLabels = new ArrayList<String>();
 		contentHolder = new SavedContent();
+		isStudent = false;
 	}
 	
 	public void setContent(SavedContent.Content contentName, String item) {
@@ -58,9 +61,12 @@ public class XMLFactory {
 	
 	public void setXMLInputString(String xml){
 		this.XMLInputString = xml;
-		constructXML();
 	}
 	
+	public void setCurrentStudent(String studentID) {
+		this.studentID = studentID;
+		constructXML();
+	}
 	private void constructXML() {
 		/*
 			This process builds a document which takes the input source of XML
@@ -206,15 +212,30 @@ public class XMLFactory {
 			case "fileExists":
 				setContent(SavedContent.Content.FILEEXISTS, content);
 				break;
+			case "studentid":
+				checkCurrentStudent(content);
 			case "usercolor":
-				setContent(SavedContent.Content.USERCOLOR, content);
+				if (isStudent) {
+					setContent(SavedContent.Content.USERCOLOR, content);
+				}
 				break;
 			case "othercolor":
-				setContent(SavedContent.Content.OTHERCOLOR, content);
+				if (isStudent) {
+					setContent(SavedContent.Content.OTHERCOLOR, content);
+				}
 				break;
 			case "selectedGradebookColumn":
 				setContent(SavedContent.Content.GRADECHOICE, content);
 				break;
+		}
+	}
+	
+	private void checkCurrentStudent(String studentID) {
+		if (this.studentID == studentID) {
+			isStudent = true;
+		}
+		else {
+			isStudent = false;
 		}
 	}
 	
