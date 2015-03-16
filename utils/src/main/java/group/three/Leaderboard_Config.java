@@ -28,6 +28,7 @@ public class Leaderboard_Config{
 	private String jsConfigFormPath, sessionUserRole, fileExists;
 	private String visibleList, hiddenList, prev_grade_choice, prev_grade_string;
 	private List<MultiSelectBean> leftList, rightList;
+	private List<Student> students;
 	private MultiSelectBean leftBean, rightBean;
 	private List<CourseMembership> cmlist;
 	private List<GradableItem> lgm;
@@ -36,6 +37,11 @@ public class Leaderboard_Config{
 	private boolean isUserAnInstructor;
 	private final int NUM_LABELS = 10;
 	private Context ctx;
+	private UserBB sessionUser;
+	private CourseIDBB currentCourseID;
+	private CourseMembershipBB currentCourseMembership;
+	private GradebookManagerBB currentGradebook;
+	private String gradeChoice;
 
 	public Leaderboard_Config(Context context){
 		try{
@@ -54,10 +60,128 @@ public class Leaderboard_Config{
 			courseID = ctx.getCourseId();
 			cmlist = CourseMembershipDbLoader.Default.getInstance().loadByCourseIdAndRole(courseID, CourseMembership.Role.STUDENT, null, true);
 			jsConfigFormPath = PlugInUtil.getUri("dt", "leaderboardblock11", "js/config_form.js");
+			sessionUser = new UserBB();
+			currentCourseID = new CourseIDBB();
+			currentGradebook = new GradebookManagerBB();
+			currentCourseMembership = new CourseMembershipBB();
+			students = new ArrayList<Student>();
+			gradeChoice = "";
+			setCurrentUser();
+			loadContent();
+			setCurrentCourseID();
+			setGradebookManager();
+			setCourseMemberships();
+			studentSetup();
 		}
 		catch(KeyNotFoundException e){}
 		catch(BbSecurityException e){}
 		catch(PersistenceException e){}
+	}
+	
+	private void setCurrentUser() {
+		sessionUser.setCurrentUser(ctx.getUser());
+	}
+	
+	private void loadContent() {
+		try {
+			ProcessorBB loadProcessor = new ProcessorBB(currentCourseID.getCourseID());
+			xmlFactory.setXMLInputString(loadProcessor.loadContent(ctx));
+			xmlFactory.setCurrentStudent(sessionUser.getStudentID());
+		}
+		catch (PersistenceException e) {
+		
+		}
+		
+	}
+	
+	private void setCurrentCourseID() {
+		currentCourseID.setCourse(ctx.getCourseId());
+	}
+	
+	private void setGradebookManager() {
+		currentGradebook.setGradebookManager(currentCourseID);
+		currentGradebook.setGradebookColumn(xmlFactory.getContent(SavedContent.Content.GRADECHOICE));
+		gradeChoice = currentGradebook.getGradebookColumn();
+	}
+	
+	private void setCourseMemberships() {
+		currentCourseMembership.setCourseMemberships(currentCourseID);
+	}
+	
+	private void studentSetup() {
+		Iterator<CourseMembership> memberships = currentCourseMembership.getIterator();
+		while (memberships.hasNext()) {
+			CourseMembership selectedMember = memberships.next();
+			
+			String currentUserID = selectedMember.getUserId().toString();
+			
+			for (int x = 0; x < currentGradebook.getGradebookSize(); x++) {
+				GradeWithAttemptScore attemptedScore = currentGradebook.getGradebookAttemptedScore(selectedMember, x);
+				
+				double currentScore = 0.0;
+				if (attemptedScore != null) {
+					currentScore = attemptedScore.getScoreValue();
+				}
+				String sessionUserName = sessionUser.getName() + ": " + sessionUser.getUserName();
+				
+				if (fileExists()) {
+					String[] hiddenArr = xmlFactory.getContent(SavedContent.Content.HIDDEN).split(",");
+					String studentName = selectedMember.getUser().getGivenName() + " " + selectedMember.getUser().getFamilyName() + ": " + selectedMember.getUser().getUserName();
+					for (int i = 0; i < hiddenArr.length; i++) {
+						if (studentName.equals(sessionUserName)){
+							Student currentStudent = new Student();
+							currentStudent.setStudentID(selectedMember.getUser().getStudentId());
+							currentStudent.setFirstName(selectedMember.getUser().getGivenName());
+							currentStudent.setLastName(selectedMember.getUser().getFamilyName());
+							currentStudent.setScore(currentScore);
+							currentStudent.setUserName(selectedMember.getUser().getUserName());
+							xmlFactory.setCurrentStudent(selectedMember.getUser().getStudentId());
+							currentStudent.setStudentHighlightColor(xmlFactory.getContent(SavedContent.Content.USERCOLOR));
+							currentStudent.setStudentGeneralColor(xmlFactory.getContent(SavedContent.Content.OTHERCOLOR));
+							students.add(currentStudent);
+							break;
+						}
+						else if (studentName.equals(hiddenArr[i])) {
+							break;
+						}
+						else if(!studentName.equals(hiddenArr[i]) && i == hiddenArr.length - 1) {
+							Student currentStudent = new Student();
+							currentStudent.setStudentID(selectedMember.getUser().getStudentId());
+							currentStudent.setFirstName(selectedMember.getUser().getGivenName());
+							currentStudent.setLastName(selectedMember.getUser().getFamilyName());
+							currentStudent.setScore(currentScore);
+							currentStudent.setUserName(selectedMember.getUser().getUserName());
+							xmlFactory.setCurrentStudent(selectedMember.getUser().getStudentId());
+							currentStudent.setStudentHighlightColor(xmlFactory.getContent(SavedContent.Content.USERCOLOR));
+							currentStudent.setStudentGeneralColor(xmlFactory.getContent(SavedContent.Content.OTHERCOLOR));
+							students.add(currentStudent);
+						}
+					}
+				}
+				else {
+					Student currentStudent = new Student();
+					currentStudent.setStudentID(selectedMember.getUser().getStudentId());
+					currentStudent.setFirstName(selectedMember.getUser().getGivenName());
+					currentStudent.setLastName(selectedMember.getUser().getFamilyName());
+					currentStudent.setScore(currentScore);
+					currentStudent.setUserName(selectedMember.getUser().getUserName());
+					xmlFactory.setCurrentStudent(selectedMember.getUser().getStudentId());
+					currentStudent.setStudentHighlightColor(xmlFactory.getContent(SavedContent.Content.USERCOLOR));
+					currentStudent.setStudentGeneralColor(xmlFactory.getContent(SavedContent.Content.OTHERCOLOR));
+					students.add(currentStudent);
+				}
+			}
+			Collections.sort(students);
+			Collections.reverse(students);
+		}
+	}
+	
+	private boolean fileExists() {
+		return Boolean.parseBoolean(xmlFactory.getContent(SavedContent.Content.FILEEXISTS));
+	}
+	
+	public List<Student> getStudentList() {
+		return students;
 	}
 	
 	/*Main Functions*/

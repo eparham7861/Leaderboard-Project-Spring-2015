@@ -10,7 +10,7 @@ import org.xml.sax.*;
 
 public class XMLFactory {
 	private String XMLInputString, studentID;
-	private ArrayList<String> studentScoreLabels;
+	private List<Student> students;
 	private SavedContent contentHolder;
 	private int instanceID;
 	private boolean isStudent;
@@ -18,7 +18,7 @@ public class XMLFactory {
 	public XMLFactory(){
 		XMLInputString = "";
 		studentID = "";
-		studentScoreLabels = new ArrayList<String>();
+		students = new ArrayList<Student>();
 		contentHolder = new SavedContent();
 		isStudent = false;
 	}
@@ -30,6 +30,10 @@ public class XMLFactory {
 	
 	public String getContent(SavedContent.Content contentName) {
 		return contentHolder.getContentItem(contentName);
+	}
+	
+	public void setStudentList(ArrayList<Student> students) {
+		this.students = students;
 	}
 	
 	public String getLevelName(int index){
@@ -47,17 +51,6 @@ public class XMLFactory {
 			contentHolder.setContentItem(SavedContent.Content.NUMVISIBLE, Integer.toString(students.length));
 		}
 	}
-	public void addGradebookLabel(String gradeLabel){
-		studentScoreLabels.add(gradeLabel);
-	}
-	
-	public void removeGradebookLabel(String gradeLabel){
-		studentScoreLabels.remove(gradeLabel);
-	}
-	
-	public String getGradebookLabel(int index){
-		return studentScoreLabels.get(index);
-	}
 	
 	public void setXMLInputString(String xml){
 		this.XMLInputString = xml;
@@ -67,6 +60,7 @@ public class XMLFactory {
 		this.studentID = studentID;
 		constructXML();
 	}
+	
 	private void constructXML() {
 		/*
 			This process builds a document which takes the input source of XML
@@ -252,8 +246,19 @@ public class XMLFactory {
 		stringToXML += "<selectedGradebookColumn>" + getContent(SavedContent.Content.GRADECHOICE) + "</selectedGradebookColumn>";
 		
 		for (int i = 0; i < visibleStudentCount; i++) {
-			stringToXML += "<student>";
-			stringToXML += "<studentID>" + i + "</studentID>";
+			//this is a dirty temporary fix for our current tests
+			//the else statement should be the only statement
+			if (students.size() == 0) {
+				stringToXML += "<student>";
+				stringToXML += "<studentID>" + i + "</studentID>";
+			}
+			else {
+				String studentID = students.get(i).getStudentID();
+				setCurrentStudent(studentID);
+				
+				stringToXML += "<student>";
+				stringToXML += "<studentID>" + studentID + "</studentID>";
+			}
 			stringToXML += "<userColor>" + getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
 			stringToXML += "<otherColor>" + getContent(SavedContent.Content.OTHERCOLOR) + "</otherColor>";
 			stringToXML += "<studentColumnChoice>" + getContent(SavedContent.Content.COLUMNCHOICE) + "</studentColumnChoice>";

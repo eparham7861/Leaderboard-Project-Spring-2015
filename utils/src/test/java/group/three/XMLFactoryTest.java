@@ -25,6 +25,7 @@ public class XMLFactoryTest {
 		assertEquals("200", currentXML.getContent(SavedContent.Content.LEVELINDEX0));
 	}
 	
+	
 	@Test
 	public void testContentHolderLevel() {
 		currentXML.setContent(SavedContent.Content.LEVEL0, "Journeyman");
