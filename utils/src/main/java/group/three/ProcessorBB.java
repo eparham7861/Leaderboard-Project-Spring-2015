@@ -146,9 +146,106 @@ public class ProcessorBB {
 		}
 		
 		if (contentXML.equals(" ")){
-			contentXML = "empty";
+			contentXML = generateDefaultXML(courseContext);
 		}
 		
 		return contentXML;
+	}
+	
+	private String generateDefaultXML(Context courseContext) {
+		String defaultXML = "";
+		
+		CourseIDBB currentCourseID = new CourseIDBB();
+		CourseMembershipBB currentCourseMembership = new CourseMembershipBB();
+		
+		currentCourseID.setCourse(courseContext.getCourseId());
+		currentCourseMembership.setCourseMemberships(currentCourseID);
+		
+		Iterator<CourseMembership> memberships = currentCourseMembership.getIterator();
+		
+		defaultXML += "<course>";
+		defaultXML += "<courseID>" + currentCourseID.toString() + "</courseID>";
+		defaultXML += "<courseColor>blue</courseColor>";
+		defaultXML += "<visibleStudents>";
+		
+		
+		while (memberships.hasNext()) {
+			CourseMembership selectedMember = memberships.next();
+			
+			if (memberships.hasNext()) {
+				defaultXML += selectedMember.getUser().getStudentId() + ", ";
+			}
+			else {
+				defaultXML += selectedMember.getUser().getStudentId();
+			}
+		}
+		
+		defaultXML += "</visibleStudents>";
+		defaultXML += "<hiddenStudents></hiddenStudents>";
+		defaultXML += "<fileExists>true</fileExists>";
+		defaultXML += "<selectedGradebookColumn>Total: </selectedGradebookColumn>";
+		
+		memberships = currentCourseMembership.getIterator();
+		while (memberships.hasNext()) {
+			CourseMembership selectedMember = memberships.next();
+			
+			defaultXML += "<student>";
+			defaultXML += "<studentID>" + selectedMember.getUser().getStudentId() + "</studentID>";
+			defaultXML += "<userColor>blue</userColor>";
+			defaultXML += "<otherColor>blue</otherColor>";
+			defaultXML += "<studentColumnChoice></studentColumnChoice>";
+			defaultXML += "<studentTimePeriod></studentTimePeriod>";
+			defaultXML += "</student>";
+			
+		}
+		
+		for (int i = 0; i < 10; i++) {
+			defaultXML += "<level>";
+			defaultXML += "<levelID>" + i + "</levelID>";
+			if (i == 0){
+				defaultXML += "<levelPoints>0</levelPoints>";
+				defaultXML += "<levelLabel>Novice</levelLabel>";
+			}
+			else if (i == 1){
+				defaultXML += "<levelPoints>100</levelPoints>";
+				defaultXML += "<levelLabel>Apprentice</levelLabel>";
+			}
+			else if (i == 2){
+				defaultXML += "<levelPoints>200</levelPoints>";
+				defaultXML += "<levelLabel>Journeyman</levelLabel>";
+			}
+			else if (i == 3){
+				defaultXML += "<levelPoints>300</levelPoints>";
+				defaultXML += "<levelLabel>Grand Master</levelLabel>";
+			}
+			else if (i == 4){
+				defaultXML += "<levelPoints>400</levelPoints>";
+				defaultXML += "<levelLabel>Done</levelLabel>";
+			}
+			else if (i == 5){
+				defaultXML += "<levelPoints></levelPoints>";
+				defaultXML += "<levelLabel></levelLabel>";
+			}
+			else if (i == 6){
+				defaultXML += "<levelPoints></levelPoints>";
+				defaultXML += "<levelLabel></levelLabel>";
+			}
+			else if (i == 7){
+				defaultXML += "<levelPoints></levelPoints>";
+				defaultXML += "<levelLabel></levelLabel>";
+			}
+			else if (i == 8){
+				defaultXML += "<levelPoints></levelPoints>";
+				defaultXML += "<levelLabel></levelLabel>";
+			}
+			else if (i == 9){
+				defaultXML += "<levelPoints></levelPoints>";
+				defaultXML += "<levelLabel></levelLabel>";
+			}
+			defaultXML += "</level>";
+		}
+		defaultXML += "</course>";
+		
+		return defaultXML;
 	}
 }

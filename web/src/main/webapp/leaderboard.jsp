@@ -27,9 +27,8 @@
 <%@page import="blackboard.platform.plugin.PlugInUtil"%>	<!-- for utilities -->
 <%@ taglib uri="/bbData" prefix="bbData"%> 					<!-- for tags -->
 <%@ taglib uri="/bbNG" prefix="bbNG"%>
-<%@page import="com.spvsoftwareproducts.blackboard.utils.B2Context"%>
+<%@page import="group.three.*"%>
 <bbNG:includedPage ctxId="ctx">
-<%@include file="leaderboard_student.jsp" %>
 
 	<%
 		LeaderboardBB currentLeaderboard = new LeaderboardBB(ctx);

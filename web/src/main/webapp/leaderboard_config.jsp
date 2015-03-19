@@ -11,9 +11,8 @@
 <%@ taglib uri="/bbNG" prefix="bbNG"%>
 <%@ taglib prefix="bbUI" uri="/bbUI" %>
 <%@page import="blackboard.servlet.data.MultiSelectBean"%>
+<%@page import="group.three.*"%>
 
-
-<%@page import="com.spvsoftwareproducts.blackboard.utils.B2Context"%>
 <bbNG:modulePage type="personalize" ctxId="ctx">
 <%
 	Leaderboard_Config leaderboardConfig = new Leaderboard_Config(ctx);
@@ -24,8 +23,6 @@
 	// Grab previously saved level values and labels
 	leaderboardConfig.loadPreviousLevelInformation();
 %>
-
-<%@include file="leaderboard_student.jsp" %>
 
 <bbNG:pageHeader>
 	<bbNG:pageTitleBar title="Leaderboard Configuration"></bbNG:pageTitleBar>
