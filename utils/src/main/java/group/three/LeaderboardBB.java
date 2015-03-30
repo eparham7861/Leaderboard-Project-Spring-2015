@@ -46,8 +46,8 @@ public class LeaderboardBB {
 			currentXML = new XMLFactory();
 			canSeeScores = false;
 			
-			loadContent();
 			setCurrentUser();
+			loadContent();
 			setCurrentCourseID();
 			setGradebookManager();
 			setSessionUserID();
@@ -61,19 +61,20 @@ public class LeaderboardBB {
 		}
 	}
 	
+	private void setCurrentUser() {
+		sessionUser.setCurrentUser(currentContext.getUser());
+	}
+	
 	private void loadContent() {
 		try {
 			ProcessorBB loadProcessor = new ProcessorBB(currentCourseID.getCourseID());
 			currentXML.setXMLInputString(loadProcessor.loadContent(currentContext));
+			currentXML.setCurrentStudent(sessionUser.getStudentID());
 		}
 		catch (PersistenceException e) {
 		
 		}
 		
-	}
-	
-	private void setCurrentUser() {
-		sessionUser.setCurrentUser(currentContext.getUser());
 	}
 	
 	private void setCurrentCourseID() {
@@ -151,6 +152,9 @@ public class LeaderboardBB {
 							currentStudent.setLastName(selectedMember.getUser().getFamilyName());
 							currentStudent.setScore(currentScore);
 							currentStudent.setUserName(selectedMember.getUser().getUserName());
+							currentXML.setCurrentStudent(selectedMember.getUser().getStudentId());
+							currentStudent.setStudentHighlightColor(currentXML.getContent(SavedContent.Content.USERCOLOR));
+							currentStudent.setStudentGeneralColor(currentXML.getContent(SavedContent.Content.OTHERCOLOR));
 							students.add(currentStudent);
 							break;
 						}
@@ -164,6 +168,9 @@ public class LeaderboardBB {
 							currentStudent.setLastName(selectedMember.getUser().getFamilyName());
 							currentStudent.setScore(currentScore);
 							currentStudent.setUserName(selectedMember.getUser().getUserName());
+							currentXML.setCurrentStudent(selectedMember.getUser().getStudentId());
+							currentStudent.setStudentHighlightColor(currentXML.getContent(SavedContent.Content.USERCOLOR));
+							currentStudent.setStudentGeneralColor(currentXML.getContent(SavedContent.Content.OTHERCOLOR));
 							students.add(currentStudent);
 						}
 					}
@@ -175,6 +182,9 @@ public class LeaderboardBB {
 					currentStudent.setLastName(selectedMember.getUser().getFamilyName());
 					currentStudent.setScore(currentScore);
 					currentStudent.setUserName(selectedMember.getUser().getUserName());
+					currentXML.setCurrentStudent(selectedMember.getUser().getStudentId());
+					currentStudent.setStudentHighlightColor(currentXML.getContent(SavedContent.Content.USERCOLOR));
+					currentStudent.setStudentGeneralColor(currentXML.getContent(SavedContent.Content.OTHERCOLOR));
 					students.add(currentStudent);
 				}
 			}

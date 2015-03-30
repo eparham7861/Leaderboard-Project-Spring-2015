@@ -59,39 +59,4 @@ public class StudentTest {
 		currentStudent.setStudentGeneralColor("Blue");
 		assertEquals("Blue", currentStudent.getStudentGeneralColor());
 	}
-	@Test
-	public void testStudentScoreIsHigher() {
-		currentStudent.setScore(33.2);
-		assertTrue(currentStudent.isScoreHigher(20.2));
-	}
-	
-	@Test
-	public void testStudentScoreIsNotHigher() {
-		currentStudent.setScore(33.2);
-		assertFalse(currentStudent.isScoreHigher(80.2));
-	}
-	
-	@Test
-	public void testStudentScoreIsLower() {
-		currentStudent.setScore(80.9);
-		assertTrue(currentStudent.isScoreLower(99.9));
-	}
-	
-	@Test
-	public void testStudentScoreIsNotLower() {
-		currentStudent.setScore(80.9);
-		assertFalse(currentStudent.isScoreLower(69.9));
-	}
-	
-	@Test
-	public void testStudentScoreIsEqual() {
-		currentStudent.setScore(80.9);
-		assertTrue(currentStudent.isScoreEqual(80.9));
-	}
-	
-	@Test
-	public void testStudentScoreIsNotEqual() {
-		currentStudent.setScore(80.9);
-		assertFalse(currentStudent.isScoreEqual(69.9));
-	}
 }

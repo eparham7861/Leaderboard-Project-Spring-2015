@@ -2,10 +2,10 @@
 <manifest>
 	<!-- core extension information -->
 	<plugin>
-		<name value= "Gamegogy Leaderboard 1.4"/>
-		<handle value= "gamegogyleaderboard14"/>
+		<name value= "Gamegogy Leaderboard 1.5"/>
+		<handle value= "gamegogyleaderboard15"/>
 		<description value= "This module displays students' total points and their rank compared to their classmates.  An instructor will see the students' names displayed, while students will only see an anonymized rank."/>
-		<version value= "1.4"/>
+		<version value= "1.5"/>
 		<requires>
 			<bbversion value="9.0.0"/>
 		</requires>
@@ -20,13 +20,13 @@
   
 		<!-- Modules, types, and channels for the community -->
 		<module-defs>		
-			<module-type ext-ref="gamegogyleaderboard14" title="Gamegogy Leaderboard 1.4" uicreatable="true">
+			<module-type ext-ref="gamegogyleaderboard15" title="Gamegogy Leaderboard 1.5" uicreatable="true">
 				<jsp>		
 				  <view>leaderboard.jsp</view>		
 				  <edit>leaderboard_config.jsp</edit>
 				</jsp>		
 			</module-type>		
-			<module type="gamegogyleaderboard14" isadmin="true" isavailabletocourse="true" useraddable="true" isdeletable="true" isdetachable="true" title="Gamegogy Leaderboard 1.4">		
+			<module type="gamegogyleaderboard15" isadmin="true" isavailabletocourse="true" useraddable="true" isdeletable="true" isdetachable="true" title="Gamegogy Leaderboard 1.5">		
 				<description>This module displays students' total points and their rank compared to their classmates.  An instructor will see the students' names displayed, while students will only see an anonymized rank.</description>		
 				<ExtraInfo />		
 				<module-groups>		

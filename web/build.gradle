@@ -42,8 +42,8 @@ dependencies {
 	
 	runtime files("BBLibs/json-lib-2.4-jdk15.jar")
 	
-	providedCompile 'javax.servlet:servlet-api:2.5'
-	providedCompile 'javax.servlet:jsp-api:2.0'
+	compile 'javax.servlet:servlet-api:2.5'
+	compile 'javax.servlet:jsp-api:2.0'
 			
-	providedCompile 'javax.servlet:jstl:1.2'
+	compile 'javax.servlet:jstl:1.2'
 }

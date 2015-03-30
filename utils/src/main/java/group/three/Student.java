@@ -4,13 +4,13 @@ public class Student implements Comparable<Student> {
 	private double score;
 	private String fName, lName, userName, studentID;
 	private boolean hidden;
-	private String studentHighlightColor;
-	private String studentGeneralColor;
-	
-	
+	private String studentHighlightColor, studentGeneralColor;
+	private String gradeColumn, timePeriod;
 	
 	public Student () {
 		hidden = false;
+		gradeColumn = "";
+		timePeriod = "";
 	}
 	public void setStudentID(String ID){
 		this.studentID = ID;
@@ -35,11 +35,21 @@ public class Student implements Comparable<Student> {
 	public void setHidden() {
 		hidden = true;
 	}
+	
 	public void setStudentHighlightColor(String Color){
 		this.studentHighlightColor = Color;
 	}
+	
 	public void setStudentGeneralColor(String Color){
 		this.studentGeneralColor = Color;
+	}
+	
+	public void setGradeColumn(String gradeColumn) {
+		this.gradeColumn = gradeColumn;
+	}
+	
+	public void setTimePeriod(String timePeriod) {
+		this.timePeriod = timePeriod;
 	}
 	
 	public String getStudentID(){
@@ -65,38 +75,21 @@ public class Student implements Comparable<Student> {
 	public boolean isHidden() {
 		return hidden;
 	}
+	
 	public String getStudentHighlightColor(){
 		return studentHighlightColor;
 	}
+	
 	public String getStudentGeneralColor(){
 		return studentGeneralColor;
 	}
 	
-	public boolean isScoreHigher(Double score) {
-		if (this.score > score) {
-			return true;
-		}
-		else {
-			return false;
-		}
+	public String getGradeColumn() {
+		return gradeColumn;
 	}
 	
-	public boolean isScoreLower(Double score) {
-		if (this.score < score) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	
-	public boolean isScoreEqual(Double score) {
-		if (this.score == score) {
-			return true;
-		}
-		else {
-			return false;
-		}
+	public String getTimePeriod() {
+		return timePeriod;
 	}
 	
 	public int compareTo(Student s) {
