@@ -9,6 +9,7 @@ import org.w3c.dom.*;
 import org.xml.sax.*;
 
 public class XMLFactory {
+	
 	private String XMLInputString;
 	private ArrayList<String> studentScoreLabels;
 	private SavedContent contentHolder;
