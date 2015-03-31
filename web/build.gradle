@@ -7,6 +7,13 @@ project.ext {
 	deployInstance = "BBLEARN"
 }
 
+repositories {
+  mavenCentral()
+  maven {
+    url "https://maven.blackboard.com/content/repositories/releases/"
+  }
+}
+
 war {
 	// Replace version in Blackboard Manifest
 	inputs.property('version', version)
@@ -32,15 +39,18 @@ war {
 
 dependencies {
 	compile project(":utils")
-	compile files("BBLibs/bb-cms-admin.jar")
-	compile files("BBLibs/bb-platform.jar")
-	compile files("BBLibs/bb-taglibs.jar")
+	
+	providedCompile( "blackboard.platform:bb-platform:9.1.110082.0")  { transitive = false }
+	providedCompile( "blackboard.platform:bb-cms-admin:9.1.110082.0" ) { transitive = false }
+	providedCompile( "blackboard.platform:bb-taglibs:9.1.110082.0" ) { transitive = false }
+	
 	compile files("BBLibs/servlet-api.jar")
 	compile files("BBLibs/commons-logging-1.1.1.jar")
 	compile files("BBLibs/dwr.jar")
 	compile files("BBLibs/json-lib-2.4-jdk15.jar")
 	
 	runtime files("BBLibs/json-lib-2.4-jdk15.jar")
+	
 	
 	compile 'javax.servlet:servlet-api:2.5'
 	compile 'javax.servlet:jsp-api:2.0'

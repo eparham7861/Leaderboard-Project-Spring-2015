@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Implementation-Title: GroupThree
+Implementation-Version: 1.5
+Main-Class: group.three.Leaderboard
+
