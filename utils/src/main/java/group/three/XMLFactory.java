@@ -10,15 +10,19 @@ import org.xml.sax.*;
 
 public class XMLFactory {
 	
-	private String XMLInputString;
-	private ArrayList<String> studentScoreLabels;
+	private String XMLInputString, studentID;
+	private List<Student> students;
 	private SavedContent contentHolder;
 	private int instanceID;
+	private boolean isStudent;
+	private UserBB sessionUser;
 	
 	public XMLFactory(){
 		XMLInputString = "";
-		studentScoreLabels = new ArrayList<String>();
+		studentID = "";
+		students = new ArrayList<Student>();
 		contentHolder = new SavedContent();
+		isStudent = false;
 	}
 	
 	public void setContent(SavedContent.Content contentName, String item) {
@@ -28,6 +32,14 @@ public class XMLFactory {
 	
 	public String getContent(SavedContent.Content contentName) {
 		return contentHolder.getContentItem(contentName);
+	}
+	
+	public void setStudentList(ArrayList<Student> students) {
+		this.students = students;
+	}
+	
+	public void setSessionUser (UserBB sessionUser) {
+		this.sessionUser = sessionUser;
 	}
 	
 	public String getLevelName(int index){
@@ -45,20 +57,14 @@ public class XMLFactory {
 			contentHolder.setContentItem(SavedContent.Content.NUMVISIBLE, Integer.toString(students.length));
 		}
 	}
-	public void addGradebookLabel(String gradeLabel){
-		studentScoreLabels.add(gradeLabel);
-	}
-	
-	public void removeGradebookLabel(String gradeLabel){
-		studentScoreLabels.remove(gradeLabel);
-	}
-	
-	public String getGradebookLabel(int index){
-		return studentScoreLabels.get(index);
-	}
 	
 	public void setXMLInputString(String xml){
 		this.XMLInputString = xml;
+		constructXML();
+	}
+	
+	public void setCurrentStudent (String studentID) {
+		this.studentID = studentID;
 		constructXML();
 	}
 	
@@ -232,13 +238,29 @@ public class XMLFactory {
 		stringToXML += "<selectedGradebookColumn>" + getContent(SavedContent.Content.GRADECHOICE) + "</selectedGradebookColumn>";
 		
 		for (int i = 0; i < visibleStudentCount; i++) {
-			stringToXML += "<student>";
-			stringToXML += "<studentID>" + i + "</studentID>";
-			stringToXML += "<userColor>" + getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
-			stringToXML += "<otherColor>" + getContent(SavedContent.Content.OTHERCOLOR) + "</otherColor>";
-			stringToXML += "<studentColumnChoice>" + getContent(SavedContent.Content.COLUMNCHOICE) + "</studentColumnChoice>";
-			stringToXML += "<studentTimePeriod>" + getContent(SavedContent.Content.PERIOD) + "</studentTimePeriod>";
-			stringToXML += "</student>";
+			if (students.size() == 0) {
+				stringToXML += "<student>";
+				stringToXML += "<studentID>" + i + "</studentID>";
+			}
+			else {
+				stringToXML += "<student>";
+				stringToXML += "<studentID>" + studentID + "</studentID>";
+			}
+			
+			if (sessionUser.getUserName() == students.get(i).getUserName()) {
+				stringToXML += "<userColor>" + students.get(i).getStudentHighlightColor() + "</userColor>";
+				stringToXML += "<otherColor>" + students.get(i).getStudentGeneralColor() + "</otherColor>";
+				stringToXML += "<studentColumnChoice>" + students.get(i).getGradeColumn() + "</studentColumnChoice>";
+				stringToXML += "<studentTimePeriod>" + students.get(i).getTimePeriod() + "</studentTimePeriod>";
+				stringToXML += "</student>";
+			}
+			else {
+				stringToXML += "<userColor>" + getContent(SavedContent.Content.USERCOLOR) + "</userColor>";
+				stringToXML += "<otherColor>" + getContent(SavedContent.Content.OTHERCOLOR) + "</otherColor>";
+				stringToXML += "<studentColumnChoice>" + getContent(SavedContent.Content.COLUMNCHOICE) + "</studentColumnChoice>";
+				stringToXML += "<studentTimePeriod>" + getContent(SavedContent.Content.PERIOD) + "</studentTimePeriod>";
+				stringToXML += "</student>";
+			}
 		}
 		
 		for (int i = 0; i<10; i++){
